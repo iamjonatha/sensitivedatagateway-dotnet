@@ -1,0 +1,54 @@
+name: Feature request
+description: Propose a capability, a detector, a policy action or an integration.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem before proposing the API. Check the
+        [roadmap](https://github.com/iamjonatha/sensitivedatagateway-dotnet/blob/main/docs/roadmap.md)
+        first — the thing you want may already be scheduled, or deliberately excluded.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What is blocked today, and what do you do instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Optional. The problem matters more than the shape of the answer.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Core and the typed boundary
+        - Detection
+        - Policy
+        - Anonymization
+        - Validation
+        - Document adapters
+        - Provider integrations
+        - Dependency injection and configuration
+        - Testing
+        - Documentation
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary check
+      options:
+        - label: This does not require raw content to leave the trust boundary.
+          required: true
+        - label: This does not require a block to become a warning.
+          required: true

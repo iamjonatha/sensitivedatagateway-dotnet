@@ -1,0 +1,65 @@
+name: Bug report
+description: Something behaves differently from what the documentation says.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never paste a real document, a real value or a credential into this form.**
+
+        If the bug is that a sensitive value reached the output, it is a security report,
+        not a bug report: use
+        [Security Advisories](https://github.com/iamjonatha/sensitivedatagateway-dotnet/security/advisories/new)
+        instead.
+
+  - type: input
+    id: version
+    attributes:
+      label: Package and version
+      placeholder: SensitiveDataGateway 0.1.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Target framework
+      options: ["net8.0", "net10.0", "both"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: Quote the documentation that says so, if you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: >
+        Synthetic input only. Include the policy, the registered detectors and the code that
+        runs the gateway.
+      render: csharp
+    validations:
+      required: true
+
+  - type: textarea
+    id: report
+    attributes:
+      label: Inspection or validation report
+      description: >
+        The output of InspectAsync, or the blocking report. It contains no values, so it is
+        safe to paste.
+    validations:
+      required: false

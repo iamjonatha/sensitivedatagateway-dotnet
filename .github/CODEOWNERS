@@ -1,0 +1,12 @@
+# Default owner for everything in the repository.
+*       @iamjonatha
+
+# The trust boundary, the guarantees that describe it and the rules that keep it
+# intact carry the strictest review requirements.
+/src/SensitiveDataGateway.Core/  @iamjonatha
+/docs/adr/                       @iamjonatha
+/docs/security/                  @iamjonatha
+/docs/architecture/              @iamjonatha
+/CONTRIBUTING.md                 @iamjonatha
+/SECURITY.md                     @iamjonatha
+/.github/workflows/              @iamjonatha

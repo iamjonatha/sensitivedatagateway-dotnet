@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability or a leaked value
+    url: https://github.com/iamjonatha/sensitivedatagateway-dotnet/security/advisories/new
+    about: Report privately. Never open a public issue for a security problem, and never attach a real document.
+  - name: Question or idea
+    url: https://github.com/iamjonatha/sensitivedatagateway-dotnet/discussions
+    about: Ask usage questions or discuss design before opening an issue.
