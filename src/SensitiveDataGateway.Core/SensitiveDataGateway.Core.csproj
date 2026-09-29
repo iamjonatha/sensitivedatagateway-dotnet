@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SensitiveDataGateway</RootNamespace>
+    <Description>
+      The provider-independent core of SensitiveDataGateway: the domain types and the
+      abstractions that define the trust boundary. This package has no package references,
+      performs no I/O and reaches no network.
+    </Description>
+  </PropertyGroup>
+
+</Project>

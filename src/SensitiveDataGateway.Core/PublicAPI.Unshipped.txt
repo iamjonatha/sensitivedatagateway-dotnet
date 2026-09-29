@@ -1,0 +1,15 @@
+#nullable enable
+const SensitiveDataGateway.BundleId.MaxLength = 128 -> int
+override SensitiveDataGateway.BundleId.Equals(object? obj) -> bool
+override SensitiveDataGateway.BundleId.GetHashCode() -> int
+override SensitiveDataGateway.BundleId.ToString() -> string!
+SensitiveDataGateway.BundleId
+SensitiveDataGateway.BundleId.BundleId() -> void
+SensitiveDataGateway.BundleId.Equals(SensitiveDataGateway.BundleId other) -> bool
+SensitiveDataGateway.BundleId.IsDefault.get -> bool
+SensitiveDataGateway.BundleId.Value.get -> string!
+static SensitiveDataGateway.BundleId.Create(string! value) -> SensitiveDataGateway.BundleId
+static SensitiveDataGateway.BundleId.New() -> SensitiveDataGateway.BundleId
+static SensitiveDataGateway.BundleId.operator !=(SensitiveDataGateway.BundleId left, SensitiveDataGateway.BundleId right) -> bool
+static SensitiveDataGateway.BundleId.operator ==(SensitiveDataGateway.BundleId left, SensitiveDataGateway.BundleId right) -> bool
+static SensitiveDataGateway.BundleId.TryCreate(string? value, out SensitiveDataGateway.BundleId bundleId) -> bool

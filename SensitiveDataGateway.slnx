@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SensitiveDataGateway.Core.Tests/SensitiveDataGateway.Core.Tests.csproj" />
+  </Folder>
+</Solution>
