@@ -10,15 +10,13 @@ namespace SensitiveDataGateway;
 /// <remarks>
 /// <para>
 /// A bundle identifier is the correlation key of the gateway: it appears in every log line,
-/// audit record and report produced while a bundle is processed, and it is the only part of
-/// an operation that is allowed to cross the trust boundary unchanged.
+/// audit record and report produced while a bundle is processed.
 /// </para>
 /// <para>
-/// That privilege is exactly why the value must never be derived from document content. A
-/// bundle identifier that embeds a subject line, a file name or a customer name is a leak
-/// with an identifier's name. Callers that need a value carrying no information at all
-/// should use <see cref="New"/>; callers correlating with an external system should pass an
-/// identifier that system already treats as non-sensitive.
+/// The value is never derived from document content. An identifier that embeds a subject
+/// line, a file name or a customer name is a leak with an identifier's name, because
+/// identifiers are the part of an operation that is allowed to cross the trust boundary
+/// unchanged and to appear in logs and audit records.
 /// </para>
 /// <para>
 /// The type is a value: two identifiers with the same text are the same identifier, and
@@ -28,14 +26,14 @@ namespace SensitiveDataGateway;
 public readonly struct BundleId : IEquatable<BundleId>
 {
     /// <summary>
-    /// The greatest number of characters a bundle identifier may contain.
+    /// The greatest number of characters a bundle identifier may contain once trimmed.
     /// </summary>
     /// <remarks>
     /// The bound is deliberate rather than incidental. An unbounded identifier is a place to
     /// smuggle content into a log line, and it is a denial-of-service surface for anything
     /// that stores one identifier per record.
     /// </remarks>
-    public const int MaxLength = 128;
+    public const int MaxLength = IdentifierValue.MaxLength;
 
     private readonly string? _value;
 
@@ -52,14 +50,14 @@ public readonly struct BundleId : IEquatable<BundleId>
     /// </exception>
     public string Value =>
         _value ?? throw new InvalidOperationException(
-            "A default BundleId carries no value. Create one with BundleId.New or BundleId.Create.");
+            "A default BundleId carries no value. Create one with BundleId.Create or BundleId.New.");
 
     /// <summary>
     /// Gets a value indicating whether this identifier is the default value of the struct.
     /// </summary>
     /// <value>
-    /// <see langword="true"/> when the identifier was never created through <see cref="New"/>
-    /// or <see cref="Create(string)"/>; otherwise <see langword="false"/>.
+    /// <see langword="true"/> when the identifier was never created through one of the
+    /// factory methods; otherwise <see langword="false"/>.
     /// </value>
     /// <remarks>
     /// A struct cannot forbid its own default value, so the gateway rejects a default
@@ -68,14 +66,14 @@ public readonly struct BundleId : IEquatable<BundleId>
     public bool IsDefault => _value is null;
 
     /// <summary>
-    /// Creates an identifier that carries no information about the bundle it identifies.
+    /// Creates a bundle identifier that carries no information about the processing
+    /// operation it identifies.
     /// </summary>
     /// <returns>A new identifier backed by a random value.</returns>
     public static BundleId New() =>
         new(Guid.NewGuid().ToString("n", CultureInfo.InvariantCulture));
-
     /// <summary>
-    /// Creates an identifier from an existing value.
+    /// Creates a bundle identifier from an existing value.
     /// </summary>
     /// <param name="value">
     /// The identifier text. Surrounding white space is removed. The result must be non-empty
@@ -96,18 +94,18 @@ public readonly struct BundleId : IEquatable<BundleId>
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        if (!TryCreate(value, out var bundleId))
+        if (!TryCreate(value, out var identifier))
         {
             throw new ArgumentException(
                 $"A bundle identifier must be non-empty, free of control characters and at most {MaxLength.ToString(CultureInfo.InvariantCulture)} characters once trimmed.",
                 nameof(value));
         }
 
-        return bundleId;
+        return identifier;
     }
 
     /// <summary>
-    /// Attempts to create an identifier from an existing value.
+    /// Attempts to create a bundle identifier from an existing value.
     /// </summary>
     /// <param name="value">The identifier text, or <see langword="null"/>.</param>
     /// <param name="bundleId">
@@ -120,30 +118,14 @@ public readonly struct BundleId : IEquatable<BundleId>
     /// </returns>
     public static bool TryCreate([NotNullWhen(true)] string? value, out BundleId bundleId)
     {
+        if (IdentifierValue.TryNormalize(value, out var normalized))
+        {
+            bundleId = new BundleId(normalized);
+            return true;
+        }
+
         bundleId = default;
-
-        if (value is null)
-        {
-            return false;
-        }
-
-        var trimmed = value.Trim();
-
-        if (trimmed.Length is 0 or > MaxLength)
-        {
-            return false;
-        }
-
-        foreach (var character in trimmed)
-        {
-            if (char.IsControl(character))
-            {
-                return false;
-            }
-        }
-
-        bundleId = new BundleId(trimmed);
-        return true;
+        return false;
     }
 
     /// <inheritdoc />

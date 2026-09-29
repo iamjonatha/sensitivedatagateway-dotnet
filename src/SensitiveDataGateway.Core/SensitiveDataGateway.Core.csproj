@@ -9,4 +9,16 @@
     </Description>
   </PropertyGroup>
 
+  <!--
+    Core deliberately does not grant its internals to its own test project. The internal
+    factory on ValidatedPayload is what makes "only the validator can produce a payload" a
+    property of the type system, and a test project that could call it would reduce that
+    property to a convention. Only the pipeline assembly needs the grant.
+  -->
+  <ItemGroup Label="Test visibility">
+    <InternalsVisibleTo Remove="SensitiveDataGateway.Core.Tests" />
+    <InternalsVisibleTo Remove="SensitiveDataGateway.EgressTests" />
+    <InternalsVisibleTo Include="SensitiveDataGateway" />
+  </ItemGroup>
+
 </Project>

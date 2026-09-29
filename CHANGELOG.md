@@ -40,3 +40,31 @@ While the major version is `0`, the public API may change in any minor release.
 - `SensitiveDataGateway.Core` with `BundleId`, the correlation identifier of a processing
   operation: bounded, trimmed, ordinal, and unable to quote a rejected value in its
   diagnostics.
+- The typed pipeline boundary. Every stage of the pipeline now has a type, and the unsafe
+  path has none:
+  - Identity: `BundleId`, `PartId`, `SegmentId`, `EntityId`, `PolicyId`, `PolicyVersion`,
+    `DetectorId`, `ExtractorId` — bounded value objects with ordinal equality, whose
+    diagnostics never quote the value they rejected.
+  - Input: `DocumentBundle`, `DocumentPart`, `PartKind`, `DocumentContent`,
+    `DocumentMetadata`. A bundle rejects duplicate part identifiers, a part whose parent is
+    not in the bundle, and a primary document that is nested inside another part.
+  - Extraction: `ExtractedDocument`, `TextSegment`, `SegmentOrigin`, `SourceSpan`,
+    `ExtractionFailure`, `ExtractorVersion`, `IDocumentExtractor`.
+  - Detection: `SensitiveEntity`, `EntityType` with thirty-one well-known values,
+    `SensitivityLevel`, `DetectionConfidence`, `DetectionEvidence`, `DetectorVersion`,
+    `DetectionFailure`, `DetectedDocument`, `ISensitiveDataDetector`. A detected document
+    rejects an entity whose span falls outside the segment it claims.
+  - Anonymization: `SanitizedDocument`, `SanitizedSegment`, `SanitizationStatus`,
+    `TransformationAction`, `AppliedTransformation`, `SanitizationWarning`,
+    `SanitizationProvenance`.
+  - Egress: `ValidatedPayload`, which has no public constructor and no public factory, and
+    `IDecisionProvider<TRequest, TResult>`, which accepts nothing else.
+  - Errors: `GatewayError`, `GatewayErrorCategory` and the eight exceptions below
+    `SensitiveDataGatewayException`. `PolicyViolation` has no exception type, because a
+    block is a result and not a fault.
+  - Limits: `ProcessingLimits`, with a default profile and validation that keeps the part
+    bound inside the bundle bound.
+- Architecture tests that assert the boundary properties by reflection rather than by
+  review: the decision provider accepts no document type, `ValidatedPayload` cannot be
+  constructed from a test assembly, no exception carries document content, and
+  `PolicyViolation` still has no exception.
