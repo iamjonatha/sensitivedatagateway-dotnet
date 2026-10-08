@@ -7,6 +7,7 @@
 | [The pipeline](architecture/pipeline.md) | Each stage's contract: what it does, what it must not do, when it blocks |
 | [Domain model](architecture/domain-model.md) | The types the gateway is built from, and the rules they follow |
 | [Policies](guides/policies.md) | Writing a policy, the two shipped policies, and what each failure code means |
+| [Anonymization](guides/anonymization.md) | The five transformations, the token grammar, correlation scopes and the mapping |
 | [Threat model](security/threat-model.md) | The trust boundary, the assets, fourteen threats and the residual risk |
 | [Egress guarantees](security/egress-guarantees.md) | What is guaranteed, what is explicitly not, and how to verify both |
 | [Dependency classification](security/dependency-classification.md) | What a referenced package is allowed to be capable of |
@@ -19,7 +20,6 @@ Written by the phase that creates the behaviour. The phases are listed in
 
 | Document | Phase |
 | --- | --- |
-| `guides/anonymization.md` | 3 |
 | `guides/detectors.md` | 5 |
 | `guides/getting-started.md`, `guides/logging-and-audit.md` | 6 |
 | `guides/testing.md` | 7 |

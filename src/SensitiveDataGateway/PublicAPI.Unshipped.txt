@@ -1,4 +1,86 @@
 #nullable enable
+const SensitiveDataGateway.Anonymization.HashingKey.DigestBytes = 8 -> int
+const SensitiveDataGateway.Anonymization.HashingKey.MinimumLength = 32 -> int
+const SensitiveDataGateway.Anonymization.MarkerSyntax.Close = ']' -> char
+const SensitiveDataGateway.Anonymization.MarkerSyntax.HashPrefix = 'H' -> char
+const SensitiveDataGateway.Anonymization.MarkerSyntax.Open = '[' -> char
+const SensitiveDataGateway.Anonymization.MarkerSyntax.RedactionType = "REDACTED" -> string!
+const SensitiveDataGateway.Anonymization.MarkerSyntax.SequenceDigits = 3 -> int
+const SensitiveDataGateway.Anonymization.Masker.MaskCharacter = '*' -> char
+const SensitiveDataGateway.Anonymization.Masker.MaxVisiblePerEnd = 4 -> int
+const SensitiveDataGateway.Anonymization.Masker.ShortestPartialMask = 8 -> int
+const SensitiveDataGateway.Anonymization.PseudonymScopeKey.MaxLength = 128 -> int
+override SensitiveDataGateway.Anonymization.HashingKey.ToString() -> string!
+override SensitiveDataGateway.Anonymization.PseudonymMap.ToString() -> string!
+override SensitiveDataGateway.Anonymization.PseudonymScopeKey.Equals(object? obj) -> bool
+override SensitiveDataGateway.Anonymization.PseudonymScopeKey.GetHashCode() -> int
+override SensitiveDataGateway.Anonymization.PseudonymScopeKey.ToString() -> string!
+SensitiveDataGateway.Anonymization.AnonymizationOptions
+SensitiveDataGateway.Anonymization.AnonymizationOptions.HashingKey.get -> SensitiveDataGateway.Anonymization.HashingKey?
+SensitiveDataGateway.Anonymization.AnonymizationOptions.SessionName.get -> string?
+SensitiveDataGateway.Anonymization.AnonymizationOptions.TenantName.get -> string?
+SensitiveDataGateway.Anonymization.AnonymizationOptions.WithHashingKey(SensitiveDataGateway.Anonymization.HashingKey! hashingKey) -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
+SensitiveDataGateway.Anonymization.AnonymizationOptions.WithSession(string! sessionName) -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
+SensitiveDataGateway.Anonymization.AnonymizationOptions.WithTenant(string! tenantName) -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
+SensitiveDataGateway.Anonymization.DocumentAnonymizer
+SensitiveDataGateway.Anonymization.DocumentAnonymizer.Anonymize(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizationProvenance! provenance) -> SensitiveDataGateway.Anonymization.SanitizedDocument!
+SensitiveDataGateway.Anonymization.DocumentAnonymizer.DocumentAnonymizer(SensitiveDataGateway.Anonymization.IPseudonymStore! store, SensitiveDataGateway.Anonymization.AnonymizationOptions! options) -> void
+SensitiveDataGateway.Anonymization.DocumentAnonymizer.DocumentAnonymizer(SensitiveDataGateway.Anonymization.IPseudonymStore! store) -> void
+SensitiveDataGateway.Anonymization.Hasher
+SensitiveDataGateway.Anonymization.Hasher.Apply(SensitiveDataGateway.Detection.EntityType type, string! value) -> string!
+SensitiveDataGateway.Anonymization.Hasher.Hasher(SensitiveDataGateway.Anonymization.HashingKey! key) -> void
+SensitiveDataGateway.Anonymization.HashingKey
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore.Clear() -> void
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore.GetOrCreate(SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> SensitiveDataGateway.Anonymization.PseudonymMap!
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore.InMemoryPseudonymStore() -> void
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore.Release(SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> bool
+SensitiveDataGateway.Anonymization.InMemoryPseudonymStore.TryGet(SensitiveDataGateway.Anonymization.PseudonymScopeKey key, out SensitiveDataGateway.Anonymization.PseudonymMap? map) -> bool
+SensitiveDataGateway.Anonymization.IPseudonymStore
+SensitiveDataGateway.Anonymization.IPseudonymStore.GetOrCreate(SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> SensitiveDataGateway.Anonymization.PseudonymMap!
+SensitiveDataGateway.Anonymization.IPseudonymStore.Release(SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> bool
+SensitiveDataGateway.Anonymization.IPseudonymStore.TryGet(SensitiveDataGateway.Anonymization.PseudonymScopeKey key, out SensitiveDataGateway.Anonymization.PseudonymMap? map) -> bool
+SensitiveDataGateway.Anonymization.LocalReidentifier
+SensitiveDataGateway.Anonymization.LocalReidentifier.LocalReidentifier(SensitiveDataGateway.Anonymization.IPseudonymStore! store) -> void
+SensitiveDataGateway.Anonymization.LocalReidentifier.Restore(string! text, SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> string!
+SensitiveDataGateway.Anonymization.MarkerSyntax
+SensitiveDataGateway.Anonymization.Masker
+SensitiveDataGateway.Anonymization.Pseudonymizer
+SensitiveDataGateway.Anonymization.Pseudonymizer.Apply(SensitiveDataGateway.Detection.EntityType type, string! value) -> string!
+SensitiveDataGateway.Anonymization.Pseudonymizer.Pseudonymizer(SensitiveDataGateway.Anonymization.PseudonymMap! map) -> void
+SensitiveDataGateway.Anonymization.Pseudonymizer.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymMap
+SensitiveDataGateway.Anonymization.PseudonymMap.Allocate(SensitiveDataGateway.Detection.EntityType type, string! value) -> string!
+SensitiveDataGateway.Anonymization.PseudonymMap.Clear() -> void
+SensitiveDataGateway.Anonymization.PseudonymMap.Count.get -> int
+SensitiveDataGateway.Anonymization.PseudonymMap.Holds(SensitiveDataGateway.Detection.EntityType type, string! value) -> bool
+SensitiveDataGateway.Anonymization.PseudonymMap.Key.get -> SensitiveDataGateway.Anonymization.PseudonymScopeKey
+SensitiveDataGateway.Anonymization.PseudonymMap.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymMap.TryReveal(string! token, out string? value) -> bool
+SensitiveDataGateway.Anonymization.PseudonymScopeKey
+SensitiveDataGateway.Anonymization.PseudonymScopeKey.Equals(SensitiveDataGateway.Anonymization.PseudonymScopeKey other) -> bool
+SensitiveDataGateway.Anonymization.PseudonymScopeKey.IsDefault.get -> bool
+SensitiveDataGateway.Anonymization.PseudonymScopeKey.PseudonymScopeKey() -> void
+SensitiveDataGateway.Anonymization.PseudonymScopeKey.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymScopeKey.Value.get -> string!
+SensitiveDataGateway.Anonymization.Redactor
 SensitiveDataGateway.Policies.PolicyEngine
 SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
 SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void
+static SensitiveDataGateway.Anonymization.AnonymizationOptions.Default.get -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
+static SensitiveDataGateway.Anonymization.HashingKey.Create(System.ReadOnlySpan<byte> material) -> SensitiveDataGateway.Anonymization.HashingKey!
+static SensitiveDataGateway.Anonymization.HashingKey.CreateEphemeral() -> SensitiveDataGateway.Anonymization.HashingKey!
+static SensitiveDataGateway.Anonymization.MarkerSyntax.ContainsMarker(string! text) -> bool
+static SensitiveDataGateway.Anonymization.MarkerSyntax.Escape(string! text) -> string!
+static SensitiveDataGateway.Anonymization.MarkerSyntax.Hash(SensitiveDataGateway.Detection.EntityType type, string! digest) -> string!
+static SensitiveDataGateway.Anonymization.MarkerSyntax.Pseudonym(SensitiveDataGateway.Detection.EntityType type, int sequence) -> string!
+static SensitiveDataGateway.Anonymization.MarkerSyntax.Redaction(SensitiveDataGateway.Detection.EntityType type) -> string!
+static SensitiveDataGateway.Anonymization.MarkerSyntax.Unescape(string! text) -> string!
+static SensitiveDataGateway.Anonymization.Masker.Apply(string! value) -> string!
+static SensitiveDataGateway.Anonymization.PseudonymMap.Create(SensitiveDataGateway.Anonymization.PseudonymScopeKey key) -> SensitiveDataGateway.Anonymization.PseudonymMap!
+static SensitiveDataGateway.Anonymization.PseudonymScopeKey.ForBundle(SensitiveDataGateway.BundleId bundleId) -> SensitiveDataGateway.Anonymization.PseudonymScopeKey
+static SensitiveDataGateway.Anonymization.PseudonymScopeKey.ForDocument(SensitiveDataGateway.PartId partId) -> SensitiveDataGateway.Anonymization.PseudonymScopeKey
+static SensitiveDataGateway.Anonymization.PseudonymScopeKey.ForWiderScope(SensitiveDataGateway.Anonymization.PseudonymScope scope, string! name) -> SensitiveDataGateway.Anonymization.PseudonymScopeKey
+static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator !=(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
+static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator ==(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
+static SensitiveDataGateway.Anonymization.Redactor.Apply(SensitiveDataGateway.Detection.EntityType type) -> string!

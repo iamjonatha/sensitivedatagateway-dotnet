@@ -89,3 +89,28 @@ While the major version is `0`, the public API may change in any minor release.
 - `EntityType.WellKnown`, the list of the thirty-one well-known types, so a policy can be
   checked for coverage.
 - Guide: [policies](docs/guides/policies.md).
+- The anonymization stage. `DocumentAnonymizer` applies a `TransformationPlan` to a
+  `DetectedDocument` and produces a `SanitizedDocument`, rewriting each segment forward
+  against unmutated source text so every recorded offset still refers to what detection saw.
+- The five transformations: `Preserve`, `Mask` (length-preserving, prefix and suffix only),
+  `Redact`, `Pseudonymize` and `Hash` (keyed HMAC-SHA256 through `HashingKey`, which refuses
+  key material under 32 bytes and hands none of it back).
+- A closed token grammar in `MarkerSyntax`, and escaping of any document text shaped like a
+  token, so a document cannot forge a replacement the validator would trust. An escaped
+  segment carries a `MarkerSyntaxEscaped` warning and stays valid.
+- Correlation scopes: `PseudonymScopeKey` for `Document`, `Bundle`, `Session` and `Tenant`,
+  with the two wider scopes usable only when the application names them through
+  `AnonymizationOptions`.
+- `PseudonymMap`, `IPseudonymStore` and the volatile `InMemoryPseudonymStore`, all outside
+  `SensitiveDataGateway.Core` so that no provider package can name them, and
+  `LocalReidentifier` as the only, explicitly local way back from a token to a value.
+- Overlapping spans are resolved strongest action first: a span wholly covered by an accepted
+  one is reported and dropped, a partial overlap leaves the document `Incomplete`. An
+  incomplete extraction, an incomplete detection, an unresolved candidate or a planned entity
+  missing from the document do the same.
+- Architecture tests asserting that the mapping stays inside the boundary: no mapping type
+  lives in the assembly a provider references, no public member of `SanitizedDocument` or
+  `ValidatedPayload` has a path to one, and `HashingKey` exposes no key material.
+- Decision record 0013: the token grammar, the escaping rule, the keyed hash and the
+  synchronous store.
+- Guide: [anonymization](docs/guides/anonymization.md).

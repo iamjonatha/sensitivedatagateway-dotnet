@@ -137,12 +137,18 @@ Applies the plan to the text.
 
 **Does**
 
-- Rewrite spans from the end of each segment backwards, so that earlier offsets stay valid.
+- Rewrite each segment forward against the original text, copying the text between planned
+  spans and appending the replacement in place of each one. The source is never mutated, so
+  every recorded offset still refers to the document detection saw.
+- Resolve overlapping spans before rewriting, strongest action first. A span wholly covered
+  by an accepted one is reported as `OverlappingEntities` and dropped; a partial overlap is
+  a transformation that could not be applied, and the document becomes `Incomplete`.
 - Allocate pseudonyms through the scope the policy selected, reusing the token for a value
   already seen within that scope. `Bundle` is the default.
 - Produce tokens that cannot be confused with content: a fixed, documented marker syntax, and
   a check that the marker syntax does not already occur in the source. If it does, the
-  markers are escaped — otherwise a document can forge a token and defeat the validator.
+  markers are escaped — otherwise a document can forge a token and defeat the validator. The
+  grammar and the escaping rule are [ADR 0013](../adr/0013-token-vocabulary.md).
 - Record an `AppliedTransformation` per rewritten span for the audit trail.
 - Set `Status` to `Incomplete` if any planned transformation could not be applied.
 

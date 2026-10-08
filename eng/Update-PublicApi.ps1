@@ -8,11 +8,17 @@ param([string]$Solution = 'SensitiveDataGateway.slnx')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 
+# The diagnostic is parsed, so it is read in a known language: a localized message carries
+# apostrophes of its own, and the symbol is quoted.
+$env:DOTNET_CLI_UI_LANGUAGE = 'en'
+
 $log = dotnet build (Join-Path $root $Solution) -c Release 2>&1 | Out-String
 $flat = ($log -replace "`r`n", ' ' -replace "`n", ' ' -replace '\s+', ' ')
 
+# Note on the pattern: a symbol can itself contain apostrophes, as a char constant does
+# (`Open = '[' -> char`), so the closing quote is the one the message tail follows.
 $byProject = @{}
-foreach ($match in [regex]::Matches($flat, "RS0016: [^:]*?'([^']+)'[^\[]*\[([^\]]+)\]")) {
+foreach ($match in [regex]::Matches($flat, "RS0016: Symbol '(.+?)' is not part of the declared public API[^\[]*\[([^\]]+)\]")) {
     $symbol = $match.Groups[1].Value
     $project = ($match.Groups[2].Value -split '::')[0]
     $file = Join-Path (Split-Path -Parent $project) 'PublicAPI.Unshipped.txt'

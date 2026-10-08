@@ -95,6 +95,8 @@ SensitiveDataGateway.Anonymization.AppliedTransformation.EntityId.get -> Sensiti
 SensitiveDataGateway.Anonymization.AppliedTransformation.EntityType.get -> SensitiveDataGateway.Detection.EntityType
 SensitiveDataGateway.Anonymization.AppliedTransformation.ReplacementLength.get -> int
 SensitiveDataGateway.Anonymization.AppliedTransformation.Span.get -> SensitiveDataGateway.SourceSpan
+SensitiveDataGateway.Anonymization.IDocumentAnonymizer
+SensitiveDataGateway.Anonymization.IDocumentAnonymizer.Anonymize(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizationProvenance! provenance) -> SensitiveDataGateway.Anonymization.SanitizedDocument!
 SensitiveDataGateway.Anonymization.PseudonymScope
 SensitiveDataGateway.Anonymization.PseudonymScope.Bundle = 2 -> SensitiveDataGateway.Anonymization.PseudonymScope
 SensitiveDataGateway.Anonymization.PseudonymScope.Document = 1 -> SensitiveDataGateway.Anonymization.PseudonymScope
@@ -119,6 +121,7 @@ SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.DetectionIncomplete = 6 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.ExtractionIncomplete = 5 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.LowConfidence = 1 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
+SensitiveDataGateway.Anonymization.SanitizationWarningCode.MarkerSyntaxEscaped = 8 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.OverlappingEntities = 2 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.PseudonymScopeWidened = 7 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode
 SensitiveDataGateway.Anonymization.SanitizationWarningCode.TransformationSkipped = 4 -> SensitiveDataGateway.Anonymization.SanitizationWarningCode

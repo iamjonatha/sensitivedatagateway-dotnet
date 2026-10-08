@@ -34,3 +34,4 @@ logged all require a record before the code is written.
 | [0010](0010-document-content-is-untrusted.md) | Treat document content as untrusted data, never as instruction | Accepted |
 | [0011](0011-decisionkit-first-integration.md) | Adopt DecisionKit as the first provider integration | Accepted |
 | [0012](0012-dependency-policy.md) | Restrict shipping dependencies and classify every one of them | Accepted |
+| [0013](0013-token-vocabulary.md) | Give replacement tokens a closed grammar, and escape content that imitates it | Accepted |

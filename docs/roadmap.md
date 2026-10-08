@@ -16,7 +16,7 @@ is still a plan.
 | Repository foundation | Built |
 | Typed pipeline boundary | Built |
 | Policy engine | Built |
-| Anonymization and pseudonym mapping | Phase 3 |
+| Anonymization and pseudonym mapping | Built |
 | Final privacy validation | Phase 4 |
 | Deterministic detection | Phase 5 |
 | Gateway façade, audit, logging | Phase 6 |

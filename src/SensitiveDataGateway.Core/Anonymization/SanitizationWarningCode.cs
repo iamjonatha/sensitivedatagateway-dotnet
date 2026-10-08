@@ -50,4 +50,15 @@ public enum SanitizationWarningCode
     /// point and always worth recording.
     /// </remarks>
     PseudonymScopeWidened = 7,
+
+    /// <summary>
+    /// The source document already contained the gateway's marker syntax, so the markers it
+    /// contained were escaped.
+    /// </summary>
+    /// <remarks>
+    /// This is an attempt — deliberate or accidental — to make document content look like
+    /// gateway output. It is escaped rather than blocked, and recorded here because a
+    /// document that forges tokens is worth noticing even when the escape worked.
+    /// </remarks>
+    MarkerSyntaxEscaped = 8,
 }
