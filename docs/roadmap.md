@@ -6,15 +6,16 @@ and there are no dates.
 ## Today
 
 **Nothing is released.** The repository holds the architecture, the threat model and the
-decision records. Implementation starts at the repository foundation, phase 0 below.
+decision records, and the first three phases are built. Everything below the policy engine
+is still a plan.
 
 | Area | State |
 | --- | --- |
 | Architecture and decision records | Written |
 | Threat model and egress guarantees | Written |
-| Repository foundation | Phase 0 |
-| Typed pipeline boundary | Phase 1 |
-| Policy engine | Phase 2 |
+| Repository foundation | Built |
+| Typed pipeline boundary | Built |
+| Policy engine | Built |
 | Anonymization and pseudonym mapping | Phase 3 |
 | Final privacy validation | Phase 4 |
 | Deterministic detection | Phase 5 |

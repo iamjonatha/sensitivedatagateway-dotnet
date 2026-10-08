@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      The SensitiveDataGateway pipeline: the stages that turn a document bundle into a
+      validated payload, and the policy engine that decides what happens to what was found.
+      This package performs no network I/O.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+</Project>

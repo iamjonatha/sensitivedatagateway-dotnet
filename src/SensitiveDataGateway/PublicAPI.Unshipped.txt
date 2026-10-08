@@ -1,0 +1,4 @@
+#nullable enable
+SensitiveDataGateway.Policies.PolicyEngine
+SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
+SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void

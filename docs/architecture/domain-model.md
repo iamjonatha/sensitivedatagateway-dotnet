@@ -162,9 +162,13 @@ SanitizationPolicy
   Version              PolicyVersion
   DefaultAction        TransformationAction
   UnknownEntityAction  TransformationAction        default: Block
+  DefaultThresholds    ConfidenceThresholds        used when Thresholds has no entry
+  DefaultScope         PseudonymScope              used when a rule states no scope
   Rules                IReadOnlyList<PolicyRule>
   Thresholds           IReadOnlyDictionary<EntityType, ConfidenceThresholds>
   Limits               ProcessingLimits
+  UnresolvedTolerance  SensitivityLevel?           null: tolerate nothing
+  RequiresCompleteScan bool                        default: true
 
 PolicyRule
   Match       EntityType
@@ -172,6 +176,34 @@ PolicyRule
   Scope       PseudonymScope?
   Sensitivity SensitivityLevel?
 ```
+
+A policy is built through `SanitizationPolicy.CreateBuilder(id, version)`, never through a
+constructor with eleven parameters. The builder starts from the closed position — block
+everything, tolerate nothing, require a complete scan — so an incompletely configured policy
+is a restrictive policy, not an open one.
+
+`PolicyRule.Sensitivity` **selects**, it does not assign. A rule with a sensitivity matches
+only entities the detector classified at that level; the level itself comes from detection.
+The first matching rule wins, and `Build()` rejects a rule that an earlier rule has already
+made unreachable, because a policy that silently ignores one of its own lines cannot be
+audited.
+
+`Scope` is accepted only for `Pseudonymize` and `Hash` — the two actions that produce a
+correlatable token. For every other action a scope would be a value nothing reads.
+
+### What is tolerated, and what blocks
+
+| Condition | Outcome |
+| --- | --- |
+| Entity type mentioned by no rule and no threshold | `UnknownEntityAction`, which ships as `Block` |
+| Confidence below the flag threshold | The entity is unresolved; no decision is produced |
+| Unresolved entity above `UnresolvedTolerance` | `PolicyViolation` — the operation blocks |
+| Rule action is `Block` or `RequireReview` | `PolicyViolation` — the operation blocks |
+| Scan incomplete and `RequiresCompleteScan` | `PolicyViolation` — the operation blocks |
+
+An unresolved entity never receives a `PolicyDecision`. The engine will not act on something
+it could not identify, so the choice is between tolerating it and refusing the document — and
+that choice belongs to the policy, not to the engine.
 
 ### `TransformationAction`
 

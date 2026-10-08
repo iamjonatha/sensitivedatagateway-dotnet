@@ -19,6 +19,7 @@ const SensitiveDataGateway.ExtractorId.MaxLength = 128 -> int
 const SensitiveDataGateway.GatewayError.MaxCodeLength = 64 -> int
 const SensitiveDataGateway.GatewayError.MaxDescriptionLength = 512 -> int
 const SensitiveDataGateway.PartId.MaxLength = 128 -> int
+const SensitiveDataGateway.Policies.SanitizationPolicyDescription.NoTolerance = "None" -> string!
 const SensitiveDataGateway.PolicyId.MaxLength = 128 -> int
 const SensitiveDataGateway.PolicyVersion.MaxLength = 128 -> int
 const SensitiveDataGateway.SegmentId.MaxLength = 128 -> int
@@ -68,6 +69,13 @@ override SensitiveDataGateway.GatewayError.ToString() -> string!
 override SensitiveDataGateway.PartId.Equals(object? obj) -> bool
 override SensitiveDataGateway.PartId.GetHashCode() -> int
 override SensitiveDataGateway.PartId.ToString() -> string!
+override SensitiveDataGateway.Policies.ConfidenceThresholds.ToString() -> string!
+override SensitiveDataGateway.Policies.PolicyDecision.ToString() -> string!
+override SensitiveDataGateway.Policies.PolicyRationale.ToString() -> string!
+override SensitiveDataGateway.Policies.PolicyRule.ToString() -> string!
+override SensitiveDataGateway.Policies.PolicyViolation.ToString() -> string!
+override SensitiveDataGateway.Policies.SanitizationPolicy.ToString() -> string!
+override SensitiveDataGateway.Policies.TransformationPlan.ToString() -> string!
 override SensitiveDataGateway.PolicyId.Equals(object? obj) -> bool
 override SensitiveDataGateway.PolicyId.GetHashCode() -> int
 override SensitiveDataGateway.PolicyId.ToString() -> string!
@@ -87,6 +95,11 @@ SensitiveDataGateway.Anonymization.AppliedTransformation.EntityId.get -> Sensiti
 SensitiveDataGateway.Anonymization.AppliedTransformation.EntityType.get -> SensitiveDataGateway.Detection.EntityType
 SensitiveDataGateway.Anonymization.AppliedTransformation.ReplacementLength.get -> int
 SensitiveDataGateway.Anonymization.AppliedTransformation.Span.get -> SensitiveDataGateway.SourceSpan
+SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymScope.Bundle = 2 -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymScope.Document = 1 -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymScope.Session = 3 -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Anonymization.PseudonymScope.Tenant = 4 -> SensitiveDataGateway.Anonymization.PseudonymScope
 SensitiveDataGateway.Anonymization.SanitizationProvenance
 SensitiveDataGateway.Anonymization.SanitizationProvenance.Detectors.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.DetectorVersion>!
 SensitiveDataGateway.Anonymization.SanitizationProvenance.Extractors.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.ExtractorVersion>!
@@ -333,6 +346,145 @@ SensitiveDataGateway.PartId.Equals(SensitiveDataGateway.PartId other) -> bool
 SensitiveDataGateway.PartId.IsDefault.get -> bool
 SensitiveDataGateway.PartId.PartId() -> void
 SensitiveDataGateway.PartId.Value.get -> string!
+SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.ConfidenceOutcome.Flag = 2 -> SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.ConfidenceOutcome.Transform = 1 -> SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.ConfidenceOutcome.Unresolved = 3 -> SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.ConfidenceThresholds
+SensitiveDataGateway.Policies.ConfidenceThresholds.Classify(SensitiveDataGateway.Detection.DetectionConfidence confidence) -> SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.ConfidenceThresholds.Flag.get -> SensitiveDataGateway.Detection.DetectionConfidence
+SensitiveDataGateway.Policies.ConfidenceThresholds.Transform.get -> SensitiveDataGateway.Detection.DetectionConfidence
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.ConfidenceThresholdsDescription() -> void
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.Flag.get -> double?
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.Flag.set -> void
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.ToThresholds() -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.Transform.get -> double?
+SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.Transform.set -> void
+SensitiveDataGateway.Policies.IPolicyEngine
+SensitiveDataGateway.Policies.IPolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
+SensitiveDataGateway.Policies.PolicyDecision
+SensitiveDataGateway.Policies.PolicyDecision.Action.get -> SensitiveDataGateway.Anonymization.TransformationAction
+SensitiveDataGateway.Policies.PolicyDecision.Entity.get -> SensitiveDataGateway.EntityId
+SensitiveDataGateway.Policies.PolicyDecision.Rationale.get -> SensitiveDataGateway.Policies.PolicyRationale!
+SensitiveDataGateway.Policies.PolicyDecision.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope?
+SensitiveDataGateway.Policies.PolicyDecision.Type.get -> SensitiveDataGateway.Detection.EntityType
+SensitiveDataGateway.Policies.PolicyRationale
+SensitiveDataGateway.Policies.PolicyRationale.Confidence.get -> SensitiveDataGateway.Detection.DetectionConfidence
+SensitiveDataGateway.Policies.PolicyRationale.Outcome.get -> SensitiveDataGateway.Policies.ConfidenceOutcome
+SensitiveDataGateway.Policies.PolicyRationale.RuleIndex.get -> int?
+SensitiveDataGateway.Policies.PolicyRationale.Source.get -> SensitiveDataGateway.Policies.PolicyRationaleSource
+SensitiveDataGateway.Policies.PolicyRationale.Thresholds.get -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+SensitiveDataGateway.Policies.PolicyRationaleSource
+SensitiveDataGateway.Policies.PolicyRationaleSource.DefaultAction = 2 -> SensitiveDataGateway.Policies.PolicyRationaleSource
+SensitiveDataGateway.Policies.PolicyRationaleSource.Rule = 1 -> SensitiveDataGateway.Policies.PolicyRationaleSource
+SensitiveDataGateway.Policies.PolicyRationaleSource.UnknownEntityAction = 3 -> SensitiveDataGateway.Policies.PolicyRationaleSource
+SensitiveDataGateway.Policies.PolicyRule
+SensitiveDataGateway.Policies.PolicyRule.Action.get -> SensitiveDataGateway.Anonymization.TransformationAction
+SensitiveDataGateway.Policies.PolicyRule.Match.get -> SensitiveDataGateway.Detection.EntityType
+SensitiveDataGateway.Policies.PolicyRule.Matches(SensitiveDataGateway.Detection.SensitiveEntity! entity) -> bool
+SensitiveDataGateway.Policies.PolicyRule.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope?
+SensitiveDataGateway.Policies.PolicyRule.Sensitivity.get -> SensitiveDataGateway.Detection.SensitivityLevel?
+SensitiveDataGateway.Policies.PolicyRule.Shadows(SensitiveDataGateway.Policies.PolicyRule! other) -> bool
+SensitiveDataGateway.Policies.PolicyRule.WhenSensitivityIs(SensitiveDataGateway.Detection.SensitivityLevel sensitivity) -> SensitiveDataGateway.Policies.PolicyRule!
+SensitiveDataGateway.Policies.PolicyRule.WithScope(SensitiveDataGateway.Anonymization.PseudonymScope scope) -> SensitiveDataGateway.Policies.PolicyRule!
+SensitiveDataGateway.Policies.PolicyRuleDescription
+SensitiveDataGateway.Policies.PolicyRuleDescription.Action.get -> SensitiveDataGateway.Anonymization.TransformationAction?
+SensitiveDataGateway.Policies.PolicyRuleDescription.Action.set -> void
+SensitiveDataGateway.Policies.PolicyRuleDescription.Match.get -> string?
+SensitiveDataGateway.Policies.PolicyRuleDescription.Match.set -> void
+SensitiveDataGateway.Policies.PolicyRuleDescription.PolicyRuleDescription() -> void
+SensitiveDataGateway.Policies.PolicyRuleDescription.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope?
+SensitiveDataGateway.Policies.PolicyRuleDescription.Scope.set -> void
+SensitiveDataGateway.Policies.PolicyRuleDescription.Sensitivity.get -> SensitiveDataGateway.Detection.SensitivityLevel?
+SensitiveDataGateway.Policies.PolicyRuleDescription.Sensitivity.set -> void
+SensitiveDataGateway.Policies.PolicyRuleDescription.ToRule() -> SensitiveDataGateway.Policies.PolicyRule!
+SensitiveDataGateway.Policies.PolicyViolation
+SensitiveDataGateway.Policies.PolicyViolation.Entity.get -> SensitiveDataGateway.EntityId?
+SensitiveDataGateway.Policies.PolicyViolation.Reason.get -> SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.PolicyViolation.Sensitivity.get -> SensitiveDataGateway.Detection.SensitivityLevel?
+SensitiveDataGateway.Policies.PolicyViolation.ToError() -> SensitiveDataGateway.GatewayError!
+SensitiveDataGateway.Policies.PolicyViolation.Type.get -> SensitiveDataGateway.Detection.EntityType?
+SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.PolicyViolationReason.BlockedEntity = 1 -> SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.PolicyViolationReason.IncompleteScan = 4 -> SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.PolicyViolationReason.ReviewRequired = 2 -> SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.PolicyViolationReason.UnresolvedEntity = 3 -> SensitiveDataGateway.Policies.PolicyViolationReason
+SensitiveDataGateway.Policies.ProcessingLimitsDescription
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxBundleBytes.get -> long?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxBundleBytes.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxEntities.get -> int?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxEntities.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxExtractedCharacters.get -> int?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxExtractedCharacters.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxPartBytes.get -> long?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxPartBytes.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxPartCount.get -> int?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxPartCount.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxProcessingTime.get -> System.TimeSpan?
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.MaxProcessingTime.set -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.ProcessingLimitsDescription() -> void
+SensitiveDataGateway.Policies.ProcessingLimitsDescription.ToLimits() -> SensitiveDataGateway.ProcessingLimits!
+SensitiveDataGateway.Policies.SanitizationPolicy
+SensitiveDataGateway.Policies.SanitizationPolicy.DefaultAction.get -> SensitiveDataGateway.Anonymization.TransformationAction
+SensitiveDataGateway.Policies.SanitizationPolicy.DefaultScope.get -> SensitiveDataGateway.Anonymization.PseudonymScope
+SensitiveDataGateway.Policies.SanitizationPolicy.DefaultThresholds.get -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+SensitiveDataGateway.Policies.SanitizationPolicy.Id.get -> SensitiveDataGateway.PolicyId
+SensitiveDataGateway.Policies.SanitizationPolicy.Limits.get -> SensitiveDataGateway.ProcessingLimits!
+SensitiveDataGateway.Policies.SanitizationPolicy.Mentions(SensitiveDataGateway.Detection.EntityType type) -> bool
+SensitiveDataGateway.Policies.SanitizationPolicy.RequiresCompleteScan.get -> bool
+SensitiveDataGateway.Policies.SanitizationPolicy.Rules.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Policies.PolicyRule!>!
+SensitiveDataGateway.Policies.SanitizationPolicy.Thresholds.get -> System.Collections.Generic.IReadOnlyDictionary<SensitiveDataGateway.Detection.EntityType, SensitiveDataGateway.Policies.ConfidenceThresholds!>!
+SensitiveDataGateway.Policies.SanitizationPolicy.ThresholdsFor(SensitiveDataGateway.Detection.EntityType type) -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+SensitiveDataGateway.Policies.SanitizationPolicy.ToDescription() -> SensitiveDataGateway.Policies.SanitizationPolicyDescription!
+SensitiveDataGateway.Policies.SanitizationPolicy.ToleratesUnresolved(SensitiveDataGateway.Detection.SensitivityLevel sensitivity) -> bool
+SensitiveDataGateway.Policies.SanitizationPolicy.TryFindRule(SensitiveDataGateway.Detection.SensitiveEntity! entity, out int ruleIndex) -> bool
+SensitiveDataGateway.Policies.SanitizationPolicy.UnknownEntityAction.get -> SensitiveDataGateway.Anonymization.TransformationAction
+SensitiveDataGateway.Policies.SanitizationPolicy.UnresolvedTolerance.get -> SensitiveDataGateway.Detection.SensitivityLevel?
+SensitiveDataGateway.Policies.SanitizationPolicy.Version.get -> SensitiveDataGateway.PolicyVersion
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.AddRule(SensitiveDataGateway.Policies.PolicyRule! rule) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.Build() -> SensitiveDataGateway.Policies.SanitizationPolicy!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.RequireCompleteScan(bool required) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.TolerateNoUnresolved() -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.TolerateUnresolvedUpTo(SensitiveDataGateway.Detection.SensitivityLevel sensitivity) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithDefaultAction(SensitiveDataGateway.Anonymization.TransformationAction action) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithDefaultScope(SensitiveDataGateway.Anonymization.PseudonymScope scope) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithDefaultThresholds(SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithLimits(SensitiveDataGateway.ProcessingLimits! limits) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithThresholds(SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithUnknownEntityAction(SensitiveDataGateway.Anonymization.TransformationAction action) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+SensitiveDataGateway.Policies.SanitizationPolicyDescription
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultAction.get -> SensitiveDataGateway.Anonymization.TransformationAction?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultAction.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultScope.get -> SensitiveDataGateway.Anonymization.PseudonymScope?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultScope.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultThresholds.get -> SensitiveDataGateway.Policies.ConfidenceThresholdsDescription?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.DefaultThresholds.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Id.get -> string?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Id.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Limits.get -> SensitiveDataGateway.Policies.ProcessingLimitsDescription?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Limits.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.RequireCompleteScan.get -> bool?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.RequireCompleteScan.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Rules.get -> System.Collections.Generic.IList<SensitiveDataGateway.Policies.PolicyRuleDescription!>!
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.SanitizationPolicyDescription() -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Thresholds.get -> System.Collections.Generic.IDictionary<string!, SensitiveDataGateway.Policies.ConfidenceThresholdsDescription!>!
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.ToPolicy() -> SensitiveDataGateway.Policies.SanitizationPolicy!
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.UnknownEntityAction.get -> SensitiveDataGateway.Anonymization.TransformationAction?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.UnknownEntityAction.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.UnresolvedTolerance.get -> string?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.UnresolvedTolerance.set -> void
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Version.get -> string?
+SensitiveDataGateway.Policies.SanitizationPolicyDescription.Version.set -> void
+SensitiveDataGateway.Policies.TransformationPlan
+SensitiveDataGateway.Policies.TransformationPlan.Blocking.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Policies.PolicyViolation!>!
+SensitiveDataGateway.Policies.TransformationPlan.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.Policies.TransformationPlan.Decisions.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Policies.PolicyDecision!>!
+SensitiveDataGateway.Policies.TransformationPlan.IsBlocked.get -> bool
+SensitiveDataGateway.Policies.TransformationPlan.PolicyId.get -> SensitiveDataGateway.PolicyId
+SensitiveDataGateway.Policies.TransformationPlan.PolicyVersion.get -> SensitiveDataGateway.PolicyVersion
+SensitiveDataGateway.Policies.TransformationPlan.Unresolved.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.SensitiveEntity!>!
 SensitiveDataGateway.PolicyConfigurationException
 SensitiveDataGateway.PolicyConfigurationException.PolicyConfigurationException(SensitiveDataGateway.GatewayError! error, System.Exception? innerException) -> void
 SensitiveDataGateway.PolicyConfigurationException.PolicyConfigurationException(SensitiveDataGateway.GatewayError! error) -> void
@@ -457,6 +609,7 @@ static SensitiveDataGateway.Detection.EntityType.Security.get -> SensitiveDataGa
 static SensitiveDataGateway.Detection.EntityType.TaxId.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.TradeSecret.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.TryCreate(string? value, out SensitiveDataGateway.Detection.EntityType entityType) -> bool
+static SensitiveDataGateway.Detection.EntityType.WellKnown.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
 static SensitiveDataGateway.Detection.SensitiveEntity.Create(SensitiveDataGateway.EntityId id, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.SourceSpan span, SensitiveDataGateway.Detection.DetectionConfidence confidence, SensitiveDataGateway.DetectorId detector, SensitiveDataGateway.Detection.SensitivityLevel sensitivity, SensitiveDataGateway.Detection.DetectionEvidence! evidence) -> SensitiveDataGateway.Detection.SensitiveEntity!
 static SensitiveDataGateway.DetectorId.Create(string! value) -> SensitiveDataGateway.DetectorId
 static SensitiveDataGateway.DetectorId.operator !=(SensitiveDataGateway.DetectorId left, SensitiveDataGateway.DetectorId right) -> bool
@@ -500,6 +653,23 @@ static SensitiveDataGateway.PartId.New() -> SensitiveDataGateway.PartId
 static SensitiveDataGateway.PartId.operator !=(SensitiveDataGateway.PartId left, SensitiveDataGateway.PartId right) -> bool
 static SensitiveDataGateway.PartId.operator ==(SensitiveDataGateway.PartId left, SensitiveDataGateway.PartId right) -> bool
 static SensitiveDataGateway.PartId.TryCreate(string? value, out SensitiveDataGateway.PartId partId) -> bool
+static SensitiveDataGateway.Policies.ConfidenceThresholds.Create(double transform, double flag) -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+static SensitiveDataGateway.Policies.ConfidenceThresholds.Create(SensitiveDataGateway.Detection.DetectionConfidence transform, SensitiveDataGateway.Detection.DetectionConfidence flag) -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+static SensitiveDataGateway.Policies.ConfidenceThresholds.Default.get -> SensitiveDataGateway.Policies.ConfidenceThresholds!
+static SensitiveDataGateway.Policies.ConfidenceThresholdsDescription.FromThresholds(SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds) -> SensitiveDataGateway.Policies.ConfidenceThresholdsDescription!
+static SensitiveDataGateway.Policies.PolicyDecision.Create(SensitiveDataGateway.EntityId entity, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Anonymization.TransformationAction action, SensitiveDataGateway.Anonymization.PseudonymScope? scope, SensitiveDataGateway.Policies.PolicyRationale! rationale) -> SensitiveDataGateway.Policies.PolicyDecision!
+static SensitiveDataGateway.Policies.PolicyRationale.FromDefaultAction(SensitiveDataGateway.Policies.ConfidenceOutcome outcome, SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds, SensitiveDataGateway.Detection.DetectionConfidence confidence) -> SensitiveDataGateway.Policies.PolicyRationale!
+static SensitiveDataGateway.Policies.PolicyRationale.FromRule(int ruleIndex, SensitiveDataGateway.Policies.ConfidenceOutcome outcome, SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds, SensitiveDataGateway.Detection.DetectionConfidence confidence) -> SensitiveDataGateway.Policies.PolicyRationale!
+static SensitiveDataGateway.Policies.PolicyRationale.FromUnknownEntityAction(SensitiveDataGateway.Policies.ConfidenceOutcome outcome, SensitiveDataGateway.Policies.ConfidenceThresholds! thresholds, SensitiveDataGateway.Detection.DetectionConfidence confidence) -> SensitiveDataGateway.Policies.PolicyRationale!
+static SensitiveDataGateway.Policies.PolicyRule.For(SensitiveDataGateway.Detection.EntityType match, SensitiveDataGateway.Anonymization.TransformationAction action) -> SensitiveDataGateway.Policies.PolicyRule!
+static SensitiveDataGateway.Policies.PolicyRuleDescription.FromRule(SensitiveDataGateway.Policies.PolicyRule! rule) -> SensitiveDataGateway.Policies.PolicyRuleDescription!
+static SensitiveDataGateway.Policies.PolicyViolation.ForEntity(SensitiveDataGateway.Policies.PolicyViolationReason reason, SensitiveDataGateway.EntityId entity, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Detection.SensitivityLevel sensitivity) -> SensitiveDataGateway.Policies.PolicyViolation!
+static SensitiveDataGateway.Policies.PolicyViolation.IncompleteScan() -> SensitiveDataGateway.Policies.PolicyViolation!
+static SensitiveDataGateway.Policies.ProcessingLimitsDescription.FromLimits(SensitiveDataGateway.ProcessingLimits! limits) -> SensitiveDataGateway.Policies.ProcessingLimitsDescription!
+static SensitiveDataGateway.Policies.SanitizationPolicy.Balanced.get -> SensitiveDataGateway.Policies.SanitizationPolicy!
+static SensitiveDataGateway.Policies.SanitizationPolicy.CreateBuilder(SensitiveDataGateway.PolicyId id, SensitiveDataGateway.PolicyVersion version) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+static SensitiveDataGateway.Policies.SanitizationPolicy.Strict.get -> SensitiveDataGateway.Policies.SanitizationPolicy!
+static SensitiveDataGateway.Policies.TransformationPlan.Create(SensitiveDataGateway.BundleId bundleId, SensitiveDataGateway.PolicyId policyId, SensitiveDataGateway.PolicyVersion policyVersion, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Policies.PolicyDecision!>! decisions, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Detection.SensitiveEntity!>! unresolved, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Policies.PolicyViolation!>! blocking) -> SensitiveDataGateway.Policies.TransformationPlan!
 static SensitiveDataGateway.PolicyId.Create(string! value) -> SensitiveDataGateway.PolicyId
 static SensitiveDataGateway.PolicyId.operator !=(SensitiveDataGateway.PolicyId left, SensitiveDataGateway.PolicyId right) -> bool
 static SensitiveDataGateway.PolicyId.operator ==(SensitiveDataGateway.PolicyId left, SensitiveDataGateway.PolicyId right) -> bool

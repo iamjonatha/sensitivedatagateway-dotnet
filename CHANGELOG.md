@@ -68,3 +68,24 @@ While the major version is `0`, the public API may change in any minor release.
   review: the decision provider accepts no document type, `ValidatedPayload` cannot be
   constructed from a test assembly, no exception carries document content, and
   `PolicyViolation` still has no exception.
+- The policy model in `SensitiveDataGateway.Core`: `SanitizationPolicy` and its builder,
+  `PolicyRule`, `ConfidenceThresholds`, `ConfidenceOutcome`, `PseudonymScope`,
+  `PolicyDecision`, `PolicyRationale`, `PolicyViolation`, `TransformationPlan` and
+  `IPolicyEngine`. A policy is built through `SanitizationPolicy.CreateBuilder`, which
+  starts closed: block everything, tolerate nothing, require a complete scan.
+- `SensitiveDataGateway` with `PolicyEngine`, which turns a `DetectedDocument` and a policy
+  into a `TransformationPlan`. It reads candidates and produces decisions; it never touches
+  text.
+- Two shipped policies, `SanitizationPolicy.Strict` and `SanitizationPolicy.Balanced`, both
+  covering every well-known entity type, because a type a policy does not mention is
+  blocked.
+- `SanitizationPolicyDescription` and the rule, threshold and limit descriptions it holds:
+  a policy binds from configuration and becomes a policy through `ToPolicy()`, with no
+  reflection over policy types. Omitting a value never loosens the result.
+- Policy validation at construction, never at evaluation: an unreachable rule, an undefined
+  action, a scope on an action that produces no correlatable token, a flag threshold above
+  the transform threshold and a per-part limit above the bundle limit are all configuration
+  failures.
+- `EntityType.WellKnown`, the list of the thirty-one well-known types, so a policy can be
+  checked for coverage.
+- Guide: [policies](docs/guides/policies.md).

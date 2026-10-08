@@ -32,9 +32,9 @@ Decision provider
 
 ## Status
 
-**Pre-implementation.** The architecture, the threat model and the decision records are
-written; the code starts at the repository foundation. Nothing is released, and the public
-API is unstable until `1.0.0`.
+**Early development.** The typed pipeline boundary and the policy engine are built; the
+detectors, the anonymizer and the validator are not. Nothing is released, and the public API
+is unstable until `1.0.0`.
 
 Start with the [architecture overview](docs/architecture/overview.md), then the
 [roadmap](docs/roadmap.md).

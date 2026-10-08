@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SensitiveDataGateway.Detection;
 
 /// <content>
@@ -164,4 +166,47 @@ public readonly partial struct EntityType
     /// Gets the type for a trade secret.
     /// </summary>
     public static EntityType TradeSecret { get; } = new("TRADE_SECRET");
+
+    /// <summary>
+    /// Gets every entity type the library recognizes out of the box.
+    /// </summary>
+    /// <remarks>
+    /// The list is a checklist, not a taxonomy: a policy that governs all of it still has to
+    /// say what happens to the categories this library has never heard of. Its order is not
+    /// part of the contract.
+    /// </remarks>
+    public static IReadOnlyList<EntityType> WellKnown { get; } =
+    [
+        Person,
+        Email,
+        Phone,
+        Address,
+        TaxId,
+        NationalId,
+        Passport,
+        DriverLicense,
+        DateOfBirth,
+        Iban,
+        CreditCard,
+        BankAccount,
+        FinancialReference,
+        Password,
+        ApiKey,
+        AccessToken,
+        Jwt,
+        PrivateKey,
+        ConnectionString,
+        Customer,
+        Project,
+        Contract,
+        InternalId,
+        ConfidentialCode,
+        InternalSystem,
+        Health,
+        Legal,
+        Hr,
+        FinancialContext,
+        Security,
+        TradeSecret,
+    ];
 }
