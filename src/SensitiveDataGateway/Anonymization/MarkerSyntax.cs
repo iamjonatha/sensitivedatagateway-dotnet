@@ -248,6 +248,124 @@ public static class MarkerSyntax
         return -1;
     }
 
+    /// <summary>
+    /// Counts the markers in a text that are not escaped.
+    /// </summary>
+    /// <param name="text">The text to examine.</param>
+    /// <returns>The number of markers the gateway would have had to write.</returns>
+    /// <remarks>
+    /// Validation compares this count with the number of transformations that produce a
+    /// marker. A text with more markers than the gateway emitted carries one the document
+    /// supplied, which is the forgery the escape exists to prevent.
+    /// </remarks>
+    internal static int CountMarkers(string text)
+    {
+        var count = 0;
+
+        for (var index = 0; index < text.Length; index++)
+        {
+            var end = SkipEscape(text, index);
+
+            if (end > 0)
+            {
+                index = end - 1;
+                continue;
+            }
+
+            end = MarkerEnd(text, index);
+
+            if (end > 0)
+            {
+                count++;
+                index = end - 1;
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Removes every marker from a text, leaving escaped markers in place.
+    /// </summary>
+    /// <param name="text">The text to examine.</param>
+    /// <returns>The text without the tokens the gateway wrote.</returns>
+    /// <remarks>
+    /// The anti-leak scan runs over this form. A token is high-entropy by construction and
+    /// bracketed by construction, so scanning it would report the gateway's own output as a
+    /// secret and train the operator to disregard the check that matters.
+    /// </remarks>
+    internal static string WithoutMarkers(string text)
+    {
+        var stripped = new StringBuilder(text.Length);
+
+        for (var index = 0; index < text.Length; index++)
+        {
+            var end = SkipEscape(text, index);
+
+            if (end < 0)
+            {
+                end = MarkerEnd(text, index);
+            }
+            else
+            {
+                stripped.Append(text, index, end - index);
+            }
+
+            if (end > 0)
+            {
+                index = end - 1;
+            }
+            else
+            {
+                stripped.Append(text[index]);
+            }
+        }
+
+        return stripped.ToString();
+    }
+
+    /// <summary>
+    /// Returns the markers in a text, concatenated, with everything else dropped.
+    /// </summary>
+    /// <param name="text">The text to examine.</param>
+    /// <returns>The tokens the gateway wrote, separated by a space.</returns>
+    /// <remarks>
+    /// Validation reads this to check that a token does not spell out the value it stands
+    /// for. The marker body accepts letters, digits and underscores, so a defective
+    /// pseudonym generator could write <c>[PERSON_DANA_OAKFIELD]</c> and produce a token that
+    /// is well formed and useless.
+    /// </remarks>
+    internal static string MarkersOnly(string text)
+    {
+        var markers = new StringBuilder();
+
+        for (var index = 0; index < text.Length; index++)
+        {
+            var escape = SkipEscape(text, index);
+
+            if (escape > 0)
+            {
+                index = escape - 1;
+                continue;
+            }
+
+            var end = MarkerEnd(text, index);
+
+            if (end > 0)
+            {
+                markers.Append(text, index, end - index).Append(' ');
+                index = end - 1;
+            }
+        }
+
+        return markers.ToString();
+    }
+
+    private static int SkipEscape(string text, int index) =>
+        index < text.Length - 1 && text[index] == Open && MarkerEnd(text, index + 1) > 0
+            ? MarkerEnd(text, index + 1)
+            : -1;
+
     private static int IndexOfEscape(string text, int start)
     {
         for (var index = start; index < text.Length - 1; index++)

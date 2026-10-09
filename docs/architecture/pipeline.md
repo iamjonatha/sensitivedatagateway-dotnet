@@ -167,24 +167,30 @@ Applies the plan to the text.
 
 ## Stage 5 — Final privacy validation
 
-**In:** `SanitizedDocument` · **Out:** `ValidatedPayload` or a block
+**In:** `DetectedDocument` + `TransformationPlan` + `SanitizedDocument` + `SanitizationPolicy` ·
+**Out:** `ValidatedPayload` or a block
 
 The last barrier, and the only producer of `ValidatedPayload`. It assumes every previous
 stage may have failed.
+
+It takes four inputs rather than the payload alone, because a check that trusts the stage it
+is checking only confirms that stage agrees with itself. The validator re-derives each fact
+from the stage before the one that reports it: the entities from detection, the decisions
+from the plan, the limits from the policy, and the output from the anonymizer.
 
 Checks, all of which must pass:
 
 | # | Check |
 | --- | --- |
 | 1 | Sanitization status is `Valid` |
-| 2 | Every detector completed; no `DetectionFailure` is present |
+| 2 | Every extractor and every detector completed |
 | 3 | No unresolved entity above the tolerated sensitivity remains |
 | 4 | No policy violation is outstanding |
 | 5 | Every planned transformation was applied |
 | 6 | **Anti-leak scan:** no original sensitive value appears in the output |
-| 7 | No pseudonym token resolves to its original inside the payload |
-| 8 | No marker syntax was forged by the source document |
-| 9 | Policy identifier, version and detector versions are present |
+| 7 | No marker in the output carries the value it stands for |
+| 8 | The output carries exactly as many markers as transformations that produce one |
+| 9 | Policy identifier, version and detector versions are present, and match the plan |
 | 10 | The payload structure is well formed and within limits |
 
 ### The anti-leak scan

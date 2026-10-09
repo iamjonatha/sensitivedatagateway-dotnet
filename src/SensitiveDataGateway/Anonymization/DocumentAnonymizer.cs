@@ -339,6 +339,17 @@ public sealed class DocumentAnonymizer : IDocumentAnonymizer
     private static string UnsupportedScope(PseudonymScope scope) =>
         string.Format(CultureInfo.InvariantCulture, "The anonymizer does not know the {0} scope.", scope);
 
+    /// <summary>
+    /// Records the gaps the stages before this one left in the input.
+    /// </summary>
+    /// <param name="document">The detected document.</param>
+    /// <param name="plan">The plan being applied.</param>
+    /// <param name="run">The run collecting warnings.</param>
+    /// <remarks>
+    /// An unresolved candidate is reported without degrading the status. A blocked plan never
+    /// reaches this method, so every candidate still unresolved here is one the policy chose
+    /// to tolerate, and overriding that decision would make the tolerance unreachable.
+    /// </remarks>
     private static void ReportInputGaps(DetectedDocument document, TransformationPlan plan, Run run)
     {
         if (!document.Extracted.IsComplete)
@@ -353,7 +364,7 @@ public sealed class DocumentAnonymizer : IDocumentAnonymizer
 
         foreach (var entity in plan.Unresolved)
         {
-            run.Fail(SanitizationWarningCode.UnresolvedEntity, entity.Id, entity.Span.SegmentId);
+            run.Warn(SanitizationWarningCode.UnresolvedEntity, entity.Id, entity.Span.SegmentId);
         }
     }
 

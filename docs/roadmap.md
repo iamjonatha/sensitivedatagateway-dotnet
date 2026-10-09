@@ -6,8 +6,8 @@ and there are no dates.
 ## Today
 
 **Nothing is released.** The repository holds the architecture, the threat model and the
-decision records, and the first three phases are built. Everything below the policy engine
-is still a plan.
+decision records, and the first four phases are built. Everything below the final privacy
+validation is still a plan.
 
 | Area | State |
 | --- | --- |
@@ -17,7 +17,7 @@ is still a plan.
 | Typed pipeline boundary | Built |
 | Policy engine | Built |
 | Anonymization and pseudonym mapping | Built |
-| Final privacy validation | Phase 4 |
+| Final privacy validation | Built |
 | Deterministic detection | Phase 5 |
 | Gateway façade, audit, logging | Phase 6 |
 | Testing package and egress security suite | Phase 7 |

@@ -26,6 +26,34 @@ defect. See [`../../SECURITY.md`](../../SECURITY.md).
 | G11 | The same input, policy version and detector versions produce the same output | Determinism is a requirement of every stage |
 | G12 | Every operation, including a blocked one, produces an audit record | The façade emits one per operation |
 
+### How the validator enforces them
+
+`PrivacyValidator` runs ten checks, in the order of
+[`PrivacyCheck`](../../src/SensitiveDataGateway.Core/Validation/PrivacyCheck.cs). It takes
+the detected document, the plan, the sanitized output and the policy, rather than the output
+alone: a check that trusts the stage it is checking only confirms that stage agrees with
+itself, so each fact is re-derived from the stage before the one that reports it.
+
+| Check | Enforces | Fails when |
+| --- | --- | --- |
+| `SanitizationStatus` | G4 | the anonymizer did not finish cleanly |
+| `ScanCompleteness` | G5 | an extractor or a detector did not complete |
+| `UnresolvedEntities` | G6 | a candidate above the tolerated sensitivity is unresolved |
+| `PolicyViolations` | G4 | the plan carries a blocking decision |
+| `TransformationCoverage` | G4 | a decision other than `Preserve` produced no transformation |
+| `AntiLeakScan` | G1, G4 | a detected value, a normalization of it, a fragment of it, a known secret pattern or a high-entropy string survives in the output |
+| `TokenResolution` | G8 | a marker body carries the value the marker stands for |
+| `MarkerIntegrity` | G4 | the marker count does not match the transformations that produce one |
+| `ProvenanceCompleteness` | G11 | the policy, its version or the detector versions are absent or disagree with the plan |
+| `PayloadStructure` | G7 | the payload is empty, belongs to another bundle, or exceeds a limit |
+
+Every finding names a check, and optionally a segment, an entity type and a signal. No
+finding carries text from the document, which is why a report can be logged whole (G9).
+
+The scan searches for the values of entities the plan decided to transform. Values the
+policy decided to `Preserve`, and unresolved candidates the policy tolerates, are in the
+output legitimately; flagging them would block documents the policy approved.
+
 ---
 
 ## 2. What is not guaranteed

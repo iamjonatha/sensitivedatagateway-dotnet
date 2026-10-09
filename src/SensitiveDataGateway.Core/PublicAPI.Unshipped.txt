@@ -66,6 +66,7 @@ override SensitiveDataGateway.ExtractorId.Equals(object? obj) -> bool
 override SensitiveDataGateway.ExtractorId.GetHashCode() -> int
 override SensitiveDataGateway.ExtractorId.ToString() -> string!
 override SensitiveDataGateway.GatewayError.ToString() -> string!
+override SensitiveDataGateway.GatewayResult<TResult>.ToString() -> string!
 override SensitiveDataGateway.PartId.Equals(object? obj) -> bool
 override SensitiveDataGateway.PartId.GetHashCode() -> int
 override SensitiveDataGateway.PartId.ToString() -> string!
@@ -88,6 +89,9 @@ override SensitiveDataGateway.SegmentId.ToString() -> string!
 override SensitiveDataGateway.SourceSpan.Equals(object? obj) -> bool
 override SensitiveDataGateway.SourceSpan.GetHashCode() -> int
 override SensitiveDataGateway.SourceSpan.ToString() -> string!
+override SensitiveDataGateway.Validation.PrivacyFinding.ToString() -> string!
+override SensitiveDataGateway.Validation.PrivacyValidationReport.ToString() -> string!
+override SensitiveDataGateway.Validation.SanitizationResult.ToString() -> string!
 override SensitiveDataGateway.Validation.ValidatedPayload.ToString() -> string!
 SensitiveDataGateway.Anonymization.AppliedTransformation
 SensitiveDataGateway.Anonymization.AppliedTransformation.Action.get -> SensitiveDataGateway.Anonymization.TransformationAction
@@ -341,6 +345,12 @@ SensitiveDataGateway.GatewayErrorCategory.PolicyViolation = 3 -> SensitiveDataGa
 SensitiveDataGateway.GatewayErrorCategory.ProviderFailed = 8 -> SensitiveDataGateway.GatewayErrorCategory
 SensitiveDataGateway.GatewayErrorCategory.SanitizationFailed = 4 -> SensitiveDataGateway.GatewayErrorCategory
 SensitiveDataGateway.GatewayErrorCategory.ValidationFailed = 5 -> SensitiveDataGateway.GatewayErrorCategory
+SensitiveDataGateway.GatewayResult<TResult>
+SensitiveDataGateway.GatewayResult<TResult>.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.GatewayResult<TResult>.GetValueOrThrow() -> TResult
+SensitiveDataGateway.GatewayResult<TResult>.IsAllowed.get -> bool
+SensitiveDataGateway.GatewayResult<TResult>.Report.get -> SensitiveDataGateway.Validation.PrivacyValidationReport!
+SensitiveDataGateway.GatewayResult<TResult>.Value.get -> TResult?
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>.DecideAsync(SensitiveDataGateway.Validation.ValidatedPayload! payload, TRequest request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResult>!
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>.Name.get -> string!
@@ -541,6 +551,45 @@ SensitiveDataGateway.SourceSpan.SegmentId.get -> SensitiveDataGateway.SegmentId
 SensitiveDataGateway.SourceSpan.SourceSpan() -> void
 SensitiveDataGateway.SourceSpan.Start.get -> int
 SensitiveDataGateway.SourceSpan.TryIntersect(SensitiveDataGateway.SourceSpan other, out SensitiveDataGateway.SourceSpan intersection) -> bool
+SensitiveDataGateway.Validation.IPrivacyValidator
+SensitiveDataGateway.Validation.IPrivacyValidator.Validate(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizedDocument! sanitized, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
+SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.Exact = 1 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.Fragment = 3 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.HighEntropy = 5 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.None = 0 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.Normalized = 2 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.LeakSignal.SecretPattern = 4 -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.AntiLeakScan = 6 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.MarkerIntegrity = 8 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.None = 0 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.PayloadStructure = 10 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.PolicyViolations = 4 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.ProvenanceCompleteness = 9 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.SanitizationStatus = 1 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.ScanCompleteness = 2 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.TokenResolution = 7 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.TransformationCoverage = 5 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyCheck.UnresolvedEntities = 3 -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyFinding
+SensitiveDataGateway.Validation.PrivacyFinding.Check.get -> SensitiveDataGateway.Validation.PrivacyCheck
+SensitiveDataGateway.Validation.PrivacyFinding.Entity.get -> SensitiveDataGateway.EntityId?
+SensitiveDataGateway.Validation.PrivacyFinding.Segment.get -> SensitiveDataGateway.SegmentId?
+SensitiveDataGateway.Validation.PrivacyFinding.Signal.get -> SensitiveDataGateway.Validation.LeakSignal
+SensitiveDataGateway.Validation.PrivacyFinding.ToError() -> SensitiveDataGateway.GatewayError!
+SensitiveDataGateway.Validation.PrivacyFinding.Type.get -> SensitiveDataGateway.Detection.EntityType?
+SensitiveDataGateway.Validation.PrivacyValidationReport
+SensitiveDataGateway.Validation.PrivacyValidationReport.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.Validation.PrivacyValidationReport.Executed.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Validation.PrivacyCheck>!
+SensitiveDataGateway.Validation.PrivacyValidationReport.Findings.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Validation.PrivacyFinding!>!
+SensitiveDataGateway.Validation.PrivacyValidationReport.Passed.get -> bool
+SensitiveDataGateway.Validation.PrivacyValidationReport.ToErrors() -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.GatewayError!>!
+SensitiveDataGateway.Validation.SanitizationResult
+SensitiveDataGateway.Validation.SanitizationResult.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.Validation.SanitizationResult.IsAllowed.get -> bool
+SensitiveDataGateway.Validation.SanitizationResult.Payload.get -> SensitiveDataGateway.Validation.ValidatedPayload?
+SensitiveDataGateway.Validation.SanitizationResult.Report.get -> SensitiveDataGateway.Validation.PrivacyValidationReport!
 SensitiveDataGateway.Validation.ValidatedPayload
 SensitiveDataGateway.Validation.ValidatedPayload.BundleId.get -> SensitiveDataGateway.BundleId
 SensitiveDataGateway.Validation.ValidatedPayload.Content.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Anonymization.SanitizedSegment!>!
@@ -691,3 +740,8 @@ static SensitiveDataGateway.SegmentId.TryCreate(string? value, out SensitiveData
 static SensitiveDataGateway.SourceSpan.Create(SensitiveDataGateway.SegmentId segmentId, int start, int length) -> SensitiveDataGateway.SourceSpan
 static SensitiveDataGateway.SourceSpan.operator !=(SensitiveDataGateway.SourceSpan left, SensitiveDataGateway.SourceSpan right) -> bool
 static SensitiveDataGateway.SourceSpan.operator ==(SensitiveDataGateway.SourceSpan left, SensitiveDataGateway.SourceSpan right) -> bool
+static SensitiveDataGateway.Validation.PrivacyFinding.For(SensitiveDataGateway.Validation.PrivacyCheck check) -> SensitiveDataGateway.Validation.PrivacyFinding!
+static SensitiveDataGateway.Validation.PrivacyFinding.ForEntity(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.EntityId entity, SensitiveDataGateway.Detection.EntityType type) -> SensitiveDataGateway.Validation.PrivacyFinding!
+static SensitiveDataGateway.Validation.PrivacyFinding.ForLeak(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.Validation.LeakSignal signal, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!
+static SensitiveDataGateway.Validation.PrivacyFinding.ForLeak(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.Validation.LeakSignal signal, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!
+static SensitiveDataGateway.Validation.PrivacyFinding.InSegment(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!

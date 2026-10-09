@@ -114,3 +114,32 @@ While the major version is `0`, the public API may change in any minor release.
 - Decision record 0013: the token grammar, the escaping rule, the keyed hash and the
   synchronous store.
 - Guide: [anonymization](docs/guides/anonymization.md).
+- The final privacy validation. `PrivacyValidator` runs ten checks over the detected
+  document, the plan, the sanitized output and the policy, and is the only producer of a
+  `ValidatedPayload`:
+  - `SanitizationStatus`, `ScanCompleteness`, `UnresolvedEntities`, `PolicyViolations`,
+    `TransformationCoverage`, `AntiLeakScan`, `TokenResolution`, `MarkerIntegrity`,
+    `ProvenanceCompleteness` and `PayloadStructure`. Every check must pass; there is no
+    partial pass, no severity and no override.
+  - The anti-leak scan looks for an exact match, a normalized match, a fragment above a
+    configured length, a known secret pattern and a high-entropy string, over the output text
+    with the gateway's own markers removed.
+  - `TokenResolution` catches a marker whose body carries the value it stands for, which the
+    token grammar permits and which would otherwise pass every other check.
+- `PrivacyCheck`, `LeakSignal`, `PrivacyFinding`, `PrivacyValidationReport`,
+  `SanitizationResult`, `GatewayResult<TResult>` and `IPrivacyValidator` in
+  `SensitiveDataGateway.Core`. A finding names a check, a segment, an entity type and a
+  signal, and carries no text from the document, so a report can be logged whole.
+- `ValidationOptions`, with a fragment length, an entropy length and an entropy threshold.
+  None of the three can be set to a value that turns a check off, and the type carries no
+  boolean at all — asserted by a test, so that an option to downgrade a block cannot be added
+  without deleting it.
+- Decision record 0014: the validator takes four inputs and re-derives each fact from the
+  stage before the one that reports it.
+
+### Fixed
+
+- The anonymizer no longer degrades a document to `Incomplete` for an unresolved candidate
+  the policy explicitly tolerates. A blocked plan never reaches the anonymizer, so every
+  unresolved candidate that does is one `TolerateUnresolvedUpTo` accepted; reporting it as a
+  failure made that policy lever inert.

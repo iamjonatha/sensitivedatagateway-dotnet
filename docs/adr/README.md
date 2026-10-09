@@ -35,3 +35,4 @@ logged all require a record before the code is written.
 | [0011](0011-decisionkit-first-integration.md) | Adopt DecisionKit as the first provider integration | Accepted |
 | [0012](0012-dependency-policy.md) | Restrict shipping dependencies and classify every one of them | Accepted |
 | [0013](0013-token-vocabulary.md) | Give replacement tokens a closed grammar, and escape content that imitates it | Accepted |
+| [0014](0014-validator-re-derives-what-it-checks.md) | Give the validator the whole pipeline, not just its output | Accepted |

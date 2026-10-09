@@ -10,11 +10,14 @@ const SensitiveDataGateway.Anonymization.Masker.MaskCharacter = '*' -> char
 const SensitiveDataGateway.Anonymization.Masker.MaxVisiblePerEnd = 4 -> int
 const SensitiveDataGateway.Anonymization.Masker.ShortestPartialMask = 8 -> int
 const SensitiveDataGateway.Anonymization.PseudonymScopeKey.MaxLength = 128 -> int
+const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedEntropyLength = 8 -> int
+const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedFragmentLength = 3 -> int
 override SensitiveDataGateway.Anonymization.HashingKey.ToString() -> string!
 override SensitiveDataGateway.Anonymization.PseudonymMap.ToString() -> string!
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.Equals(object? obj) -> bool
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.GetHashCode() -> int
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.ToString() -> string!
+override SensitiveDataGateway.Validation.ValidationOptions.ToString() -> string!
 SensitiveDataGateway.Anonymization.AnonymizationOptions
 SensitiveDataGateway.Anonymization.AnonymizationOptions.HashingKey.get -> SensitiveDataGateway.Anonymization.HashingKey?
 SensitiveDataGateway.Anonymization.AnonymizationOptions.SessionName.get -> string?
@@ -67,6 +70,17 @@ SensitiveDataGateway.Anonymization.Redactor
 SensitiveDataGateway.Policies.PolicyEngine
 SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
 SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void
+SensitiveDataGateway.Validation.PrivacyValidator
+SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator() -> void
+SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator(SensitiveDataGateway.Validation.ValidationOptions! options) -> void
+SensitiveDataGateway.Validation.PrivacyValidator.Validate(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizedDocument! sanitized, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
+SensitiveDataGateway.Validation.ValidationOptions
+SensitiveDataGateway.Validation.ValidationOptions.EntropyThreshold.get -> double
+SensitiveDataGateway.Validation.ValidationOptions.MinimumEntropyLength.get -> int
+SensitiveDataGateway.Validation.ValidationOptions.MinimumFragmentLength.get -> int
+SensitiveDataGateway.Validation.ValidationOptions.WithEntropyThreshold(double threshold) -> SensitiveDataGateway.Validation.ValidationOptions!
+SensitiveDataGateway.Validation.ValidationOptions.WithMinimumEntropyLength(int length) -> SensitiveDataGateway.Validation.ValidationOptions!
+SensitiveDataGateway.Validation.ValidationOptions.WithMinimumFragmentLength(int length) -> SensitiveDataGateway.Validation.ValidationOptions!
 static SensitiveDataGateway.Anonymization.AnonymizationOptions.Default.get -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
 static SensitiveDataGateway.Anonymization.HashingKey.Create(System.ReadOnlySpan<byte> material) -> SensitiveDataGateway.Anonymization.HashingKey!
 static SensitiveDataGateway.Anonymization.HashingKey.CreateEphemeral() -> SensitiveDataGateway.Anonymization.HashingKey!
@@ -84,3 +98,4 @@ static SensitiveDataGateway.Anonymization.PseudonymScopeKey.ForWiderScope(Sensit
 static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator !=(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
 static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator ==(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
 static SensitiveDataGateway.Anonymization.Redactor.Apply(SensitiveDataGateway.Detection.EntityType type) -> string!
+static SensitiveDataGateway.Validation.ValidationOptions.Default.get -> SensitiveDataGateway.Validation.ValidationOptions!
