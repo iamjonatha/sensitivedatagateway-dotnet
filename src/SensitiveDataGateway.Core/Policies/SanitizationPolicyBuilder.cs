@@ -11,9 +11,13 @@ namespace SensitiveDataGateway.Policies;
 /// <remarks>
 /// <para>
 /// Every default is the closed one. A policy built without a single call still blocks
-/// anything it does not recognize, resolves nothing on weak evidence, tolerates no unresolved
-/// candidate and demands a complete scan. Forgetting to configure something therefore makes
-/// the gateway stricter, never more permissive.
+/// anything it does not recognize, resolves nothing on weak evidence and tolerates no
+/// unresolved candidate. Forgetting to configure something therefore makes the gateway
+/// stricter, never more permissive.
+/// </para>
+/// <para>
+/// An incomplete scan is not one of the things a policy decides. It blocks under every
+/// policy, because a document that was not fully examined has not been shown to be safe.
 /// </para>
 /// <para>
 /// The builder is not thread-safe and is meant to be used and discarded.
@@ -52,8 +56,6 @@ public sealed class SanitizationPolicyBuilder
     internal ProcessingLimits Limits { get; private set; } = ProcessingLimits.Default;
 
     internal SensitivityLevel? UnresolvedTolerance { get; private set; }
-
-    internal bool RequiresCompleteScan { get; private set; } = true;
 
     internal List<PolicyRule> Rules { get; } = new();
 
@@ -199,17 +201,6 @@ public sealed class SanitizationPolicyBuilder
     public SanitizationPolicyBuilder TolerateNoUnresolved()
     {
         UnresolvedTolerance = null;
-        return this;
-    }
-
-    /// <summary>
-    /// States whether every part of the bundle must have been read and scanned.
-    /// </summary>
-    /// <param name="required">Whether a complete pass is required.</param>
-    /// <returns>The same builder.</returns>
-    public SanitizationPolicyBuilder RequireCompleteScan(bool required)
-    {
-        RequiresCompleteScan = required;
         return this;
     }
 

@@ -35,7 +35,7 @@ public sealed class PolicyEngine : IPolicyEngine
 
         var evaluation = new Evaluation(policy, document.Entities.Count);
 
-        if (policy.RequiresCompleteScan && !document.IsComplete)
+        if (!document.IsComplete)
         {
             evaluation.Blocking.Add(PolicyViolation.IncompleteScan());
         }

@@ -150,23 +150,22 @@ public sealed class PolicyEngineTests
     }
 
     [Fact]
-    public void Evaluate_BlocksAnIncompleteScanWhenThePolicyRequiresACompletePass()
+    public void Evaluate_BlocksAnIncompleteScan()
     {
-        var policy = Policy(builder => builder.RequireCompleteScan(true));
-
-        var plan = s_engine.Evaluate(IncompleteDocument(), policy);
+        var plan = s_engine.Evaluate(IncompleteDocument(), Policy(builder => builder));
 
         Assert.Equal(PolicyViolationReason.IncompleteScan, Assert.Single(plan.Blocking).Reason);
     }
 
     [Fact]
-    public void Evaluate_AcceptsAnIncompleteScanWhenThePolicyDoesNotRequireACompletePass()
+    public void Evaluate_BlocksAnIncompleteScanUnderEveryShippedPolicy()
     {
-        var policy = Policy(builder => builder.RequireCompleteScan(false));
+        foreach (var policy in new[] { SanitizationPolicy.Strict, SanitizationPolicy.Balanced })
+        {
+            var plan = s_engine.Evaluate(IncompleteDocument(), policy);
 
-        var plan = s_engine.Evaluate(IncompleteDocument(), policy);
-
-        Assert.False(plan.IsBlocked);
+            Assert.Equal(PolicyViolationReason.IncompleteScan, Assert.Single(plan.Blocking).Reason);
+        }
     }
 
     [Fact]

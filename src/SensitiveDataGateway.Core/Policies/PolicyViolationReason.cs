@@ -34,12 +34,12 @@ public enum PolicyViolationReason
     UnresolvedEntity = 3,
 
     /// <summary>
-    /// Part of the bundle was not read or not scanned, and the policy requires a complete
-    /// pass.
+    /// Part of the bundle was not read or not scanned.
     /// </summary>
     /// <remarks>
     /// An incomplete scan is an unknown, and an unknown blocks. A document that was not fully
-    /// examined has not been shown to be safe; it has only failed to be shown unsafe.
+    /// examined has not been shown to be safe; it has only failed to be shown unsafe. No
+    /// policy can accept one: the final privacy validation refuses it regardless.
     /// </remarks>
     IncompleteScan = 4,
 }

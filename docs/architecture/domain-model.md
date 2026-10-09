@@ -168,7 +168,6 @@ SanitizationPolicy
   Thresholds           IReadOnlyDictionary<EntityType, ConfidenceThresholds>
   Limits               ProcessingLimits
   UnresolvedTolerance  SensitivityLevel?           null: tolerate nothing
-  RequiresCompleteScan bool                        default: true
 
 PolicyRule
   Match       EntityType
@@ -179,8 +178,8 @@ PolicyRule
 
 A policy is built through `SanitizationPolicy.CreateBuilder(id, version)`, never through a
 constructor with eleven parameters. The builder starts from the closed position — block
-everything, tolerate nothing, require a complete scan — so an incompletely configured policy
-is a restrictive policy, not an open one.
+everything, tolerate nothing — so an incompletely configured policy is a restrictive policy,
+not an open one.
 
 `PolicyRule.Sensitivity` **selects**, it does not assign. A rule with a sensitivity matches
 only entities the detector classified at that level; the level itself comes from detection.
@@ -199,7 +198,7 @@ correlatable token. For every other action a scope would be a value nothing read
 | Confidence below the flag threshold | The entity is unresolved; no decision is produced |
 | Unresolved entity above `UnresolvedTolerance` | `PolicyViolation` — the operation blocks |
 | Rule action is `Block` or `RequireReview` | `PolicyViolation` — the operation blocks |
-| Scan incomplete and `RequiresCompleteScan` | `PolicyViolation` — the operation blocks |
+| Scan incomplete | `PolicyViolation` — the operation blocks, under every policy |
 
 An unresolved entity never receives a `PolicyDecision`. The engine will not act on something
 it could not identify, so the choice is between tolerating it and refusing the document — and

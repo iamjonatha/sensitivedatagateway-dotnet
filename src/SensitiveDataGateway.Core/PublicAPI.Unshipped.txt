@@ -445,7 +445,6 @@ SensitiveDataGateway.Policies.SanitizationPolicy.DefaultThresholds.get -> Sensit
 SensitiveDataGateway.Policies.SanitizationPolicy.Id.get -> SensitiveDataGateway.PolicyId
 SensitiveDataGateway.Policies.SanitizationPolicy.Limits.get -> SensitiveDataGateway.ProcessingLimits!
 SensitiveDataGateway.Policies.SanitizationPolicy.Mentions(SensitiveDataGateway.Detection.EntityType type) -> bool
-SensitiveDataGateway.Policies.SanitizationPolicy.RequiresCompleteScan.get -> bool
 SensitiveDataGateway.Policies.SanitizationPolicy.Rules.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Policies.PolicyRule!>!
 SensitiveDataGateway.Policies.SanitizationPolicy.Thresholds.get -> System.Collections.Generic.IReadOnlyDictionary<SensitiveDataGateway.Detection.EntityType, SensitiveDataGateway.Policies.ConfidenceThresholds!>!
 SensitiveDataGateway.Policies.SanitizationPolicy.ThresholdsFor(SensitiveDataGateway.Detection.EntityType type) -> SensitiveDataGateway.Policies.ConfidenceThresholds!
@@ -458,7 +457,6 @@ SensitiveDataGateway.Policies.SanitizationPolicy.Version.get -> SensitiveDataGat
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder.AddRule(SensitiveDataGateway.Policies.PolicyRule! rule) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder.Build() -> SensitiveDataGateway.Policies.SanitizationPolicy!
-SensitiveDataGateway.Policies.SanitizationPolicyBuilder.RequireCompleteScan(bool required) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder.TolerateNoUnresolved() -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder.TolerateUnresolvedUpTo(SensitiveDataGateway.Detection.SensitivityLevel sensitivity) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
 SensitiveDataGateway.Policies.SanitizationPolicyBuilder.WithDefaultAction(SensitiveDataGateway.Anonymization.TransformationAction action) -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
@@ -478,8 +476,6 @@ SensitiveDataGateway.Policies.SanitizationPolicyDescription.Id.get -> string?
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.Id.set -> void
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.Limits.get -> SensitiveDataGateway.Policies.ProcessingLimitsDescription?
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.Limits.set -> void
-SensitiveDataGateway.Policies.SanitizationPolicyDescription.RequireCompleteScan.get -> bool?
-SensitiveDataGateway.Policies.SanitizationPolicyDescription.RequireCompleteScan.set -> void
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.Rules.get -> System.Collections.Generic.IList<SensitiveDataGateway.Policies.PolicyRuleDescription!>!
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.SanitizationPolicyDescription() -> void
 SensitiveDataGateway.Policies.SanitizationPolicyDescription.Thresholds.get -> System.Collections.Generic.IDictionary<string!, SensitiveDataGateway.Policies.ConfidenceThresholdsDescription!>!

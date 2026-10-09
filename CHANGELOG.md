@@ -72,7 +72,7 @@ While the major version is `0`, the public API may change in any minor release.
   `PolicyRule`, `ConfidenceThresholds`, `ConfidenceOutcome`, `PseudonymScope`,
   `PolicyDecision`, `PolicyRationale`, `PolicyViolation`, `TransformationPlan` and
   `IPolicyEngine`. A policy is built through `SanitizationPolicy.CreateBuilder`, which
-  starts closed: block everything, tolerate nothing, require a complete scan.
+  starts closed: block everything, tolerate nothing.
 - `SensitiveDataGateway` with `PolicyEngine`, which turns a `DetectedDocument` and a policy
   into a `TransformationPlan`. It reads candidates and produces decisions; it never touches
   text.
@@ -136,6 +136,15 @@ While the major version is `0`, the public API may change in any minor release.
   without deleting it.
 - Decision record 0014: the validator takes four inputs and re-derives each fact from the
   stage before the one that reports it.
+
+### Removed
+
+- `SanitizationPolicy.RequiresCompleteScan`, `SanitizationPolicyBuilder.RequireCompleteScan`
+  and the `RequireCompleteScan` key of a policy description. An incomplete scan blocks under
+  every policy: the final privacy validation refuses one unconditionally, as the rule against
+  downgrading a block requires, so the lever could only ever read as a way to turn that
+  refusal off. It had no effect downstream, and an option that appears to relax a guarantee
+  without relaxing it is worse than no option.
 
 ### Fixed
 

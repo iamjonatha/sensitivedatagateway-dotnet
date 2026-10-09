@@ -54,12 +54,11 @@ var policy = SanitizationPolicy.CreateBuilder(
     .AddRule(PolicyRule.For(EntityType.Person, TransformationAction.Pseudonymize)
         .WithScope(PseudonymScope.Bundle))
     .TolerateUnresolvedUpTo(SensitivityLevel.Low)
-    .RequireCompleteScan(true)
     .Build();
 ```
 
-The builder starts closed: block everything, tolerate nothing, require a complete scan. A
-policy you configured halfway is a restrictive policy, never an open one.
+The builder starts closed: block everything, tolerate nothing. A policy you configured
+halfway is a restrictive policy, never an open one.
 
 ### Rule order matters, and the builder enforces it
 
@@ -111,7 +110,6 @@ is exactly what the file below shows.
     "DefaultScope": "Bundle",
     "DefaultThresholds": { "Transform": 0.90, "Flag": 0.70 },
     "UnresolvedTolerance": "Low",
-    "RequireCompleteScan": true,
     "Thresholds": {
       "API_KEY": { "Transform": 0.50, "Flag": 0.30 }
     },
@@ -137,9 +135,8 @@ var description = configuration.GetSection("Policy").Get<SanitizationPolicyDescr
 var policy = description.ToPolicy();
 ```
 
-Omitting a value never loosens the policy. An absent `DefaultAction` is `Block`, an absent
-`UnresolvedTolerance` tolerates nothing, an absent `RequireCompleteScan` requires one. Use
-`"None"` to state no tolerance explicitly.
+Omitting a value never loosens the policy. An absent `DefaultAction` is `Block` and an absent
+`UnresolvedTolerance` tolerates nothing. Use `"None"` to state no tolerance explicitly.
 
 Call `ToPolicy()` at startup, not per request. A malformed policy should stop the application
 from starting, not fail on the first document that happens to contain a tax code.
@@ -188,7 +185,7 @@ blocked operation can be diagnosed from a log the document never reached.
 | `policy.blocked_entity` | A rule, or the default, said `Block` |
 | `policy.review_required` | A rule said `RequireReview`. A human inside the trust boundary decides |
 | `policy.unresolved_entity` | Something was found, not resolved, and is more sensitive than `UnresolvedTolerance` |
-| `policy.incomplete_scan` | A part was not read or not scanned, and the policy requires a complete scan |
+| `policy.incomplete_scan` | A part was not read or not scanned, so the document was never shown to be safe |
 | `policy.too_many_entities` | The document holds more candidates than `Limits.MaxEntities` |
 
 `RequireReview` blocks. It is not a warning: the operation stops and waits for a person.

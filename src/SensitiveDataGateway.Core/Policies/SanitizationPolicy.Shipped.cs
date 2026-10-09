@@ -105,8 +105,7 @@ public sealed partial class SanitizationPolicy
             .WithUnknownEntityAction(TransformationAction.Block)
             .WithDefaultThresholds(ConfidenceThresholds.Create(0.90, 0.70))
             .WithDefaultScope(PseudonymScope.Bundle)
-            .TolerateUnresolvedUpTo(SensitivityLevel.Low)
-            .RequireCompleteScan(true);
+            .TolerateUnresolvedUpTo(SensitivityLevel.Low);
 
         LowerThresholdsForCredentials(builder);
 
@@ -130,8 +129,7 @@ public sealed partial class SanitizationPolicy
             .WithUnknownEntityAction(TransformationAction.Block)
             .WithDefaultThresholds(ConfidenceThresholds.Create(0.80, 0.60))
             .WithDefaultScope(PseudonymScope.Bundle)
-            .TolerateUnresolvedUpTo(SensitivityLevel.Moderate)
-            .RequireCompleteScan(false);
+            .TolerateUnresolvedUpTo(SensitivityLevel.Moderate);
 
         LowerThresholdsForCredentials(builder);
 

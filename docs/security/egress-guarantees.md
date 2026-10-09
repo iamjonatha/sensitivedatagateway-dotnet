@@ -17,7 +17,7 @@ defect. See [`../../SECURITY.md`](../../SECURITY.md).
 | G2 | Only the privacy validator can construct a `ValidatedPayload` | No public constructor; construction is assembly-internal |
 | G3 | A provider package cannot reach the raw document, the entity list or the pseudonym map | Package boundaries and an architecture test |
 | G4 | A validation failure prevents transmission | No configuration converts it into a warning |
-| G5 | A detection failure prevents transmission under the strict policy | Fail-closed evaluation of an incomplete scan |
+| G5 | A detection failure prevents transmission | Fail-closed evaluation of an incomplete scan, under every policy |
 | G6 | An unresolved entity above the tolerated sensitivity prevents transmission | Policy evaluation, then re-checked by the validator |
 | G7 | An exceeded limit prevents transmission | Limits block; they never truncate |
 | G8 | The pseudonym map is never transmitted | It is not a member of any type that crosses the boundary |

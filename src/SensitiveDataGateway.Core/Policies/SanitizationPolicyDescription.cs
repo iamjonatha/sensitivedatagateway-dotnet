@@ -68,11 +68,6 @@ public sealed class SanitizationPolicyDescription
     public string? UnresolvedTolerance { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether every part must have been read and scanned.
-    /// </summary>
-    public bool? RequireCompleteScan { get; set; }
-
-    /// <summary>
     /// Gets or sets the size, count and time bounds of an operation under this policy.
     /// </summary>
     public ProcessingLimitsDescription? Limits { get; set; }
@@ -101,8 +96,7 @@ public sealed class SanitizationPolicyDescription
         var builder = SanitizationPolicy.CreateBuilder(ReadId(), ReadVersion())
             .WithDefaultAction(ReadAction(DefaultAction, TransformationAction.Block))
             .WithUnknownEntityAction(ReadAction(UnknownEntityAction, TransformationAction.Block))
-            .WithDefaultScope(ReadScope())
-            .RequireCompleteScan(RequireCompleteScan ?? true);
+            .WithDefaultScope(ReadScope());
 
         ApplyTolerance(builder);
         ApplyThresholds(builder);

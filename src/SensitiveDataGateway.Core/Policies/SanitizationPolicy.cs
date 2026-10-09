@@ -40,7 +40,6 @@ public sealed partial class SanitizationPolicy
         DefaultScope = builder.DefaultScope;
         Limits = builder.Limits;
         UnresolvedTolerance = builder.UnresolvedTolerance;
-        RequiresCompleteScan = builder.RequiresCompleteScan;
         Rules = new ReadOnlyCollection<PolicyRule>(new List<PolicyRule>(builder.Rules));
         Thresholds = new ReadOnlyDictionary<EntityType, ConfidenceThresholds>(
             new Dictionary<EntityType, ConfidenceThresholds>(builder.Thresholds));
@@ -124,24 +123,13 @@ public sealed partial class SanitizationPolicy
     public SensitivityLevel? UnresolvedTolerance { get; }
 
     /// <summary>
-    /// Gets a value indicating whether every part of the bundle must have been read and
-    /// scanned.
-    /// </summary>
-    /// <remarks>
-    /// When this is set, a failed extractor or a failed detector blocks the operation. A
-    /// document that was not fully examined has not been shown to be safe.
-    /// </remarks>
-    public bool RequiresCompleteScan { get; }
-
-    /// <summary>
     /// Starts building a policy.
     /// </summary>
     /// <param name="id">The identifier of the policy.</param>
     /// <param name="version">The revision of the policy.</param>
     /// <returns>
     /// A builder whose every default is the closed one: block what is not understood, resolve
-    /// nothing on weak evidence, tolerate no unresolved candidate and require a complete
-    /// scan.
+    /// nothing on weak evidence and tolerate no unresolved candidate.
     /// </returns>
     /// <exception cref="ArgumentException">An identifier is the default value.</exception>
     public static SanitizationPolicyBuilder CreateBuilder(PolicyId id, PolicyVersion version) =>
@@ -228,7 +216,6 @@ public sealed partial class SanitizationPolicy
             DefaultScope = DefaultScope,
             DefaultThresholds = ConfidenceThresholdsDescription.FromThresholds(DefaultThresholds),
             UnresolvedTolerance = UnresolvedTolerance?.ToString() ?? SanitizationPolicyDescription.NoTolerance,
-            RequireCompleteScan = RequiresCompleteScan,
             Limits = ProcessingLimitsDescription.FromLimits(Limits),
         };
 

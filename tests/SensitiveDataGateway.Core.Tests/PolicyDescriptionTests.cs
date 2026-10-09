@@ -46,7 +46,6 @@ public sealed class PolicyDescriptionTests
         Assert.Equal(TransformationAction.Block, policy.DefaultAction);
         Assert.Equal(TransformationAction.Block, policy.UnknownEntityAction);
         Assert.Null(policy.UnresolvedTolerance);
-        Assert.True(policy.RequiresCompleteScan);
         Assert.Empty(policy.Rules);
     }
 
@@ -201,7 +200,6 @@ public sealed class PolicyDescriptionTests
         Assert.Equal(expected.UnknownEntityAction, actual.UnknownEntityAction);
         Assert.Equal(expected.DefaultScope, actual.DefaultScope);
         Assert.Equal(expected.UnresolvedTolerance, actual.UnresolvedTolerance);
-        Assert.Equal(expected.RequiresCompleteScan, actual.RequiresCompleteScan);
         Assert.Equal(expected.Rules.Count, actual.Rules.Count);
         Assert.Equal(expected.Thresholds.Count, actual.Thresholds.Count);
         Assert.Equal(expected.DefaultThresholds.Transform, actual.DefaultThresholds.Transform);

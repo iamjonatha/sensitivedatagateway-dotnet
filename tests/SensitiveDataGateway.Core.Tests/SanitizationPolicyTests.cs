@@ -25,7 +25,6 @@ public sealed class SanitizationPolicyBuilderTests
         Assert.Equal(TransformationAction.Block, policy.DefaultAction);
         Assert.Equal(TransformationAction.Block, policy.UnknownEntityAction);
         Assert.Null(policy.UnresolvedTolerance);
-        Assert.True(policy.RequiresCompleteScan);
         Assert.Same(ConfidenceThresholds.Default, policy.DefaultThresholds);
         Assert.Same(ProcessingLimits.Default, policy.Limits);
         Assert.Equal(PseudonymScope.Bundle, policy.DefaultScope);
@@ -222,7 +221,6 @@ public sealed class ShippedPolicyTests
     {
         Assert.Equal("strict", SanitizationPolicy.Strict.Id.Value);
         Assert.Equal(TransformationAction.Redact, SanitizationPolicy.Strict.DefaultAction);
-        Assert.True(SanitizationPolicy.Strict.RequiresCompleteScan);
         Assert.Equal(SensitivityLevel.Low, SanitizationPolicy.Strict.UnresolvedTolerance);
         Assert.Equal(TransformationAction.Redact, ActionFor(SanitizationPolicy.Strict, EntityType.Iban));
     }
