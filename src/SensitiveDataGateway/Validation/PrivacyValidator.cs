@@ -88,6 +88,31 @@ public sealed class PrivacyValidator : IPrivacyValidator
             : SanitizationResult.Blocked(report);
     }
 
+    /// <inheritdoc/>
+    public SanitizationResult Reject(
+        DetectedDocument detected,
+        TransformationPlan plan,
+        SanitizationPolicy policy)
+    {
+        ArgumentNullException.ThrowIfNull(detected);
+        ArgumentNullException.ThrowIfNull(plan);
+        ArgumentNullException.ThrowIfNull(policy);
+
+        if (!plan.IsBlocked)
+        {
+            throw new ArgumentException("A plan that does not block cannot be rejected.", nameof(plan));
+        }
+
+        var run = new Run();
+
+        CheckScan(run, detected);
+        CheckUnresolved(run, plan, policy);
+        CheckViolations(run, plan);
+
+        return SanitizationResult.Blocked(
+            PrivacyValidationReport.Create(detected.BundleId, run.Executed, run.Findings));
+    }
+
     private static void CheckStatus(Run run, SanitizedDocument sanitized)
     {
         run.Ran(PrivacyCheck.SanitizationStatus);

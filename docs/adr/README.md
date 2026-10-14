@@ -37,3 +37,4 @@ logged all require a record before the code is written.
 | [0013](0013-token-vocabulary.md) | Give replacement tokens a closed grammar, and escape content that imitates it | Accepted |
 | [0014](0014-validator-re-derives-what-it-checks.md) | Give the validator the whole pipeline, not just its output | Accepted |
 | [0015](0015-failed-checksum-drops-the-candidate.md) | Drop a candidate whose check digit disagrees, rather than reporting it weakly | Accepted |
+| [0016](0016-refusal-is-a-result.md) | Return a refusal as a result, and throw only when the pipeline cannot answer | Accepted |

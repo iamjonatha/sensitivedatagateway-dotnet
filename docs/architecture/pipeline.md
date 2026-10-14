@@ -23,8 +23,9 @@ Turns every part of the bundle into ordered, provenance-carrying text segments.
 
 **Does**
 
-- Select an `IDocumentExtractor` per part by media type, with the plain-text extractor as the
-  terminal fallback.
+- Select an `IDocumentExtractor` per part by media type. The shipped `PlainTextExtractor`
+  accepts `text/*` only; a part no extractor accepts becomes an extraction failure, never a
+  silent best-effort read.
 - Preserve structure that matters to provenance: page for a PDF, paragraph and table cell for
   a DOCX, sheet and cell for an XLSX, header name for an email.
 - Extract the metadata that is content — file names, subjects, sender and recipient headers —

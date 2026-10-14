@@ -35,4 +35,19 @@ public interface IPrivacyValidator
         TransformationPlan plan,
         SanitizedDocument sanitized,
         SanitizationPolicy policy);
+
+    /// <summary>
+    /// Refuses a document the policy engine already blocked, without anonymizing it.
+    /// </summary>
+    /// <param name="detected">The document as detection left it.</param>
+    /// <param name="plan">The blocking plan the policy engine produced.</param>
+    /// <param name="policy">The policy the plan was built from.</param>
+    /// <returns>A refusal carrying the checks that could run and the reasons they failed.</returns>
+    /// <remarks>
+    /// A blocked plan is never applied, so there is no sanitized document to validate. The
+    /// refusal still goes through the validator because it is the only type allowed to decide
+    /// that nothing leaves, and the only one that can prove it never built a payload.
+    /// </remarks>
+    /// <exception cref="System.ArgumentException"><paramref name="plan"/> does not block.</exception>
+    SanitizationResult Reject(DetectedDocument detected, TransformationPlan plan, SanitizationPolicy policy);
 }

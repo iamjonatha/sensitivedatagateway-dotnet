@@ -165,6 +165,48 @@ While the major version is `0`, the public API may change in any minor release.
 - The detector guide, covering what each built-in detector finds, the measured precision and
   recall, the six classes of value the built-in set does not find, and how to add a pattern
   of your own.
+- Stage 1 of the pipeline. `IDocumentExtractor`, `ExtractionPipeline`, `ExtractedDocument`,
+  `TextSegment`, `ExtractionFailure` and a `PlainTextExtractor` that accepts `text/*` and
+  nothing else. A part no extractor accepts becomes a recorded failure rather than a silent
+  best-effort read, and a bundle-wide overage is a limit exception rather than a truncation.
+- The gateway façade. `ISensitiveDataGateway` sanitizes and inspects;
+  `ISensitiveDataGateway<TRequest, TResult>` adds `ExecuteAsync` and is the only way to reach
+  a provider, which it can only reach with a `ValidatedPayload`. `DocumentGateway` and
+  `DocumentGateway<TRequest, TResult>` implement them over one shared pipeline, so the two
+  cannot drift.
+- `InspectionReport`, what `InspectAsync` returns: counts, statuses and versions, with no
+  text, no entity value and no offset. Nothing is transmitted and no payload is produced.
+- Audit. `IAuditSink`, `AuditRecord`, `AuditOperation`, `AuditOutcome` and a `NullAuditSink`
+  default. Every operation writes exactly one record — allowed, blocked, failed or
+  cancelled — and the write uses `CancellationToken.None`, because a cancelled operation that
+  left no trace is the one an incident review needs.
+- `GatewayOptions`, immutable with `With` methods: the audit sink, the logger, the hashing
+  key, the clock the processing budget is enforced against, and the gateway version stamped
+  into provenance.
+- Ten source-generated log events, none of which takes a `string` parameter. A reflection
+  test over every shipping assembly enforces the parameter rule, and a corpus harness runs
+  the annotated detection corpus through the gateway and asserts that no annotated value
+  reaches a message, a structured field, a scope or an audit record.
+- Optional keyed digests of the document and the payload in an audit record, off unless the
+  application supplies a key. An `Inspect` record never carries a payload digest.
+- `IPrivacyValidator.Reject`, which produces a refusal for a plan the policy engine already
+  blocked. The validator remains the only producer of a `ValidatedPayload` and is now also
+  the only producer of a refusal.
+- Decision record 0016: a refusal is a result, a pipeline that cannot answer throws, and
+  stage failures flow to the validator rather than being decided by the stage that failed.
+- The getting-started guide and the logging-and-audit guide.
+
+### Changed
+
+- The default gateway supplies the anonymizer with a hashing key whether or not the
+  application configured one. A shipped policy may ask for a hashing transformation, and the
+  anonymizer refuses to produce an unkeyed hash because a short value hashed without a secret
+  is reversible; without this, `SanitizationPolicy.Balanced` on the default gateway threw at
+  the first value it was asked to hash. The fallback key is per-instance, so the token is
+  stable inside that gateway and reproducible nowhere else.
+- A blocked plan now skips anonymization entirely. The pseudonym store is not touched and no
+  token is minted for a document that is not going anywhere, so
+  `InspectionReport.Status` is `null` when the policy blocked the document.
 
 ### Removed
 

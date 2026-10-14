@@ -28,6 +28,7 @@ override SensitiveDataGateway.Anonymization.SanitizationProvenance.ToString() ->
 override SensitiveDataGateway.Anonymization.SanitizationWarning.ToString() -> string!
 override SensitiveDataGateway.Anonymization.SanitizedDocument.ToString() -> string!
 override SensitiveDataGateway.Anonymization.SanitizedSegment.ToString() -> string!
+override SensitiveDataGateway.Auditing.AuditRecord.ToString() -> string!
 override SensitiveDataGateway.BundleId.Equals(object? obj) -> bool
 override SensitiveDataGateway.BundleId.GetHashCode() -> int
 override SensitiveDataGateway.BundleId.ToString() -> string!
@@ -67,6 +68,7 @@ override SensitiveDataGateway.ExtractorId.GetHashCode() -> int
 override SensitiveDataGateway.ExtractorId.ToString() -> string!
 override SensitiveDataGateway.GatewayError.ToString() -> string!
 override SensitiveDataGateway.GatewayResult<TResult>.ToString() -> string!
+override SensitiveDataGateway.InspectionReport.ToString() -> string!
 override SensitiveDataGateway.PartId.Equals(object? obj) -> bool
 override SensitiveDataGateway.PartId.GetHashCode() -> int
 override SensitiveDataGateway.PartId.ToString() -> string!
@@ -152,6 +154,57 @@ SensitiveDataGateway.Anonymization.TransformationAction.Preserve = 1 -> Sensitiv
 SensitiveDataGateway.Anonymization.TransformationAction.Pseudonymize = 4 -> SensitiveDataGateway.Anonymization.TransformationAction
 SensitiveDataGateway.Anonymization.TransformationAction.Redact = 3 -> SensitiveDataGateway.Anonymization.TransformationAction
 SensitiveDataGateway.Anonymization.TransformationAction.RequireReview = 8 -> SensitiveDataGateway.Anonymization.TransformationAction
+SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditOperation.Execute = 1 -> SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditOperation.Inspect = 3 -> SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditOperation.Sanitize = 2 -> SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditOperation.Unspecified = 0 -> SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditOutcome.Allowed = 1 -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditOutcome.Blocked = 2 -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditOutcome.Cancelled = 4 -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditOutcome.Failed = 3 -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditOutcome.Unspecified = 0 -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditRecord
+SensitiveDataGateway.Auditing.AuditRecord.AuditRecord() -> void
+SensitiveDataGateway.Auditing.AuditRecord.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.Auditing.AuditRecord.BundleId.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.DocumentHash.get -> string?
+SensitiveDataGateway.Auditing.AuditRecord.DocumentHash.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.Duration.get -> System.TimeSpan
+SensitiveDataGateway.Auditing.AuditRecord.Duration.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.EntityCount.get -> int
+SensitiveDataGateway.Auditing.AuditRecord.EntityCount.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.ErrorCategory.get -> SensitiveDataGateway.GatewayErrorCategory?
+SensitiveDataGateway.Auditing.AuditRecord.ErrorCategory.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.ErrorCode.get -> string?
+SensitiveDataGateway.Auditing.AuditRecord.ErrorCode.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.FailedChecks.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Validation.PrivacyCheck>!
+SensitiveDataGateway.Auditing.AuditRecord.FailedChecks.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.GapCount.get -> int
+SensitiveDataGateway.Auditing.AuditRecord.GapCount.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.GatewayVersion.get -> string!
+SensitiveDataGateway.Auditing.AuditRecord.GatewayVersion.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.Operation.get -> SensitiveDataGateway.Auditing.AuditOperation
+SensitiveDataGateway.Auditing.AuditRecord.Operation.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.OperationId.get -> System.Guid
+SensitiveDataGateway.Auditing.AuditRecord.OperationId.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.Outcome.get -> SensitiveDataGateway.Auditing.AuditOutcome
+SensitiveDataGateway.Auditing.AuditRecord.Outcome.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.PayloadHash.get -> string?
+SensitiveDataGateway.Auditing.AuditRecord.PayloadHash.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.PolicyId.get -> SensitiveDataGateway.PolicyId
+SensitiveDataGateway.Auditing.AuditRecord.PolicyId.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.PolicyVersion.get -> SensitiveDataGateway.PolicyVersion
+SensitiveDataGateway.Auditing.AuditRecord.PolicyVersion.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.StartedAt.get -> System.DateTimeOffset
+SensitiveDataGateway.Auditing.AuditRecord.StartedAt.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.TransformedCount.get -> int
+SensitiveDataGateway.Auditing.AuditRecord.TransformedCount.init -> void
+SensitiveDataGateway.Auditing.IAuditSink
+SensitiveDataGateway.Auditing.IAuditSink.WriteAsync(SensitiveDataGateway.Auditing.AuditRecord! record, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+SensitiveDataGateway.Auditing.NullAuditSink
+SensitiveDataGateway.Auditing.NullAuditSink.WriteAsync(SensitiveDataGateway.Auditing.AuditRecord! record, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 SensitiveDataGateway.BundleId
 SensitiveDataGateway.BundleId.BundleId() -> void
 SensitiveDataGateway.BundleId.Equals(SensitiveDataGateway.BundleId other) -> bool
@@ -354,6 +407,41 @@ SensitiveDataGateway.GatewayResult<TResult>.Value.get -> TResult?
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>.DecideAsync(SensitiveDataGateway.Validation.ValidatedPayload! payload, TRequest request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResult>!
 SensitiveDataGateway.IDecisionProvider<TRequest, TResult>.Name.get -> string!
+SensitiveDataGateway.InspectionReport
+SensitiveDataGateway.InspectionReport.ActionCounts.get -> System.Collections.Generic.IReadOnlyDictionary<SensitiveDataGateway.Anonymization.TransformationAction, int>!
+SensitiveDataGateway.InspectionReport.ActionCounts.init -> void
+SensitiveDataGateway.InspectionReport.BlockingReasons.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Policies.PolicyViolationReason>!
+SensitiveDataGateway.InspectionReport.BlockingReasons.init -> void
+SensitiveDataGateway.InspectionReport.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.InspectionReport.BundleId.init -> void
+SensitiveDataGateway.InspectionReport.DetectionFailureCount.get -> int
+SensitiveDataGateway.InspectionReport.DetectionFailureCount.init -> void
+SensitiveDataGateway.InspectionReport.EntityCounts.get -> System.Collections.Generic.IReadOnlyDictionary<SensitiveDataGateway.Detection.EntityType, int>!
+SensitiveDataGateway.InspectionReport.EntityCounts.init -> void
+SensitiveDataGateway.InspectionReport.ExtractionFailureCount.get -> int
+SensitiveDataGateway.InspectionReport.ExtractionFailureCount.init -> void
+SensitiveDataGateway.InspectionReport.FailedChecks.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Validation.PrivacyCheck>!
+SensitiveDataGateway.InspectionReport.FailedChecks.init -> void
+SensitiveDataGateway.InspectionReport.InspectedAt.get -> System.DateTimeOffset
+SensitiveDataGateway.InspectionReport.InspectedAt.init -> void
+SensitiveDataGateway.InspectionReport.InspectionReport() -> void
+SensitiveDataGateway.InspectionReport.Provenance.get -> SensitiveDataGateway.Anonymization.SanitizationProvenance!
+SensitiveDataGateway.InspectionReport.Provenance.init -> void
+SensitiveDataGateway.InspectionReport.SegmentCount.get -> int
+SensitiveDataGateway.InspectionReport.SegmentCount.init -> void
+SensitiveDataGateway.InspectionReport.Status.get -> SensitiveDataGateway.Anonymization.SanitizationStatus?
+SensitiveDataGateway.InspectionReport.Status.init -> void
+SensitiveDataGateway.InspectionReport.TotalCharacters.get -> long
+SensitiveDataGateway.InspectionReport.TotalCharacters.init -> void
+SensitiveDataGateway.InspectionReport.UnresolvedCount.get -> int
+SensitiveDataGateway.InspectionReport.UnresolvedCount.init -> void
+SensitiveDataGateway.InspectionReport.WouldBeAllowed.get -> bool
+SensitiveDataGateway.InspectionReport.WouldBeAllowed.init -> void
+SensitiveDataGateway.ISensitiveDataGateway
+SensitiveDataGateway.ISensitiveDataGateway.InspectAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.InspectionReport!>!
+SensitiveDataGateway.ISensitiveDataGateway.SanitizeAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Validation.SanitizationResult!>!
+SensitiveDataGateway.ISensitiveDataGateway<TRequest, TResult>
+SensitiveDataGateway.ISensitiveDataGateway<TRequest, TResult>.ExecuteAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, TRequest request, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.GatewayResult<TResult>!>!
 SensitiveDataGateway.PartId
 SensitiveDataGateway.PartId.Equals(SensitiveDataGateway.PartId other) -> bool
 SensitiveDataGateway.PartId.IsDefault.get -> bool
@@ -548,6 +636,7 @@ SensitiveDataGateway.SourceSpan.SourceSpan() -> void
 SensitiveDataGateway.SourceSpan.Start.get -> int
 SensitiveDataGateway.SourceSpan.TryIntersect(SensitiveDataGateway.SourceSpan other, out SensitiveDataGateway.SourceSpan intersection) -> bool
 SensitiveDataGateway.Validation.IPrivacyValidator
+SensitiveDataGateway.Validation.IPrivacyValidator.Reject(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
 SensitiveDataGateway.Validation.IPrivacyValidator.Validate(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizedDocument! sanitized, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
 SensitiveDataGateway.Validation.LeakSignal
 SensitiveDataGateway.Validation.LeakSignal.Exact = 1 -> SensitiveDataGateway.Validation.LeakSignal
@@ -597,6 +686,7 @@ static SensitiveDataGateway.Anonymization.SanitizationWarning.Create(SensitiveDa
 static SensitiveDataGateway.Anonymization.SanitizationWarning.Create(SensitiveDataGateway.Anonymization.SanitizationWarningCode code) -> SensitiveDataGateway.Anonymization.SanitizationWarning!
 static SensitiveDataGateway.Anonymization.SanitizedDocument.Create(SensitiveDataGateway.BundleId bundleId, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Anonymization.SanitizedSegment!>! segments, SensitiveDataGateway.Anonymization.SanitizationStatus status, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Anonymization.AppliedTransformation!>! applied, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Anonymization.SanitizationWarning!>! warnings, SensitiveDataGateway.Anonymization.SanitizationProvenance! provenance) -> SensitiveDataGateway.Anonymization.SanitizedDocument!
 static SensitiveDataGateway.Anonymization.SanitizedSegment.Create(SensitiveDataGateway.SegmentId id, SensitiveDataGateway.PartId partId, string! text, SensitiveDataGateway.Documents.SegmentOrigin origin, int order) -> SensitiveDataGateway.Anonymization.SanitizedSegment!
+static SensitiveDataGateway.Auditing.NullAuditSink.Instance.get -> SensitiveDataGateway.Auditing.NullAuditSink!
 static SensitiveDataGateway.BundleId.Create(string! value) -> SensitiveDataGateway.BundleId
 static SensitiveDataGateway.BundleId.New() -> SensitiveDataGateway.BundleId
 static SensitiveDataGateway.BundleId.operator !=(SensitiveDataGateway.BundleId left, SensitiveDataGateway.BundleId right) -> bool

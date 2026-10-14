@@ -21,8 +21,14 @@ namespace SensitiveDataGateway.Tests.Detection;
 /// </para>
 /// <para>
 /// This is deliberately coarser than "no detector". If no type in the assembly refers to a
-/// socket, an HTTP client or a file, then no detector in it can use one, and no future one
-/// can either without this test failing first.
+/// socket, an HTTP client, a file or a database, then no detector in it can use one, and no
+/// future one can either without this test failing first.
+/// </para>
+/// <para>
+/// In-memory stream types are not on the list. An extractor reads the stream the caller
+/// supplies through <see cref="Documents.DocumentContent.OpenStreamAsync"/>, which is content
+/// the application already has; what the assembly must never do is go and find content, or
+/// send it, of its own accord.
 /// </para>
 /// </remarks>
 public sealed class DetectionBoundaryTests
@@ -30,8 +36,9 @@ public sealed class DetectionBoundaryTests
     private static readonly string[] s_forbiddenNamespaces =
     [
         "System.Net",
-        "System.IO",
         "System.Data",
+        "System.IO.Pipes",
+        "System.IO.MemoryMappedFiles",
         "Microsoft.Extensions.Http",
     ];
 
@@ -39,10 +46,17 @@ public sealed class DetectionBoundaryTests
     [
         "System.Diagnostics.Process",
         "System.Diagnostics.ProcessStartInfo",
+        "System.IO.Directory",
+        "System.IO.DirectoryInfo",
+        "System.IO.File",
+        "System.IO.FileInfo",
+        "System.IO.FileStream",
+        "System.IO.FileSystemWatcher",
+        "System.IO.Path",
     ];
 
     [Fact]
-    public void The_pipeline_assembly_refers_to_nothing_that_performs_input_or_output()
+    public void The_pipeline_assembly_refers_to_nothing_that_reaches_the_network_or_the_file_system()
     {
         var forbidden = TypeReferencesOf(typeof(DetectionPipeline).Assembly.Location)
             .Select(reference => (reference.Namespace, Full: $"{reference.Namespace}.{reference.Name}"))

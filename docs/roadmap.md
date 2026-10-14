@@ -19,7 +19,7 @@ validation is still a plan.
 | Anonymization and pseudonym mapping | Built |
 | Final privacy validation | Built |
 | Deterministic detection | Built |
-| Gateway façade, audit, logging | Phase 6 |
+| Gateway façade, audit, logging | Built |
 | Testing package and egress security suite | Phase 7 |
 | DecisionKit integration | Phase 8 |
 | Dependency injection | Phase 9 |

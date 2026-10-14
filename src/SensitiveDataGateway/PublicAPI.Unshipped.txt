@@ -19,6 +19,7 @@ const SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumAllowedBits =
 const SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumAllowedLength = 16 -> int
 const SensitiveDataGateway.Detection.PatternDetector.MaxDetectorIdLength = 96 -> int
 const SensitiveDataGateway.Detection.PatternDetector.ValueGroupName = "value" -> string!
+const SensitiveDataGateway.Documents.PlainTextExtractor.AcceptedMediaTypePrefix = "text/" -> string!
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedEntropyLength = 8 -> int
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedFragmentLength = 3 -> int
 override SensitiveDataGateway.Anonymization.HashingKey.ToString() -> string!
@@ -26,6 +27,7 @@ override SensitiveDataGateway.Anonymization.PseudonymMap.ToString() -> string!
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.Equals(object? obj) -> bool
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.GetHashCode() -> int
 override SensitiveDataGateway.Anonymization.PseudonymScopeKey.ToString() -> string!
+override SensitiveDataGateway.GatewayOptions.ToString() -> string!
 override SensitiveDataGateway.Validation.ValidationOptions.ToString() -> string!
 SensitiveDataGateway.Anonymization.AnonymizationOptions
 SensitiveDataGateway.Anonymization.AnonymizationOptions.HashingKey.get -> SensitiveDataGateway.Anonymization.HashingKey?
@@ -92,12 +94,41 @@ SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumLength.get -> int
 SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumBitsPerCharacter(double minimumBitsPerCharacter) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumLength(int minimumLength) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 SensitiveDataGateway.Detection.PatternDetector
+SensitiveDataGateway.DocumentGateway
+SensitiveDataGateway.DocumentGateway.DocumentGateway(SensitiveDataGateway.Documents.ExtractionPipeline! extraction, SensitiveDataGateway.Detection.DetectionPipeline! detection, SensitiveDataGateway.Policies.IPolicyEngine! policyEngine, SensitiveDataGateway.Anonymization.IDocumentAnonymizer! anonymizer, SensitiveDataGateway.Validation.IPrivacyValidator! validator, SensitiveDataGateway.GatewayOptions! options) -> void
+SensitiveDataGateway.DocumentGateway.InspectAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.InspectionReport!>!
+SensitiveDataGateway.DocumentGateway.SanitizeAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Validation.SanitizationResult!>!
+SensitiveDataGateway.DocumentGateway<TRequest, TResult>
+SensitiveDataGateway.DocumentGateway<TRequest, TResult>.DocumentGateway(SensitiveDataGateway.DocumentGateway! gateway, SensitiveDataGateway.IDecisionProvider<TRequest, TResult>! provider) -> void
+SensitiveDataGateway.DocumentGateway<TRequest, TResult>.ExecuteAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, TRequest request, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.GatewayResult<TResult>!>!
+SensitiveDataGateway.DocumentGateway<TRequest, TResult>.InspectAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.InspectionReport!>!
+SensitiveDataGateway.DocumentGateway<TRequest, TResult>.SanitizeAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Validation.SanitizationResult!>!
+SensitiveDataGateway.Documents.ExtractionPipeline
+SensitiveDataGateway.Documents.ExtractionPipeline.ExtractAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.ProcessingLimits! limits, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Documents.ExtractedDocument!>!
+SensitiveDataGateway.Documents.ExtractionPipeline.ExtractionPipeline(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Documents.IDocumentExtractor!>! extractors) -> void
+SensitiveDataGateway.Documents.PlainTextExtractor
+SensitiveDataGateway.Documents.PlainTextExtractor.CanExtract(string! mediaType) -> bool
+SensitiveDataGateway.Documents.PlainTextExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
+SensitiveDataGateway.Documents.PlainTextExtractor.PlainTextExtractor() -> void
+SensitiveDataGateway.Documents.PlainTextExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
+SensitiveDataGateway.GatewayOptions
+SensitiveDataGateway.GatewayOptions.AuditSink.get -> SensitiveDataGateway.Auditing.IAuditSink!
+SensitiveDataGateway.GatewayOptions.GatewayVersion.get -> string!
+SensitiveDataGateway.GatewayOptions.HashingKey.get -> SensitiveDataGateway.Anonymization.HashingKey?
+SensitiveDataGateway.GatewayOptions.Logger.get -> Microsoft.Extensions.Logging.ILogger!
+SensitiveDataGateway.GatewayOptions.TimeProvider.get -> System.TimeProvider!
+SensitiveDataGateway.GatewayOptions.WithAuditSink(SensitiveDataGateway.Auditing.IAuditSink! auditSink) -> SensitiveDataGateway.GatewayOptions!
+SensitiveDataGateway.GatewayOptions.WithGatewayVersion(string! gatewayVersion) -> SensitiveDataGateway.GatewayOptions!
+SensitiveDataGateway.GatewayOptions.WithHashing(SensitiveDataGateway.Anonymization.HashingKey! hashingKey) -> SensitiveDataGateway.GatewayOptions!
+SensitiveDataGateway.GatewayOptions.WithLogger(Microsoft.Extensions.Logging.ILogger! logger) -> SensitiveDataGateway.GatewayOptions!
+SensitiveDataGateway.GatewayOptions.WithTimeProvider(System.TimeProvider! timeProvider) -> SensitiveDataGateway.GatewayOptions!
 SensitiveDataGateway.Policies.PolicyEngine
 SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
 SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void
 SensitiveDataGateway.Validation.PrivacyValidator
 SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator() -> void
 SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator(SensitiveDataGateway.Validation.ValidationOptions! options) -> void
+SensitiveDataGateway.Validation.PrivacyValidator.Reject(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
 SensitiveDataGateway.Validation.PrivacyValidator.Validate(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizedDocument! sanitized, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
 SensitiveDataGateway.Validation.ValidationOptions
 SensitiveDataGateway.Validation.ValidationOptions.EntropyThreshold.get -> double
@@ -143,4 +174,7 @@ static SensitiveDataGateway.Detection.DeterministicDetectors.PrivateKey() -> Sen
 static SensitiveDataGateway.Detection.DeterministicDetectors.Url() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
 static SensitiveDataGateway.Detection.EntropyDetectorOptions.Default.get -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 static SensitiveDataGateway.Detection.PatternDetector.Create(SensitiveDataGateway.Detection.DetectorVersion version, string! patternName, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Detection.SensitivityLevel sensitivity, SensitiveDataGateway.Detection.DetectionConfidence confidence, System.Text.RegularExpressions.Regex! pattern) -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.DocumentGateway.CreateDefault() -> SensitiveDataGateway.DocumentGateway!
+static SensitiveDataGateway.DocumentGateway.CreateDefault(SensitiveDataGateway.GatewayOptions! options) -> SensitiveDataGateway.DocumentGateway!
+static SensitiveDataGateway.GatewayOptions.Default.get -> SensitiveDataGateway.GatewayOptions!
 static SensitiveDataGateway.Validation.ValidationOptions.Default.get -> SensitiveDataGateway.Validation.ValidationOptions!
