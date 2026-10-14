@@ -65,6 +65,12 @@ public sealed partial class SanitizationPolicy
         EntityType.InternalSystem,
     ];
 
+    private static readonly EntityType[] s_networkLocators =
+    [
+        EntityType.Url,
+        EntityType.IpAddress,
+    ];
+
     /// <summary>
     /// A policy that lets nothing identifying through.
     /// </summary>
@@ -117,6 +123,7 @@ public sealed partial class SanitizationPolicy
         AddRules(builder, TransformationAction.Redact, s_identityDocuments);
         AddRules(builder, TransformationAction.Redact, s_financialIdentifiers);
         AddRules(builder, TransformationAction.Redact, s_specialCategories);
+        AddRules(builder, TransformationAction.Redact, s_networkLocators);
         AddRule(builder, TransformationAction.Redact, EntityType.DateOfBirth);
 
         return builder.Build();
@@ -142,6 +149,7 @@ public sealed partial class SanitizationPolicy
         AddRules(builder, TransformationAction.Pseudonymize, s_directIdentifiers);
         AddRules(builder, TransformationAction.Pseudonymize, s_contactDetails);
         AddRules(builder, TransformationAction.Pseudonymize, s_internalReferences);
+        AddRules(builder, TransformationAction.Pseudonymize, s_networkLocators);
 
         return builder.Build();
     }

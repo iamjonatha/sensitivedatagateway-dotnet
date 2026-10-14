@@ -10,6 +10,15 @@ const SensitiveDataGateway.Anonymization.Masker.MaskCharacter = '*' -> char
 const SensitiveDataGateway.Anonymization.Masker.MaxVisiblePerEnd = 4 -> int
 const SensitiveDataGateway.Anonymization.Masker.ShortestPartialMask = 8 -> int
 const SensitiveDataGateway.Anonymization.PseudonymScopeKey.MaxLength = 128 -> int
+const SensitiveDataGateway.Detection.DetectionPipelineOptions.MaximumCandidates = 1000000 -> int
+const SensitiveDataGateway.Detection.DetectionPipelineOptions.MinimumCandidates = 16 -> int
+const SensitiveDataGateway.Detection.DeterministicDetectors.Version = "1.0.0" -> string!
+const SensitiveDataGateway.Detection.EntropyDetectorOptions.MaximumAllowedBits = 6.5 -> double
+const SensitiveDataGateway.Detection.EntropyDetectorOptions.MaximumAllowedLength = 256 -> int
+const SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumAllowedBits = 3 -> double
+const SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumAllowedLength = 16 -> int
+const SensitiveDataGateway.Detection.PatternDetector.MaxDetectorIdLength = 96 -> int
+const SensitiveDataGateway.Detection.PatternDetector.ValueGroupName = "value" -> string!
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedEntropyLength = 8 -> int
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedFragmentLength = 3 -> int
 override SensitiveDataGateway.Anonymization.HashingKey.ToString() -> string!
@@ -67,6 +76,22 @@ SensitiveDataGateway.Anonymization.PseudonymScopeKey.PseudonymScopeKey() -> void
 SensitiveDataGateway.Anonymization.PseudonymScopeKey.Scope.get -> SensitiveDataGateway.Anonymization.PseudonymScope
 SensitiveDataGateway.Anonymization.PseudonymScopeKey.Value.get -> string!
 SensitiveDataGateway.Anonymization.Redactor
+SensitiveDataGateway.Detection.DetectionPipeline
+SensitiveDataGateway.Detection.DetectionPipeline.DetectAsync(SensitiveDataGateway.Documents.ExtractedDocument! document, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Detection.DetectedDocument!>!
+SensitiveDataGateway.Detection.DetectionPipeline.DetectionPipeline(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Detection.ISensitiveDataDetector!>! detectors, SensitiveDataGateway.Detection.DetectionPipelineOptions! options) -> void
+SensitiveDataGateway.Detection.DetectionPipeline.DetectionPipeline(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Detection.ISensitiveDataDetector!>! detectors) -> void
+SensitiveDataGateway.Detection.DetectionPipelineOptions
+SensitiveDataGateway.Detection.DetectionPipelineOptions.DetectorTimeout.get -> System.TimeSpan
+SensitiveDataGateway.Detection.DetectionPipelineOptions.MaxCandidatesPerDetector.get -> int
+SensitiveDataGateway.Detection.DetectionPipelineOptions.WithDetectorTimeout(System.TimeSpan detectorTimeout) -> SensitiveDataGateway.Detection.DetectionPipelineOptions!
+SensitiveDataGateway.Detection.DetectionPipelineOptions.WithMaxCandidatesPerDetector(int maxCandidatesPerDetector) -> SensitiveDataGateway.Detection.DetectionPipelineOptions!
+SensitiveDataGateway.Detection.DeterministicDetectors
+SensitiveDataGateway.Detection.EntropyDetectorOptions
+SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumBitsPerCharacter.get -> double
+SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumLength.get -> int
+SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumBitsPerCharacter(double minimumBitsPerCharacter) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
+SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumLength(int minimumLength) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
+SensitiveDataGateway.Detection.PatternDetector
 SensitiveDataGateway.Policies.PolicyEngine
 SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
 SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void
@@ -81,6 +106,8 @@ SensitiveDataGateway.Validation.ValidationOptions.MinimumFragmentLength.get -> i
 SensitiveDataGateway.Validation.ValidationOptions.WithEntropyThreshold(double threshold) -> SensitiveDataGateway.Validation.ValidationOptions!
 SensitiveDataGateway.Validation.ValidationOptions.WithMinimumEntropyLength(int length) -> SensitiveDataGateway.Validation.ValidationOptions!
 SensitiveDataGateway.Validation.ValidationOptions.WithMinimumFragmentLength(int length) -> SensitiveDataGateway.Validation.ValidationOptions!
+static readonly SensitiveDataGateway.Detection.DetectionPipelineOptions.MaximumTimeout -> System.TimeSpan
+static readonly SensitiveDataGateway.Detection.DetectionPipelineOptions.MinimumTimeout -> System.TimeSpan
 static SensitiveDataGateway.Anonymization.AnonymizationOptions.Default.get -> SensitiveDataGateway.Anonymization.AnonymizationOptions!
 static SensitiveDataGateway.Anonymization.HashingKey.Create(System.ReadOnlySpan<byte> material) -> SensitiveDataGateway.Anonymization.HashingKey!
 static SensitiveDataGateway.Anonymization.HashingKey.CreateEphemeral() -> SensitiveDataGateway.Anonymization.HashingKey!
@@ -98,4 +125,22 @@ static SensitiveDataGateway.Anonymization.PseudonymScopeKey.ForWiderScope(Sensit
 static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator !=(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
 static SensitiveDataGateway.Anonymization.PseudonymScopeKey.operator ==(SensitiveDataGateway.Anonymization.PseudonymScopeKey left, SensitiveDataGateway.Anonymization.PseudonymScopeKey right) -> bool
 static SensitiveDataGateway.Anonymization.Redactor.Apply(SensitiveDataGateway.Detection.EntityType type) -> string!
+static SensitiveDataGateway.Detection.DetectionPipelineOptions.Default.get -> SensitiveDataGateway.Detection.DetectionPipelineOptions!
+static SensitiveDataGateway.Detection.DeterministicDetectors.All() -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.ISensitiveDataDetector!>!
+static SensitiveDataGateway.Detection.DeterministicDetectors.ApiKey() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.ConnectionString() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.CreditCard() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Email() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.HighEntropy() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.HighEntropy(SensitiveDataGateway.Detection.EntropyDetectorOptions! options) -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Iban() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.IpAddress() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.ItalianTaxId() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Jwt() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Password() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Phone() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.PrivateKey() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.DeterministicDetectors.Url() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.EntropyDetectorOptions.Default.get -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
+static SensitiveDataGateway.Detection.PatternDetector.Create(SensitiveDataGateway.Detection.DetectorVersion version, string! patternName, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Detection.SensitivityLevel sensitivity, SensitiveDataGateway.Detection.DetectionConfidence confidence, System.Text.RegularExpressions.Regex! pattern) -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
 static SensitiveDataGateway.Validation.ValidationOptions.Default.get -> SensitiveDataGateway.Validation.ValidationOptions!

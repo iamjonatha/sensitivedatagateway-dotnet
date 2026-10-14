@@ -18,7 +18,7 @@ validation is still a plan.
 | Policy engine | Built |
 | Anonymization and pseudonym mapping | Built |
 | Final privacy validation | Built |
-| Deterministic detection | Phase 5 |
+| Deterministic detection | Built |
 | Gateway façade, audit, logging | Phase 6 |
 | Testing package and egress security suite | Phase 7 |
 | DecisionKit integration | Phase 8 |

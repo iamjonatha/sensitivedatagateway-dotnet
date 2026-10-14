@@ -74,10 +74,14 @@ ExtractedDocument +--> structured detectors
   free; there is no reason to reach for a model to find an IBAN.
 - Run a semantic detector only when the policy asks for one, and only if it is local.
 - Reconcile overlapping spans: when two detectors claim the same range, the higher
-  sensitivity wins, and the surviving entity records both detectors.
+  sensitivity wins, then the higher confidence, then the longer span. The surviving entity
+  keeps the detector that produced it; the full set of detectors that examined the document
+  is recorded on the output.
 - Record every detector identifier and version in the output, so that a result can be
   reproduced and a regression attributed.
-- Record a `DetectionFailure` when a detector throws or times out.
+- Record a `DetectionFailure` when a detector throws, exceeds its time budget, or reports so
+  many candidates that it has stopped discriminating. Its candidates are discarded rather
+  than truncated.
 
 **Must not**
 
@@ -90,8 +94,8 @@ ExtractedDocument +--> structured detectors
 
 **Blocks when**
 
-- a detector fails and the policy requires a complete detection pass — which the strict
-  policy does. A partial scan is an unknown, and unknown blocks.
+- a detector fails. A partial scan is an unknown, and unknown blocks. This is not
+  configurable: see [ADR-0004](../adr/0004-fail-closed.md).
 
 ---
 

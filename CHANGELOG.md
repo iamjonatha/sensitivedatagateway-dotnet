@@ -136,6 +136,35 @@ While the major version is `0`, the public API may change in any minor release.
   without deleting it.
 - Decision record 0014: the validator takes four inputs and re-derives each fact from the
   stage before the one that reports it.
+- Stage 2, deterministic detection. `DetectionPipeline` runs a set of detectors concurrently,
+  reconciles the spans they claim over the same characters, and records a `DetectionFailure`
+  for any detector that throws, exceeds its time budget or floods the stage. The claims of a
+  failed detector are discarded rather than truncated, so the document carries the evidence
+  that part of it was never examined.
+  - Reconciliation prefers the more damaging claim, then the more confident, then the longer,
+    and breaks a remaining tie by detector identifier so that the result is the same on every
+    run and on every machine.
+- `DeterministicDetectors`, with thirteen built-in detectors: email addresses, telephone
+  numbers, IBANs, payment cards, Italian tax codes, JSON web tokens, API keys and access
+  tokens, private keys, connection strings, passwords, locators, IP addresses and runs of
+  text too dense to be prose. None of them reads a file, opens a socket or consults a model.
+  - `Iban()`, `CreditCard()` and `ItalianTaxId()` verify mod-97, Luhn and the Italian check
+    character respectively. A candidate whose arithmetic disagrees is dropped, not degraded.
+  - Measured against the annotated corpus: 100% recall and 93.3% precision, both asserted by
+    a test rather than only published.
+- `PatternDetector.Create`, which builds a detector from an expression a deployment supplies.
+  It refuses an expression that carries no match timeout, and narrows the reported span to a
+  group named `value` when the expression declares one.
+- `EntropyDetectorOptions` and `DetectionPipelineOptions`. Neither can be set to a value that
+  makes the stage scan less without saying so: exceeding a bound is a recorded gap, and a gap
+  blocks.
+- `EntityType.Url` and `EntityType.IpAddress`, with rules in both shipped policies — the
+  strict policy redacts them, the balanced policy pseudonymizes them.
+- Decision record 0015: a failed check digit drops the candidate rather than reducing its
+  confidence.
+- The detector guide, covering what each built-in detector finds, the measured precision and
+  recall, the six classes of value the built-in set does not find, and how to add a pattern
+  of your own.
 
 ### Removed
 

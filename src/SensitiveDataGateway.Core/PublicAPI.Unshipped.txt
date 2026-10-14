@@ -642,6 +642,7 @@ static SensitiveDataGateway.Detection.EntityType.Hr.get -> SensitiveDataGateway.
 static SensitiveDataGateway.Detection.EntityType.Iban.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.InternalId.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.InternalSystem.get -> SensitiveDataGateway.Detection.EntityType
+static SensitiveDataGateway.Detection.EntityType.IpAddress.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.Jwt.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.Legal.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.NationalId.get -> SensitiveDataGateway.Detection.EntityType
@@ -657,6 +658,7 @@ static SensitiveDataGateway.Detection.EntityType.Security.get -> SensitiveDataGa
 static SensitiveDataGateway.Detection.EntityType.TaxId.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.TradeSecret.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.TryCreate(string? value, out SensitiveDataGateway.Detection.EntityType entityType) -> bool
+static SensitiveDataGateway.Detection.EntityType.Url.get -> SensitiveDataGateway.Detection.EntityType
 static SensitiveDataGateway.Detection.EntityType.WellKnown.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
 static SensitiveDataGateway.Detection.SensitiveEntity.Create(SensitiveDataGateway.EntityId id, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.SourceSpan span, SensitiveDataGateway.Detection.DetectionConfidence confidence, SensitiveDataGateway.DetectorId detector, SensitiveDataGateway.Detection.SensitivityLevel sensitivity, SensitiveDataGateway.Detection.DetectionEvidence! evidence) -> SensitiveDataGateway.Detection.SensitiveEntity!
 static SensitiveDataGateway.DetectorId.Create(string! value) -> SensitiveDataGateway.DetectorId

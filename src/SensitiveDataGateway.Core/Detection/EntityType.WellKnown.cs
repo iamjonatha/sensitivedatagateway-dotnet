@@ -138,6 +138,25 @@ public readonly partial struct EntityType
     public static EntityType InternalSystem { get; } = new("INTERNAL_SYSTEM");
 
     /// <summary>
+    /// Gets the type for a uniform resource locator.
+    /// </summary>
+    /// <remarks>
+    /// An address is rarely sensitive for the host it names and frequently sensitive for
+    /// everything after it: a path that contains an account number, a query string that
+    /// carries a session, a host that only exists inside the network.
+    /// </remarks>
+    public static EntityType Url { get; } = new("URL");
+
+    /// <summary>
+    /// Gets the type for an internet protocol address.
+    /// </summary>
+    /// <remarks>
+    /// A public address identifies a subscriber and is personal data in most of the world. A
+    /// private one describes the shape of a network nobody outside it should be mapping.
+    /// </remarks>
+    public static EntityType IpAddress { get; } = new("IP_ADDRESS");
+
+    /// <summary>
     /// Gets the type for health information.
     /// </summary>
     public static EntityType Health { get; } = new("HEALTH");
@@ -202,6 +221,8 @@ public readonly partial struct EntityType
         InternalId,
         ConfidentialCode,
         InternalSystem,
+        Url,
+        IpAddress,
         Health,
         Legal,
         Hr,

@@ -76,6 +76,28 @@ internal static class Fixture
 
     public static DetectedDocument Document(params PartSpec[] parts) => Document(BundleId.New(), parts);
 
+    /// <summary>
+    /// Builds an extracted document with one segment per text, in the order given.
+    /// </summary>
+    /// <param name="texts">The text of each segment.</param>
+    /// <returns>The document a detector runs over.</returns>
+    public static ExtractedDocument Extracted(params string[] texts)
+    {
+        var segments = new List<TextSegment>(texts.Length);
+
+        for (var order = 0; order < texts.Length; order++)
+        {
+            segments.Add(TextSegment.Create(
+                SegmentId.Create($"segment-{order}"),
+                PartId.Create("body"),
+                texts[order],
+                SegmentOrigin.At(SegmentOriginKind.Paragraph, order + 1),
+                order));
+        }
+
+        return ExtractedDocument.Create(BundleId.New(), segments, [], []);
+    }
+
     public static PartSpec Part(string name, string text, params EntitySpec[] entities) =>
         new(name, text, entities);
 
