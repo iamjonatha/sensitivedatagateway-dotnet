@@ -23,7 +23,16 @@ internal static partial class BuiltInPatterns
     /// The time any single pattern may spend on one segment before the scan is declared
     /// incomplete.
     /// </summary>
-    public const int TimeoutMilliseconds = 250;
+    /// <remarks>
+    /// This is a second belt, not the first one. What stops a pattern from backtracking for
+    /// minutes is the bounded quantifiers above, which are tested; the clock only catches a
+    /// case the bounds somehow failed to. So it is set far above any time a bounded
+    /// expression can legitimately need on one segment. A tighter value buys no additional
+    /// safety and costs correctness, because the clock measures wall time on a shared
+    /// machine: under heavy load it turns a scan that was working into a recorded gap, and a
+    /// gap blocks a document that nothing was ever wrong with.
+    /// </remarks>
+    public const int TimeoutMilliseconds = 1000;
 
     [GeneratedRegex(
         @"\b[A-Za-z0-9._%+-]{1,64}@(?:[A-Za-z0-9-]{1,63}\.){1,8}[A-Za-z]{2,24}\b",

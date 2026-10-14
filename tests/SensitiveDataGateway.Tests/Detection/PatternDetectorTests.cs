@@ -107,9 +107,9 @@ public sealed partial class PatternDetectorTests
         Assert.True(started.Elapsed < TimeSpan.FromSeconds(10));
     }
 
-    [GeneratedRegex(@"\bORD-\d{5}\b", RegexOptions.None, 250)]
+    [GeneratedRegex(@"\bORD-\d{5}\b", RegexOptions.None, 1000)]
     private static partial Regex OrderReference();
 
-    [GeneratedRegex(@"\border:[ ]?(?<value>ORD-\d{5})\b", RegexOptions.None, 250)]
+    [GeneratedRegex(@"\border:[ ]?(?<value>ORD-\d{5})\b", RegexOptions.None, 1000)]
     private static partial Regex LabelledReference();
 }

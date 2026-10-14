@@ -22,7 +22,17 @@ namespace SensitiveDataGateway.Validation;
 /// </remarks>
 internal static partial class SecretPatterns
 {
-    private const int TimeoutMilliseconds = 100;
+    /// <summary>
+    /// The time any single pattern may spend on one text before the scan fails closed.
+    /// </summary>
+    /// <remarks>
+    /// Set for the same reason as
+    /// <see cref="Detection.BuiltInPatterns.TimeoutMilliseconds"/>: the protection against
+    /// runaway backtracking comes from the bounded quantifiers in these expressions, and the
+    /// clock is only the fallback. Here the cost of a tight value is higher still, because a
+    /// timeout in the final scan blocks the document outright.
+    /// </remarks>
+    private const int TimeoutMilliseconds = 1000;
 
     private static readonly (Regex Pattern, EntityType Type)[] s_patterns =
     [

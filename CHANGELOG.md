@@ -177,6 +177,12 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Fixed
 
+- Raised the match timeout on every built-in expression, in both deterministic detection and
+  the final anti-leak scan, from 250 and 100 milliseconds to one second. The timeout is the
+  fallback behind bounded quantifiers, not the protection itself, and a value that tight
+  measured contention for the processor rather than a runaway pattern — turning a scan that
+  was working into a recorded gap, and a gap into a blocked document.
+
 - The anonymizer no longer degrades a document to `Incomplete` for an unresolved candidate
   the policy explicitly tolerates. A blocked plan never reaches the anonymizer, so every
   unresolved candidate that does is one `TolerateUnresolvedUpTo` accepted; reporting it as a

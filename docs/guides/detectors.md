@@ -118,7 +118,7 @@ customer code, a case number or an employee identifier look the way one organiza
 they would look, and only that organization can write the pattern.
 
 ```csharp
-[GeneratedRegex(@"\bORD-\d{5}\b", RegexOptions.None, 250)]
+[GeneratedRegex(@"\bORD-\d{5}\b", RegexOptions.None, 1000)]
 private static partial Regex OrderReference();
 
 var detector = PatternDetector.Create(
@@ -130,11 +130,17 @@ var detector = PatternDetector.Create(
     pattern: OrderReference());
 ```
 
-Four things are worth knowing before you write one.
+Five things are worth knowing before you write one.
 
 **The expression must carry a match timeout.** `PatternDetector.Create` refuses one that does
 not. An expression that can be made to take forever is a document that never gets refused, and
 the guard is at the type rather than in a review checklist for that reason.
+
+**Set the timeout generously — one second, not fifty milliseconds.** It is the fallback, not
+the protection: what keeps a bounded expression fast is its bounds. The timeout measures wall
+time on a machine you share with everything else running on it, so a tight value does not make
+a runaway pattern safer, it makes a working scan fail under load. A timeout is a recorded gap,
+and a gap blocks a document that nothing was wrong with.
 
 **Use bounded quantifiers.** `{1,64}` rather than `+`. An unbounded quantifier next to another
 one is how a regular expression turns a long line into minutes of backtracking. The timeout
