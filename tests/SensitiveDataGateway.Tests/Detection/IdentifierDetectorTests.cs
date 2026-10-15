@@ -82,6 +82,29 @@ public sealed class IdentifierDetectorTests
         Assert.True(Assert.Single(entities).Evidence.ChecksumValidated);
     }
 
+    /// <summary>
+    /// A compact account number keeps its boundary when a short word follows it.
+    /// </summary>
+    /// <param name="iban">The account number, whose body is a multiple of four characters.</param>
+    /// <returns>A task that completes when the scan has run.</returns>
+    /// <remarks>
+    /// The pattern tolerates the grouped form, in which a separator sits between groups of
+    /// four. When the body divides evenly into groups, the final group of a compact number
+    /// is complete, and a pattern that still expects a trailing group will reach across the
+    /// following space and take the next word with it. The checksum then rejects the whole
+    /// thing, so the number is not reported at all: an over-eager match is a missed
+    /// detection, not a noisy one.
+    /// </remarks>
+    [Theory]
+    [InlineData("ES7899999999999999999999")]
+    [InlineData("NL50ABNA9999999999")]
+    public async Task Iban_reports_a_compact_number_followed_by_a_short_word(string iban)
+    {
+        var matches = await Scan.MatchesIn(DeterministicDetectors.Iban(), $"credit {iban} una vez");
+
+        Assert.Equal(iban, Assert.Single(matches));
+    }
+
     [Theory]
     [InlineData("4111111111111111")]
     [InlineData("4111 1111 1111 1111")]

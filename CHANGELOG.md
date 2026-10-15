@@ -229,3 +229,11 @@ While the major version is `0`, the public API may change in any minor release.
   the policy explicitly tolerates. A blocked plan never reaches the anonymizer, so every
   unresolved candidate that does is one `TolerateUnresolvedUpTo` accepted; reporting it as a
   failure made that policy lever inert.
+
+- The IBAN expression no longer reaches past the end of the number it is matching. Its final
+  group was mandatory and could span the separator, so an account number whose body divides
+  evenly into four-character groups — every Spanish IBAN, among others — swallowed the next
+  word of the sentence when that word was one to four characters long. The widened candidate
+  then failed its mod-97 check and was discarded, so the account number was not reported at
+  all: a missed detection rather than a noisy one. The separator is now captured once and
+  required to be the same throughout, which is what the format actually specifies.

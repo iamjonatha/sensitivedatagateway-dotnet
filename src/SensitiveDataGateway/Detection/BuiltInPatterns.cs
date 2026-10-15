@@ -52,8 +52,19 @@ internal static partial class BuiltInPatterns
         TimeoutMilliseconds)]
     public static partial Regex LabelledPhone();
 
+    /// <summary>
+    /// Matches an international bank account number, compact or in groups of four.
+    /// </summary>
+    /// <returns>The pattern.</returns>
+    /// <remarks>
+    /// The separator is captured once and required to repeat, so a compact number cannot
+    /// reach across the space that ends it and take the following word with it. It would
+    /// otherwise fail the checksum and be reported as nothing at all, which is the worse
+    /// outcome: an account number whose body divides evenly into groups of four would be
+    /// missed whenever a short word followed it.
+    /// </remarks>
     [GeneratedRegex(
-        @"\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]{4}){2,7} ?[A-Z0-9]{1,4}\b",
+        @"\b[A-Z]{2}\d{2}(?<sep> ?)[A-Z0-9]{4}(?:\k<sep>[A-Z0-9]{4}){1,6}(?:\k<sep>[A-Z0-9]{1,3})?\b",
         RegexOptions.IgnoreCase,
         TimeoutMilliseconds)]
     public static partial Regex Iban();

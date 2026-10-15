@@ -18,6 +18,13 @@ namespace SensitiveDataGateway.Tests.Detection;
 /// references, timestamps and identifiers that look like something they are not. A detector
 /// set measured only against clean examples reports a precision it does not have.
 /// </para>
+/// <para>
+/// This is not the corpus consumers get. <c>SensitiveDataGateway.Testing.SyntheticCorpus</c>
+/// is shipped, and exists to prove that nothing crossed the boundary. This one stays here
+/// and exists to measure precision and recall, which is why it is full of values that are
+/// supposed to be left alone. Keeping them apart stops a near miss added for measurement
+/// from quietly weakening a leak test.
+/// </para>
 /// </remarks>
 internal static class DetectionCorpus
 {
