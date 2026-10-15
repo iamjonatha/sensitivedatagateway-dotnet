@@ -104,8 +104,50 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
             return new GatewayResult<TResult>(run.Result.BundleId, isAllowed: false, default, run.Result.Report);
         }
 
-        var value = await _provider.DecideAsync(payload, request, cancellationToken).ConfigureAwait(false);
+        var value = await InvokeAsync(payload, request, cancellationToken).ConfigureAwait(false);
 
         return new GatewayResult<TResult>(run.Result.BundleId, isAllowed: true, value, run.Result.Report);
+    }
+
+    /// <summary>
+    /// Calls the provider and reports whatever it throws as a provider failure.
+    /// </summary>
+    /// <remarks>
+    /// A provider is outside the trust boundary and cannot be relied on to throw
+    /// <see cref="ProviderException"/> as the interface asks. Translating here is what keeps
+    /// the audit record of an outage attributable: without it, the record carries no error
+    /// category and nothing downstream can tell a provider failure apart from a failure of
+    /// the gateway itself. The original exception is preserved rather than flattened, and
+    /// the description says nothing the provider was looking at.
+    /// </remarks>
+    private async Task<TResult> InvokeAsync(
+        ValidatedPayload payload,
+        TRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _provider.DecideAsync(payload, request, cancellationToken).ConfigureAwait(false);
+        }
+        catch (SensitiveDataGatewayException)
+        {
+            throw;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+#pragma warning disable CA1031 // A provider may throw anything; the failure is translated, not swallowed.
+        catch (Exception exception)
+#pragma warning restore CA1031
+        {
+            throw new ProviderException(
+                GatewayError.Create(
+                    GatewayErrorCategory.ProviderFailed,
+                    "provider.failed",
+                    "The decision provider did not return a decision.")
+                    .InBundle(payload.BundleId),
+                exception);
+        }
     }
 }

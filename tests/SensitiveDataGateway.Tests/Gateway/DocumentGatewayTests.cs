@@ -243,4 +243,85 @@ public sealed class DecisionGatewayTests
         Assert.Equal(0, provider.Calls);
         Assert.Equal(AuditOperation.Inspect, Assert.Single(sink.Records).Operation);
     }
+
+    /// <summary>
+    /// A provider that breaks its contract is still reported as a provider failure.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    /// <remarks>
+    /// The interface asks a provider to throw <see cref="ProviderException"/>. A provider is
+    /// third-party code and may throw anything at all, so the gateway translates whatever it
+    /// gets, keeping the original as the inner exception. Without this, the audit record of
+    /// an outage carries no category and nothing downstream can tell a provider failure from
+    /// a failure of the gateway itself.
+    /// </remarks>
+    [Fact]
+    public async Task Reports_a_failing_provider_as_a_provider_failure()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new ThrowingProvider());
+
+        var failure = await Assert.ThrowsAsync<ProviderException>(
+            async () => await gateway.ExecuteAsync(
+                GatewayFixture.Bundle(CleanText),
+                "request",
+                SanitizationPolicy.Balanced,
+                TestContext.Current.CancellationToken));
+
+        Assert.Equal(GatewayErrorCategory.ProviderFailed, failure.Error.Category);
+        Assert.Equal(BundleId.Create("bundle"), failure.Error.BundleId);
+        _ = Assert.IsType<InvalidOperationException>(failure.InnerException);
+
+        var record = Assert.Single(sink.Records);
+
+        Assert.Equal(AuditOutcome.Failed, record.Outcome);
+        Assert.Equal(GatewayErrorCategory.ProviderFailed, record.ErrorCategory);
+    }
+
+    /// <summary>
+    /// A cancelled decision is cancellation, not a provider failure.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    [Fact]
+    public async Task Leaves_a_cancelled_decision_as_cancellation()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new CancellingProvider());
+
+        _ = await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await gateway.ExecuteAsync(
+                GatewayFixture.Bundle(CleanText),
+                "request",
+                SanitizationPolicy.Balanced,
+                TestContext.Current.CancellationToken));
+
+        Assert.Equal(AuditOutcome.Cancelled, Assert.Single(sink.Records).Outcome);
+    }
+
+    /// <summary>
+    /// A provider that already honours the contract is passed through unchanged.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    [Fact]
+    public async Task Does_not_wrap_a_failure_the_provider_already_reported_correctly()
+    {
+        var error = GatewayError.Create(
+            GatewayErrorCategory.ProviderFailed,
+            "provider.quota",
+            "The provider refused the request.");
+        var provider = FakeProvider.Failing(new ProviderException(error));
+        var gateway = new DocumentGateway<string, string>(
+            GatewayFixture.Gateway(new RecordingAuditSink()),
+            provider);
+
+        var failure = await Assert.ThrowsAsync<ProviderException>(
+            async () => await gateway.ExecuteAsync(
+                GatewayFixture.Bundle(CleanText),
+                "request",
+                SanitizationPolicy.Balanced,
+                TestContext.Current.CancellationToken));
+
+        Assert.Equal("provider.quota", failure.Error.Code);
+        Assert.Null(failure.InnerException);
+    }
 }

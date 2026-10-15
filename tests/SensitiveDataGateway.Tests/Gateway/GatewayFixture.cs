@@ -113,6 +113,47 @@ internal sealed class RecordingProvider : IDecisionProvider<string, string>
 }
 
 /// <summary>
+/// A provider that fails the way a third-party library fails: with its own exception type,
+/// not the one the interface documents.
+/// </summary>
+/// <remarks>
+/// A provider lives outside the trust boundary and cannot be made to honour a contract. The
+/// gateway has to report the failure as its own anyway, otherwise the audit record of a
+/// provider outage says only that something went wrong.
+/// </remarks>
+internal sealed class ThrowingProvider : IDecisionProvider<string, string>
+{
+    public string Name => "test.throwing";
+
+    public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
+        throw new InvalidOperationException("The decision service is unavailable.");
+}
+
+/// <summary>
+/// A provider that observes cancellation instead of deciding.
+/// </summary>
+internal sealed class CancellingProvider : IDecisionProvider<string, string>
+{
+    public string Name => "test.cancelling";
+
+    public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
+        throw new OperationCanceledException();
+}
+
+/// <summary>
+/// A provider that fails with whatever it is handed.
+/// </summary>
+internal sealed class FakeProvider(Exception failure) : IDecisionProvider<string, string>
+{
+    public static FakeProvider Failing(Exception failure) => new(failure);
+
+    public string Name => "test.fake";
+
+    public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
+        throw failure;
+}
+
+/// <summary>
 /// Builds the gateways and bundles the gateway tests use.
 /// </summary>
 /// <remarks>

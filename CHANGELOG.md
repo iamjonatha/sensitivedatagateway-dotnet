@@ -207,6 +207,13 @@ While the major version is `0`, the public API may change in any minor release.
 - A blocked plan now skips anonymization entirely. The pseudonym store is not touched and no
   token is minted for a document that is not going anywhere, so
   `InspectionReport.Status` is `null` when the policy blocked the document.
+- `ExecuteAsync` now reports a provider that throws as `ProviderException`, whatever type it
+  threw, keeping the original as the inner exception. A provider is third-party code and
+  cannot be relied on to honour the contract `IDecisionProvider<,>` documents; until now its
+  own exception escaped unchanged, and the audit record of an outage carried no error
+  category at all — nothing downstream could tell a provider failure apart from a failure of
+  the gateway itself. Cancellation and failures the provider already reported correctly are
+  passed through untouched.
 
 ### Removed
 
