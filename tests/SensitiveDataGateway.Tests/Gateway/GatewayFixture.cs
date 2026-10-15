@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -151,6 +152,35 @@ internal sealed class FakeProvider(Exception failure) : IDecisionProvider<string
 
     public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
         throw failure;
+}
+
+/// <summary>
+/// A provider that forgot to name itself.
+/// </summary>
+internal sealed class UnnamedProvider : IDecisionProvider<string, string>
+{
+    public string Name => "   ";
+
+    public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
+        Task.FromResult("decided");
+}
+
+/// <summary>
+/// A provider whose name is different every time it is read.
+/// </summary>
+/// <remarks>
+/// It stands in for the provider that would build its name out of whatever it was last asked
+/// to decide on. The gateway reads the name once, at composition, so a name derived from a
+/// document has nothing to derive from and cannot reach the audit trail.
+/// </remarks>
+internal sealed class ShiftingNameProvider : IDecisionProvider<string, string>
+{
+    public int Reads { get; private set; }
+
+    public string Name => string.Create(CultureInfo.InvariantCulture, $"test.shifting.{++Reads}");
+
+    public Task<string> DecideAsync(ValidatedPayload payload, string request, CancellationToken cancellationToken) =>
+        Task.FromResult("decided");
 }
 
 /// <summary>

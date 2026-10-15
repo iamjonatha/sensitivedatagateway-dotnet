@@ -66,6 +66,13 @@ fix.
 
 **Pass the cancellation token down**, to every call, without exception.
 
+**Name yourself once, and constantly.** `Name` is read when the provider is composed into
+`DocumentGateway<TRequest, TResult>` — before any document exists — and it becomes the
+`ProviderName` on every audit record of a payload you received. Return a fixed identifier such
+as `my-engine` or `my-engine:eu-west`. A name built from the payload would put content into
+the one record that is supposed to be safe to keep, and an empty name is refused at
+composition. See [logging and audit](../guides/logging-and-audit.md).
+
 **Let failures through.** Catch nothing you do not handle. The gateway wraps whatever you
 throw in a `ProviderException` and keeps the original as `InnerException`, so an application
 can still read the transport's own error. Swallowing it turns a failed decision into a

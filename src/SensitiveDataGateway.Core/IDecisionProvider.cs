@@ -31,8 +31,19 @@ namespace SensitiveDataGateway;
 public interface IDecisionProvider<TRequest, TResult>
 {
     /// <summary>
-    /// Gets the name of the provider, for the audit record.
+    /// Gets the name of the provider, which the audit record carries as the destination the
+    /// payload was handed to.
     /// </summary>
+    /// <value>
+    /// A stable identifier of the integration, such as <c>decisionkit:http</c>. It must not be
+    /// empty, must not change between calls, and must not be derived from anything the provider
+    /// was asked to decide on.
+    /// </value>
+    /// <remarks>
+    /// The gateway reads this once, when the provider is composed into it, and before any
+    /// document exists. A name assembled from a payload therefore cannot reach the audit trail,
+    /// which is the one place a record is allowed to say who received the content.
+    /// </remarks>
     string Name { get; }
 
     /// <summary>

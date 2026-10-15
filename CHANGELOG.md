@@ -270,6 +270,18 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Fixed
 
+- The audit record now carries `ProviderName`, the name of the decision provider the payload
+  was handed to. `IDecisionProvider<,>.Name` documented itself as being for the audit record,
+  but no field carried it and nothing in the gateway read it, so a record said that an
+  operation happened and nothing about where the content went. The field is set if and only
+  if the payload crossed the boundary — including when the provider was reached and then
+  failed, and excluding a blocked `Execute`, a `Sanitize` and an `Inspect` — because the one
+  record of an outage is exactly the one an auditor needs attributed. The name is read once,
+  when the provider is composed into the gateway and before any document exists, so a
+  provider that derived its name from content would have nothing to derive it from; a
+  provider that returns an empty name is now refused at composition rather than producing
+  records nobody can attribute.
+
 - Raised the match timeout on every built-in expression, in both deterministic detection and
   the final anti-leak scan, from 250 and 100 milliseconds to one second. The timeout is the
   fallback behind bounded quantifiers, not the protection itself, and a value that tight

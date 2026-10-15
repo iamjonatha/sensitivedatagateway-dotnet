@@ -59,6 +59,17 @@ public sealed class AuditRecord
     public required string GatewayVersion { get; init; }
 
     /// <summary>
+    /// Gets the name of the decision provider the payload was handed to, when there was one.
+    /// </summary>
+    /// <value>
+    /// The provider's own name, read when it was composed into the gateway and before any
+    /// document existed. It is <see langword="null"/> for an operation that transmits nothing,
+    /// and for an <see cref="AuditOperation.Execute"/> that was blocked or failed before the
+    /// provider was reached.
+    /// </value>
+    public string? ProviderName { get; init; }
+
+    /// <summary>
     /// Gets the moment the operation started.
     /// </summary>
     public required DateTimeOffset StartedAt { get; init; }

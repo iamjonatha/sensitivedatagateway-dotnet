@@ -197,6 +197,8 @@ SensitiveDataGateway.Auditing.AuditRecord.PolicyId.get -> SensitiveDataGateway.P
 SensitiveDataGateway.Auditing.AuditRecord.PolicyId.init -> void
 SensitiveDataGateway.Auditing.AuditRecord.PolicyVersion.get -> SensitiveDataGateway.PolicyVersion
 SensitiveDataGateway.Auditing.AuditRecord.PolicyVersion.init -> void
+SensitiveDataGateway.Auditing.AuditRecord.ProviderName.get -> string?
+SensitiveDataGateway.Auditing.AuditRecord.ProviderName.init -> void
 SensitiveDataGateway.Auditing.AuditRecord.StartedAt.get -> System.DateTimeOffset
 SensitiveDataGateway.Auditing.AuditRecord.StartedAt.init -> void
 SensitiveDataGateway.Auditing.AuditRecord.TransformedCount.get -> int

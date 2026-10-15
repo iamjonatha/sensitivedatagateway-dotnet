@@ -22,6 +22,7 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
 {
     private readonly DocumentGateway _gateway;
     private readonly IDecisionProvider<TRequest, TResult> _provider;
+    private readonly string _providerName;
 
     /// <summary>
     /// Creates a gateway that hands validated payloads to a provider.
@@ -29,13 +30,26 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
     /// <param name="gateway">The gateway that does the sanitizing.</param>
     /// <param name="provider">What decides, once there is something safe to decide on.</param>
     /// <exception cref="ArgumentNullException">Any argument is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="provider"/> has no name. The audit record has no other way to say where
+    /// a payload went, so an unnamed provider is refused at composition rather than producing
+    /// records nobody can attribute.
+    /// </exception>
+    /// <remarks>
+    /// The provider's name is read here, once, and before any document has been seen. A
+    /// provider that built its name from content would have nothing to build it from yet.
+    /// </remarks>
     public DocumentGateway(DocumentGateway gateway, IDecisionProvider<TRequest, TResult> provider)
     {
         ArgumentNullException.ThrowIfNull(gateway);
         ArgumentNullException.ThrowIfNull(provider);
 
+        var name = provider.Name;
+        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(provider));
+
         _gateway = gateway;
         _provider = provider;
+        _providerName = name;
     }
 
     /// <inheritdoc/>
@@ -70,7 +84,7 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
         try
         {
             var run = await pipeline.RunAsync(bundle, policy, operation).ConfigureAwait(false);
-            var result = await DecideAsync(run, request, operation.Token).ConfigureAwait(false);
+            var result = await DecideAsync(run, request, operation).ConfigureAwait(false);
             var key = pipeline.Options.HashingKey;
 
             operation.Completed(
@@ -95,7 +109,7 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
     private async Task<GatewayResult<TResult>> DecideAsync(
         PipelineRun run,
         TRequest request,
-        CancellationToken cancellationToken)
+        GatewayOperation operation)
     {
         var payload = run.Result.Payload;
 
@@ -104,7 +118,7 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
             return new GatewayResult<TResult>(run.Result.BundleId, isAllowed: false, default, run.Result.Report);
         }
 
-        var value = await InvokeAsync(payload, request, cancellationToken).ConfigureAwait(false);
+        var value = await InvokeAsync(payload, request, operation).ConfigureAwait(false);
 
         return new GatewayResult<TResult>(run.Result.BundleId, isAllowed: true, value, run.Result.Report);
     }
@@ -113,21 +127,30 @@ public sealed class DocumentGateway<TRequest, TResult> : ISensitiveDataGateway<T
     /// Calls the provider and reports whatever it throws as a provider failure.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// This is the only place a provider is reached, which is why it is also the place the
+    /// audit record learns the payload left: a record that names a provider is a record of
+    /// content that crossed the boundary, including when the call then failed.
+    /// </para>
+    /// <para>
     /// A provider is outside the trust boundary and cannot be relied on to throw
     /// <see cref="ProviderException"/> as the interface asks. Translating here is what keeps
     /// the audit record of an outage attributable: without it, the record carries no error
     /// category and nothing downstream can tell a provider failure apart from a failure of
     /// the gateway itself. The original exception is preserved rather than flattened, and
     /// the description says nothing the provider was looking at.
+    /// </para>
     /// </remarks>
     private async Task<TResult> InvokeAsync(
         ValidatedPayload payload,
         TRequest request,
-        CancellationToken cancellationToken)
+        GatewayOperation operation)
     {
+        operation.HandedTo(_providerName);
+
         try
         {
-            return await _provider.DecideAsync(payload, request, cancellationToken).ConfigureAwait(false);
+            return await _provider.DecideAsync(payload, request, operation.Token).ConfigureAwait(false);
         }
         catch (SensitiveDataGatewayException)
         {

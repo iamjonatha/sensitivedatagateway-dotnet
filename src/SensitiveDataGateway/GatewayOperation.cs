@@ -38,6 +38,7 @@ internal sealed class GatewayOperation : IDisposable
     private PipelineRun? _run;
     private string? _documentHash;
     private string? _payloadHash;
+    private string? _providerName;
     private GatewayError? _error;
 
     internal GatewayOperation(
@@ -64,6 +65,19 @@ internal sealed class GatewayOperation : IDisposable
     internal ILogger Logger => _options.Logger;
 
     internal CancellationToken Token => _linked.Token;
+
+    /// <summary>
+    /// Records that the payload was handed to a provider.
+    /// </summary>
+    /// <param name="providerName">
+    /// The provider's name, read when it was composed into the gateway.
+    /// </param>
+    /// <remarks>
+    /// Called from the one place that reaches a provider, so the field means what it says: the
+    /// record names a destination when, and only when, content left the gateway. An operation
+    /// that was blocked names nobody, because nobody saw it.
+    /// </remarks>
+    internal void HandedTo(string providerName) => _providerName = providerName;
 
     internal void Completed(AuditOutcome outcome, PipelineRun run, string? documentHash, string? payloadHash)
     {
@@ -110,6 +124,7 @@ internal sealed class GatewayOperation : IDisposable
             PolicyId = _policy.Id,
             PolicyVersion = _policy.Version,
             GatewayVersion = _options.GatewayVersion,
+            ProviderName = _providerName,
             StartedAt = _startedAt,
             Duration = _options.TimeProvider.GetElapsedTime(_startedTimestamp),
             EntityCount = _run?.Detected.Entities.Count ?? 0,

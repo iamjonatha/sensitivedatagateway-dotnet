@@ -104,11 +104,33 @@ one that failed loudly. Catch inside your sink, buffer, and fail your own way.
 
 Identifiers, versions, timings and counts: `OperationId`, `Operation`, `Outcome`, `BundleId`,
 `PolicyId`, `PolicyVersion`, `GatewayVersion`, `StartedAt`, `Duration`, `EntityCount`,
-`TransformedCount`, `GapCount`, `FailedChecks`, `ErrorCategory`, `ErrorCode`, and two
-optional digests.
+`TransformedCount`, `GapCount`, `FailedChecks`, `ErrorCategory`, `ErrorCode`, `ProviderName`,
+and two optional digests.
 
 It holds no entity value, no offset, no segment text and no pseudonym mapping. `ToString()`
 is safe to write anywhere, and the corpus harness asserts that it is.
+
+### Where the payload went
+
+`ProviderName` is the only field that says who received content, and it is set if and only if
+content left the gateway:
+
+| Situation | `ProviderName` |
+| --- | --- |
+| `Execute` that reached the provider | The provider's name |
+| `Execute` that reached the provider and then failed | The provider's name |
+| `Execute` blocked before the provider | `null` |
+| `Sanitize` or `Inspect` | `null` |
+
+A failed call still names the provider, because the payload crossed the boundary whether or
+not a decision came back. That record is exactly the one an auditor needs attributed.
+
+The name is read once, when the provider is composed into
+`DocumentGateway<TRequest, TResult>`, before any document exists. A provider that built its
+name out of the content it was handed would have nothing to build it from, so the field cannot
+become a back channel into the one record that is meant to be safe to keep. A provider that
+returns an empty name is refused at composition rather than producing records nobody can
+attribute.
 
 ### Digests
 

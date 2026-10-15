@@ -324,4 +324,129 @@ public sealed class DecisionGatewayTests
         Assert.Equal("provider.quota", failure.Error.Code);
         Assert.Null(failure.InnerException);
     }
+
+    /// <summary>
+    /// The audit record names the provider the payload was handed to.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    /// <remarks>
+    /// It is the only field that says where content went. Without it a record proves an
+    /// operation happened and nothing about its destination.
+    /// </remarks>
+    [Fact]
+    public async Task Names_the_provider_the_payload_was_handed_to()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new RecordingProvider());
+
+        await gateway.ExecuteAsync(
+            GatewayFixture.Bundle(CleanText),
+            "request",
+            SanitizationPolicy.Balanced,
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal("test.recording", Assert.Single(sink.Records).ProviderName);
+    }
+
+    /// <summary>
+    /// A provider that was reached and then failed is still named.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    /// <remarks>
+    /// The payload crossed the boundary whether or not a decision came back, and the record of
+    /// an outage is exactly the one an auditor needs attributed.
+    /// </remarks>
+    [Fact]
+    public async Task Names_the_provider_that_was_reached_and_then_failed()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new ThrowingProvider());
+
+        _ = await Assert.ThrowsAsync<ProviderException>(
+            async () => await gateway.ExecuteAsync(
+                GatewayFixture.Bundle(CleanText),
+                "request",
+                SanitizationPolicy.Balanced,
+                TestContext.Current.CancellationToken));
+
+        var record = Assert.Single(sink.Records);
+
+        Assert.Equal(AuditOutcome.Failed, record.Outcome);
+        Assert.Equal("test.throwing", record.ProviderName);
+    }
+
+    /// <summary>
+    /// A blocked document names nobody, because nobody saw it.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    [Fact]
+    public async Task Names_no_provider_when_the_document_was_blocked()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new RecordingProvider());
+
+        await gateway.ExecuteAsync(
+            GatewayFixture.Unreadable(),
+            "request",
+            SanitizationPolicy.Strict,
+            TestContext.Current.CancellationToken);
+
+        Assert.Null(Assert.Single(sink.Records).ProviderName);
+    }
+
+    /// <summary>
+    /// An operation that transmits nothing names nobody either.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    [Fact]
+    public async Task Names_no_provider_on_an_operation_that_transmits_nothing()
+    {
+        var sink = new RecordingAuditSink();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), new RecordingProvider());
+        var bundle = GatewayFixture.Bundle(CleanText);
+
+        await gateway.SanitizeAsync(bundle, SanitizationPolicy.Balanced, TestContext.Current.CancellationToken);
+        await gateway.InspectAsync(bundle, SanitizationPolicy.Balanced, TestContext.Current.CancellationToken);
+
+        Assert.All(sink.Records, record => Assert.Null(record.ProviderName));
+    }
+
+    /// <summary>
+    /// The name is read once, at composition, before any document exists.
+    /// </summary>
+    /// <returns>A task that completes when the scenario has run.</returns>
+    /// <remarks>
+    /// A provider that assembled its name from the content it was handed would otherwise write
+    /// that content into the one record that is supposed to be safe to keep.
+    /// </remarks>
+    [Fact]
+    public async Task Reads_the_provider_name_once_before_any_document_exists()
+    {
+        var sink = new RecordingAuditSink();
+        var provider = new ShiftingNameProvider();
+        var gateway = new DocumentGateway<string, string>(GatewayFixture.Gateway(sink), provider);
+
+        await gateway.ExecuteAsync(
+            GatewayFixture.Bundle(CleanText),
+            "request",
+            SanitizationPolicy.Balanced,
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal(1, provider.Reads);
+        Assert.Equal("test.shifting.1", Assert.Single(sink.Records).ProviderName);
+    }
+
+    /// <summary>
+    /// A provider with no name is refused when it is composed, not when it is called.
+    /// </summary>
+    [Fact]
+    public void Refuses_a_provider_that_did_not_name_itself()
+    {
+        var exception = Assert.Throws<ArgumentException>(
+            () => new DocumentGateway<string, string>(
+                GatewayFixture.Gateway(new RecordingAuditSink()),
+                new UnnamedProvider()));
+
+        Assert.Equal("provider", exception.ParamName);
+    }
 }
