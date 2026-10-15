@@ -21,7 +21,7 @@ suite is still a plan.
 | Deterministic detection | Built |
 | Gateway façade, audit, logging | Built |
 | Testing package and egress security suite | Built |
-| DecisionKit integration | Phase 8 |
+| DecisionKit integration | Built |
 | Dependency injection | Phase 9 |
 | Document adapters | Phase 10 |
 | Semantic detection | Phase 11 |

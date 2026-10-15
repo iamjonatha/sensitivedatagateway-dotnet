@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway.Providers.DecisionKit/SensitiveDataGateway.Providers.DecisionKit.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DecisionKit.Testing" />
+  </ItemGroup>
+
+</Project>

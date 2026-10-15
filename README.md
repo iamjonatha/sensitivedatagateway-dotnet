@@ -147,7 +147,9 @@ SensitiveDataGateway -> SensitiveDataGateway.Providers.DecisionKit -> DecisionKi
 
 DecisionKit is the first implemented integration, not a privileged one. The gateway
 implements no vendor protocol, holds no vendor credential and opens no socket. See
-[ADR-0011](docs/adr/0011-decisionkit-first-integration.md).
+[ADR-0011](docs/adr/0011-decisionkit-first-integration.md) for why it is first and what that
+does not mean, and [the provider guide](docs/providers/decisionkit.md) for what the adapter
+actually sends.
 
 ---
 
@@ -185,6 +187,8 @@ anywhere that is stronger than that document is a bug.
 | [Threat model](docs/security/threat-model.md) | Fourteen threats, their mitigations, and the residual risk |
 | [Egress guarantees](docs/security/egress-guarantees.md) | What is guaranteed, what is not, and how to verify it |
 | [Testing](docs/guides/testing.md) | Proving over your own documents that nothing crossed |
+| [DecisionKit provider](docs/providers/decisionkit.md) | What the DecisionKit adapter sends, and what it cannot |
+| [Writing your own provider](docs/providers/custom-provider.md) | The contract at the egress boundary, and how to prove you kept it |
 | [Dependency classification](docs/security/dependency-classification.md) | What a package is allowed to be able to do |
 | [Decision records](docs/adr/) | Why the architecture is what it is, and what was rejected |
 | [Contributing](CONTRIBUTING.md) | Development rules, commit conventions, review gates |

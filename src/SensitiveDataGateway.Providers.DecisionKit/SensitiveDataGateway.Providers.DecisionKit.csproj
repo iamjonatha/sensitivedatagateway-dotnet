@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      Adapts SensitiveDataGateway to DecisionKit. A validated payload becomes a DecisionKit
+      decision request and nothing else crosses: this package cannot name a bundle, an
+      extracted document or a detected entity. It opens no socket of its own; the transport
+      lives in the DecisionKit provider the application composes behind it.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DecisionKit.Core" />
+  </ItemGroup>
+
+</Project>

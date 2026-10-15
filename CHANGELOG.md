@@ -215,6 +215,30 @@ While the major version is `0`, the public API may change in any minor release.
   that no failure path renders a value into an exception; and that `LeakAssert` itself fails
   when it should.
 - The testing guide.
+- `SensitiveDataGateway.Providers.DecisionKit`, the first decision integration and the
+  reference implementation of `IDecisionProvider<TRequest, TResult>`. `DecisionKitProvider`
+  maps a `ValidatedPayload` onto a DecisionKit `DecisionRequest` and returns the result
+  untouched: it interprets no answer, retries nothing, and performs no network I/O of its
+  own, because the transport belongs to the DecisionKit provider the application composes
+  behind it.
+  - `DecisionKitPayloadFormat` chooses between one block of text and one property per
+    segment. The choice is about shape, never about safety: both carry the same sanitized
+    content and neither can reach anything else.
+  - `DecisionKitMetadataKeys` names the five provenance keys put on every request — policy,
+    policy version, gateway version, content hash and sanitization timestamp. All are
+    strings, none is derived from document content, and the `sdg.` prefix is reserved.
+  - The bundle identifier travels as the DecisionKit `ClientRequestId`, so a decision can be
+    correlated with its audit record without carrying content.
+  - A `DecisionException` propagates as thrown, so the category and retry hint survive to
+    the application as the inner exception of the gateway's `ProviderException`.
+- A boundary test that reads the adapter assembly's type references out of its metadata and
+  fails if it names a type from any stage before validation. Those types are reachable from
+  the adapter at compile time, so the check is mechanical rather than a review convention.
+- The DecisionKit provider guide and the guide to writing your own provider.
+- A ninth explicit non-guarantee in the egress guarantees: the request passed alongside the
+  bundle is handed to the provider untouched, so content quoted into it leaves unsanitized.
+  The gateway cannot tell a caller's own wording from quoted content, and says so rather
+  than implying a guarantee it does not make.
 
 ### Changed
 

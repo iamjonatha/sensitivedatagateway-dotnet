@@ -12,6 +12,8 @@
 | [Getting started](guides/getting-started.md) | Sanitizing, inspecting and executing a document in five minutes |
 | [Logging and audit](guides/logging-and-audit.md) | The ten log events, the audit record, and why neither can carry content |
 | [Testing](guides/testing.md) | The testing package, the synthetic corpus, and which tests may go red |
+| [DecisionKit provider](providers/decisionkit.md) | What the DecisionKit adapter sends, the two payload formats, the metadata keys |
+| [Writing your own provider](providers/custom-provider.md) | The contract at the egress boundary, the rules, and how to prove you kept them |
 | [Threat model](security/threat-model.md) | The trust boundary, the assets, fourteen threats and the residual risk |
 | [Egress guarantees](security/egress-guarantees.md) | What is guaranteed, what is explicitly not, and how to verify both |
 | [Dependency classification](security/dependency-classification.md) | What a referenced package is allowed to be capable of |
@@ -24,7 +26,6 @@ Written by the phase that creates the behaviour. The phases are listed in
 
 | Document | Phase |
 | --- | --- |
-| `providers/decisionkit.md`, `providers/custom-provider.md` | 8 |
 | `guides/dependency-injection.md` | 9 |
 | `guides/semantic-detection.md` | 11 |
 | `guides/releasing.md`, `guides/aot-and-trimming.md`, `guides/faq.md` | 0 and 12 |

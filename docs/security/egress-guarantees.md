@@ -118,6 +118,24 @@ guarantee depend on provider behaviour.
 Payload size, entity counts, processing duration and request frequency are visible to an
 observer, and permit inference. The gateway does not pad, delay or batch to defeat that.
 
+### N9 — The request is not sanitized
+
+`ExecuteAsync` takes a request alongside the bundle, and hands it to the provider untouched.
+The gateway does not inspect it, scan it or block on it, because it has no way to tell which
+part of a caller-built object is quoted content and which is the caller's own wording.
+
+```csharp
+// Safe: the question is a constant.
+new ProbabilityQuestion(new QuestionId("risk"), "Is this claim fraudulent?")
+
+// A leak. No stage of the pipeline can see it, and none will stop it.
+new ProbabilityQuestion(new QuestionId("risk"), $"Is the claim from {customer.Name} fraudulent?")
+```
+
+Build request text from constants. This is the one egress path on the gateway's own route
+that the gateway does not govern, and it is the caller's to close. See
+[`../providers/custom-provider.md`](../providers/custom-provider.md).
+
 ---
 
 ## 3. How a block reaches the caller
@@ -173,6 +191,15 @@ LeakAssert.NoneOf(provider, expectedSensitiveValues);
 `SensitiveDataGateway.Testing` ships `LeakAssert`, the recording and fake providers, a
 recording audit sink and an annotated synthetic corpus, so that the property can be tested
 with no network and no credential. See [`../guides/testing.md`](../guides/testing.md).
+
+A provider is the last place a value could still escape, so each one is tested the same way
+in its own suite: the whole corpus through the real pipeline into the adapter, whatever the
+adapter was about to transmit flattened back into strings, and every annotated value looked
+for in it. `tests/SensitiveDataGateway.Providers.DecisionKit.Tests` does this for both
+payload formats, and additionally reads the adapter assembly's type references out of its
+metadata to prove it cannot name a type from any stage before validation. Copy both checks
+into your own adapter; [`../providers/custom-provider.md`](../providers/custom-provider.md)
+shows how.
 
 ---
 
