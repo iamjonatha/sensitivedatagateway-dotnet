@@ -17,7 +17,6 @@
   -->
   <ItemGroup Label="Test visibility">
     <InternalsVisibleTo Remove="SensitiveDataGateway.Core.Tests" />
-    <InternalsVisibleTo Remove="SensitiveDataGateway.EgressTests" />
     <InternalsVisibleTo Include="SensitiveDataGateway" />
   </ItemGroup>
 

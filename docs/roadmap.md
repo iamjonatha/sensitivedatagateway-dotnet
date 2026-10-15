@@ -6,8 +6,8 @@ and there are no dates.
 ## Today
 
 **Nothing is released.** The repository holds the architecture, the threat model and the
-decision records, and the first four phases are built. Everything below the final privacy
-validation is still a plan.
+decision records, and the pipeline is built end to end. Everything below the egress security
+suite is still a plan.
 
 | Area | State |
 | --- | --- |
@@ -20,7 +20,7 @@ validation is still a plan.
 | Final privacy validation | Built |
 | Deterministic detection | Built |
 | Gateway façade, audit, logging | Built |
-| Testing package and egress security suite | Phase 7 |
+| Testing package and egress security suite | Built |
 | DecisionKit integration | Phase 8 |
 | Dependency injection | Phase 9 |
 | Document adapters | Phase 10 |

@@ -41,7 +41,6 @@
 
   <ItemGroup Label="Test visibility">
     <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
-    <InternalsVisibleTo Include="SensitiveDataGateway.EgressTests" />
   </ItemGroup>
 
 </Project>

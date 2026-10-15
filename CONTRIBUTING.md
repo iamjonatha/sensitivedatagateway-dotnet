@@ -179,6 +179,9 @@ dotnet test --solution SensitiveDataGateway.slnx -c Release
 - Test naming: `MethodOrScenario_ExpectedBehaviour`.
 - Arrange/Act/Assert, one behaviour per test.
 
+See [`docs/guides/testing.md`](docs/guides/testing.md) for what the testing package offers,
+what `LeakAssert` does and does not prove, and how the security suite is organized.
+
 ---
 
 ## 8. Documentation requirements

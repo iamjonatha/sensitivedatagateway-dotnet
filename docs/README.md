@@ -11,6 +11,7 @@
 | [Detectors](guides/detectors.md) | What each built-in detector finds, what it misses, and how to add your own |
 | [Getting started](guides/getting-started.md) | Sanitizing, inspecting and executing a document in five minutes |
 | [Logging and audit](guides/logging-and-audit.md) | The ten log events, the audit record, and why neither can carry content |
+| [Testing](guides/testing.md) | The testing package, the synthetic corpus, and which tests may go red |
 | [Threat model](security/threat-model.md) | The trust boundary, the assets, fourteen threats and the residual risk |
 | [Egress guarantees](security/egress-guarantees.md) | What is guaranteed, what is explicitly not, and how to verify both |
 | [Dependency classification](security/dependency-classification.md) | What a referenced package is allowed to be capable of |
@@ -23,7 +24,6 @@ Written by the phase that creates the behaviour. The phases are listed in
 
 | Document | Phase |
 | --- | --- |
-| `guides/testing.md` | 7 |
 | `providers/decisionkit.md`, `providers/custom-provider.md` | 8 |
 | `guides/dependency-injection.md` | 9 |
 | `guides/semantic-detection.md` | 11 |

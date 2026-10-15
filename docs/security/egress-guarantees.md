@@ -125,9 +125,9 @@ observer, and permit inference. The gateway does not pad, delay or batch to defe
 A **block** is an expected outcome and is reported as a result:
 
 ```csharp
-var result = await gateway.ExecuteAsync(bundle, request, cancellationToken);
+var result = await gateway.ExecuteAsync(bundle, request, policy, cancellationToken);
 
-if (result.Status is GatewayStatus.Blocked)
+if (!result.IsAllowed)
 {
     // result.Report names every check that failed. It quotes no value.
     return Reject(result.Report);
@@ -136,8 +136,17 @@ if (result.Status is GatewayStatus.Blocked)
 return Handle(result.Value);
 ```
 
+`result.Value` is `null` whenever `IsAllowed` is `false`, so a caller that forgets the check
+gets a null reference rather than a value that was never cleared. `GetValueOrThrow()` is the
+same decision taken the other way: it throws `EgressBlockedException` instead of returning
+nothing.
+
 A **failure** is an exception. Both prevent egress; neither requires a `catch` block to reach
 the safe path. The unsafe path is not reachable by forgetting something.
+
+A provider that throws is reported as `ProviderException`, with its own exception preserved
+as the inner one, whatever type it threw. The translation is not decoration: it is what makes
+the audit record of an outage say that the *provider* failed rather than that something did.
 
 ---
 
@@ -145,20 +154,25 @@ the safe path. The unsafe path is not reachable by forgetting something.
 
 Every guarantee above has a test in `tests/SensitiveDataGateway.Security.Tests`. The suite is
 part of the project's contract: a change that weakens a guarantee must delete a test, and
-deleting one of those tests is a reviewable event.
+deleting one of those tests is a reviewable event. The suite has no access to the internals
+of the libraries it tests, so every scenario in it is one a consumer could write.
 
 An application can assert the same property over its own documents:
 
 ```csharp
-var provider = new RecordingDecisionProvider();
+var provider = RecordingDecisionProvider.Returning<ReviewRequest, ReviewDecision>(decision);
+var gateway = new DocumentGateway<ReviewRequest, ReviewDecision>(
+    DocumentGateway.CreateDefault(),
+    provider);
 
-await gateway.ExecuteAsync(bundle, request, cancellationToken);
+await gateway.ExecuteAsync(bundle, request, policy, cancellationToken);
 
-LeakAssert.NoneOf(provider.LastPayload, expectedSensitiveValues);
+LeakAssert.NoneOf(provider, expectedSensitiveValues);
 ```
 
-`SensitiveDataGateway.Testing` ships `LeakAssert`, the recording provider and an annotated
-synthetic corpus, so that the property can be tested with no network and no credential.
+`SensitiveDataGateway.Testing` ships `LeakAssert`, the recording and fake providers, a
+recording audit sink and an annotated synthetic corpus, so that the property can be tested
+with no network and no credential. See [`../guides/testing.md`](../guides/testing.md).
 
 ---
 

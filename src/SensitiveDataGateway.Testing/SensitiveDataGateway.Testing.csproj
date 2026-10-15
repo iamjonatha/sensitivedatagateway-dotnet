@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      Test doubles and leakage assertions for SensitiveDataGateway: recording and failing
+      decision providers, a recording audit sink, an annotated synthetic corpus, and the
+      assertions that prove no annotated value reached a provider, a log or an audit record.
+      This package references no test framework, so it works with any of them.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+</Project>

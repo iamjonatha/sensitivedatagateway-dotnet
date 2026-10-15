@@ -195,6 +195,26 @@ While the major version is `0`, the public API may change in any minor release.
 - Decision record 0016: a refusal is a result, a pipeline that cannot answer throws, and
   stage failures flow to the validator rather than being decided by the stage that failed.
 - The getting-started guide and the logging-and-audit guide.
+- `SensitiveDataGateway.Testing`, a shipped package rather than an internal helper:
+  `LeakAssert`, `RecordingDecisionProvider`, `FakeDecisionProvider`, `RecordingAuditSink`,
+  `SyntheticCorpus` with nine annotated documents in five languages, `SyntheticDocument`,
+  `SensitiveValue`, `TestBundle` and `TestPolicy`. It carries no test-framework dependency,
+  so it is usable from xUnit, NUnit, MSTest or a console program, and it has no internal
+  access to the libraries — nothing in it can forge a `ValidatedPayload`.
+  - `LeakAssert` searches the text as written and with all white space removed, refuses a
+    value shorter than four characters rather than skipping it, and reports a leak without
+    ever repeating the value it found.
+- The egress security suite, `tests/SensitiveDataGateway.Security.Tests`, which is granted no
+  internal access either: every scenario in it is one a consumer of the published packages
+  could write. It establishes that every annotated value is detected and absent from the
+  payload, the provider call and the audit record; that a detector that throws, an anonymizer
+  that rewrites nothing, an unresolved entity the policy will not tolerate and an oversized
+  part each stop transmission under the most permissive policy the gateway accepts; that a
+  document issuing instructions is handled like any other and has its instruction carried
+  through as content; that a marker written in the source is escaped rather than believed;
+  that no failure path renders a value into an exception; and that `LeakAssert` itself fails
+  when it should.
+- The testing guide.
 
 ### Changed
 

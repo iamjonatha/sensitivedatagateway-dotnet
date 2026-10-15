@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    This suite deliberately gets no InternalsVisibleTo grant from anything. It stands where
+    an application stands, so if a guarantee here can only be asserted with internal access,
+    the guarantee cannot be checked by the people who depend on it, and that is a finding
+    about the API rather than a reason to widen it.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
+  </ItemGroup>
+
+</Project>

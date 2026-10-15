@@ -184,6 +184,7 @@ anywhere that is stronger than that document is a bug.
 | [Domain model](docs/architecture/domain-model.md) | The types, and the rules they follow |
 | [Threat model](docs/security/threat-model.md) | Fourteen threats, their mitigations, and the residual risk |
 | [Egress guarantees](docs/security/egress-guarantees.md) | What is guaranteed, what is not, and how to verify it |
+| [Testing](docs/guides/testing.md) | Proving over your own documents that nothing crossed |
 | [Dependency classification](docs/security/dependency-classification.md) | What a package is allowed to be able to do |
 | [Decision records](docs/adr/) | Why the architecture is what it is, and what was rejected |
 | [Contributing](CONTRIBUTING.md) | Development rules, commit conventions, review gates |
