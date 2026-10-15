@@ -22,7 +22,7 @@ suite is still a plan.
 | Gateway façade, audit, logging | Built |
 | Testing package and egress security suite | Built |
 | DecisionKit integration | Built |
-| Dependency injection | Phase 9 |
+| Dependency injection | Built |
 | Document adapters | Phase 10 |
 | Semantic detection | Phase 11 |
 | Mutation testing of the boundary | Phase 13, last |

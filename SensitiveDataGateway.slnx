@@ -1,12 +1,17 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+    <Project Path="src/SensitiveDataGateway.Extensions/SensitiveDataGateway.Extensions.csproj" />
     <Project Path="src/SensitiveDataGateway.Providers.DecisionKit/SensitiveDataGateway.Providers.DecisionKit.csproj" />
     <Project Path="src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
     <Project Path="src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Aot/SensitiveDataGateway.Samples.Aot.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SensitiveDataGateway.Core.Tests/SensitiveDataGateway.Core.Tests.csproj" />
+    <Project Path="tests/SensitiveDataGateway.Extensions.Tests/SensitiveDataGateway.Extensions.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Providers.DecisionKit.Tests/SensitiveDataGateway.Providers.DecisionKit.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Security.Tests/SensitiveDataGateway.Security.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Tests/SensitiveDataGateway.Tests.csproj" />

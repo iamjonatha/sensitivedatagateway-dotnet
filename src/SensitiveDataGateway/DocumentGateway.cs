@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SensitiveDataGateway.Anonymization;
@@ -73,6 +74,30 @@ public sealed class DocumentGateway : ISensitiveDataGateway
     /// <exception cref="ArgumentNullException"><paramref name="options"/> is <see langword="null"/>.</exception>
     public static DocumentGateway CreateDefault(GatewayOptions options) =>
         new(GatewayPipeline.CreateDefault(options));
+
+    /// <summary>
+    /// Creates a gateway over the built-in policy engine, anonymizer and validator, with the
+    /// extractors, detectors and pseudonym store the application chose.
+    /// </summary>
+    /// <param name="extractors">Turn each part of a bundle into text.</param>
+    /// <param name="detectors">Find candidates in that text.</param>
+    /// <param name="pseudonymStore">Where pseudonyms live, and for how long.</param>
+    /// <param name="options">What the gateway itself does: audit, clock, version.</param>
+    /// <returns>A gateway over those stages.</returns>
+    /// <exception cref="ArgumentNullException">Any argument is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="extractors"/> is empty.</exception>
+    /// <remarks>
+    /// The policy engine, the anonymizer and the privacy validator are not parameters here.
+    /// They are the part of the pipeline that decides what may leave, and an application that
+    /// genuinely needs to replace one of them can say so through the full constructor rather
+    /// than by passing <see langword="null"/> to a convenience method.
+    /// </remarks>
+    public static DocumentGateway Create(
+        IEnumerable<IDocumentExtractor> extractors,
+        IEnumerable<ISensitiveDataDetector> detectors,
+        IPseudonymStore pseudonymStore,
+        GatewayOptions options) =>
+        new(GatewayPipeline.Create(extractors, detectors, pseudonymStore, options));
 
     /// <inheritdoc/>
     public async Task<SanitizationResult> SanitizeAsync(

@@ -70,7 +70,7 @@ reference, together with its ADR.
 | Package | Class | Referenced by | ADR | Notes |
 | --- | --- | --- | --- | --- |
 | `Microsoft.Extensions.DependencyInjection.Abstractions` | Pure | `Extensions` | [0012](../adr/0012-dependency-policy.md) | Registration only |
-| `Microsoft.Extensions.Options` | Pure | `Extensions` | [0012](../adr/0012-dependency-policy.md) | Configuration binding without reflection |
+| `Microsoft.Extensions.Configuration.Abstractions` | Pure | `Extensions` | [0017](../adr/0017-di-composes-the-gateway-the-caller-passes-the-policy.md) | Read key by key; the reflection binder is never used |
 | `Microsoft.Extensions.Logging.Abstractions` | Pure | `Extensions`, pipeline | [0008](../adr/0008-privacy-safe-observability.md) | Source-generated logging only |
 | `DecisionKit.Core` | Pure | `Providers.DecisionKit` | [0011](../adr/0011-decisionkit-first-integration.md) | Abstractions only; the network lives in `DecisionKit.Jev`, which the application composes |
 

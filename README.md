@@ -187,6 +187,7 @@ anywhere that is stronger than that document is a bug.
 | [Threat model](docs/security/threat-model.md) | Fourteen threats, their mitigations, and the residual risk |
 | [Egress guarantees](docs/security/egress-guarantees.md) | What is guaranteed, what is not, and how to verify it |
 | [Testing](docs/guides/testing.md) | Proving over your own documents that nothing crossed |
+| [Dependency injection](docs/guides/dependency-injection.md) | One registration, the configuration schema, and keyed gateways |
 | [DecisionKit provider](docs/providers/decisionkit.md) | What the DecisionKit adapter sends, and what it cannot |
 | [Writing your own provider](docs/providers/custom-provider.md) | The contract at the egress boundary, and how to prove you kept it |
 | [Dependency classification](docs/security/dependency-classification.md) | What a package is allowed to be able to do |

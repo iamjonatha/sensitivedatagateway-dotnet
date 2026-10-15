@@ -239,6 +239,33 @@ While the major version is `0`, the public API may change in any minor release.
   bundle is handed to the provider untouched, so content quoted into it leaves unsanitized.
   The gateway cannot tell a caller's own wording from quoted content, and says so rather
   than implying a guarantee it does not make.
+- `SensitiveDataGateway.Extensions`, the composition package.
+  `AddSensitiveDataGateway(...)` publishes the gateway, its interface and the
+  `SanitizationPolicy` the registration was configured with. The policy stays an argument of
+  every call: the container composes the gateway, the caller passes the policy, and a call
+  site still says which rules governed it. A registration that states no policy publishes
+  `SanitizationPolicy.Strict`, so forgetting to choose blocks rather than leaks.
+  - `SensitiveDataGatewayBuilder` states extractors, detectors, the hashing key, the
+    pseudonym store, the audit sink, the gateway version and the clock, each as a value or a
+    factory over the service provider. There is no overload that takes a type and constructs
+    it, because that is the one thing that would stop the package publishing under native
+    ahead-of-time compilation.
+  - `PolicyConfiguration` reads a policy out of `IConfiguration` key by key, with no
+    reflection. What configuration can express is exactly what that file names.
+  - Registration is eager: the builder runs and the policy is built inside
+    `AddSensitiveDataGateway`, so a malformed section throws on the line that registers it
+    rather than on the first request. No hosting dependency, no `ValidateOnStart`.
+  - Registering the same name twice throws, naming the registration and nothing else.
+  - `AddSensitiveDataGateway(name, configure)` registers a keyed gateway and a keyed policy,
+    so several destinations coexist in one host and the choice between them is made at
+    compile time.
+- `DocumentGateway.Create(extractors, detectors, pseudonymStore, options)`, which builds a
+  gateway over stated stages while keeping the one definition of the ephemeral hashing-key
+  fallback inside the pipeline.
+- `samples/Aot`, the native AOT smoke test. It binds a policy from configuration, composes a
+  container, sanitizes a document and asserts that no synthetic value survived, publishing
+  with `PublishAot`, `TrimMode=full` and warnings as errors.
+- The dependency injection guide, with the full configuration schema.
 
 ### Changed
 

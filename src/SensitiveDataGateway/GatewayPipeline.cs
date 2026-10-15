@@ -51,15 +51,22 @@ internal sealed class GatewayPipeline
 
     internal GatewayOptions Options { get; }
 
-    internal static GatewayPipeline CreateDefault(GatewayOptions options)
+    internal static GatewayPipeline CreateDefault(GatewayOptions options) =>
+        Create([new PlainTextExtractor()], DeterministicDetectors.All(), new InMemoryPseudonymStore(), options);
+
+    internal static GatewayPipeline Create(
+        IEnumerable<IDocumentExtractor> extractors,
+        IEnumerable<ISensitiveDataDetector> detectors,
+        IPseudonymStore pseudonymStore,
+        GatewayOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
 
         return new GatewayPipeline(
-            new ExtractionPipeline([new PlainTextExtractor()]),
-            new DetectionPipeline(DeterministicDetectors.All()),
+            new ExtractionPipeline(extractors),
+            new DetectionPipeline(detectors),
             new PolicyEngine(),
-            new DocumentAnonymizer(new InMemoryPseudonymStore(), AnonymizationOptionsFor(options)),
+            new DocumentAnonymizer(pseudonymStore, AnonymizationOptionsFor(options)),
             new PrivacyValidator(),
             options);
     }
