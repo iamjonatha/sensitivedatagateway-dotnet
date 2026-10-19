@@ -76,6 +76,14 @@ public sealed class NetworkCapabilityTests
         "SensitiveDataGateway.dll",
         "SensitiveDataGateway.Documents.Mime.dll",
         "MimeKitLite.dll",
+        "SensitiveDataGateway.Documents.Pdf.dll",
+        "UglyToad.PdfPig.dll",
+        "UglyToad.PdfPig.Core.dll",
+        "UglyToad.PdfPig.DocumentLayoutAnalysis.dll",
+        "UglyToad.PdfPig.Fonts.dll",
+        "UglyToad.PdfPig.Package.dll",
+        "UglyToad.PdfPig.Tokenization.dll",
+        "UglyToad.PdfPig.Tokens.dll",
     ];
 
     [Theory]

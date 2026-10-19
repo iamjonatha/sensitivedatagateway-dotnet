@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      Turns a PDF into a SensitiveDataGateway bundle: one segment per page of extracted text,
+      plus the document information entries. It reads what the page draws and nothing else —
+      it opens no socket, resolves no reference out of the file, and refuses a document whose
+      content it cannot read in place.
+    </Description>
+  </PropertyGroup>
+
+  <!--
+    The format parsers are not claimed to be trimmable or Native AOT safe. The guarantee
+    covers Core, the pipeline, Extensions and Providers.*; see
+    docs/adr/0018-format-adapters-may-take-a-parser.md -> Consequences.
+  -->
+  <PropertyGroup>
+    <IsTrimmable>false</IsTrimmable>
+    <IsAotCompatible>false</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PdfPig" />
+  </ItemGroup>
+
+</Project>

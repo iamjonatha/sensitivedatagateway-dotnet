@@ -41,3 +41,4 @@ logged all require a record before the code is written.
 | [0017](0017-di-composes-the-gateway-the-caller-passes-the-policy.md) | Let the container compose the gateway, and the caller pass the policy | Accepted |
 | [0018](0018-format-adapters-may-take-a-parser.md) | Let a format adapter take one parser dependency, under stated criteria | Accepted |
 | [0019](0019-mimekitlite-for-mime.md) | Read MIME with MimeKitLite | Accepted |
+| [0020](0020-pdfpig-for-pdf.md) | Read PDF with PdfPig | Accepted |

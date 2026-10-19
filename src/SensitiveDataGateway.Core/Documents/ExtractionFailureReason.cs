@@ -43,4 +43,16 @@ public enum ExtractionFailureReason
     /// The extractor failed for a reason it did not classify.
     /// </summary>
     ExtractorFailed = 6,
+
+    /// <summary>
+    /// The part is well formed, and carries content in a construct the extractor cannot read
+    /// in place.
+    /// </summary>
+    /// <remarks>
+    /// A file embedded in a document, a form whose values live in a format the extractor does
+    /// not read, a chunk in a foreign format, a link to a workbook that is not present, a page
+    /// that is an image of text. The part parsed; part of what it carries was not read, and an
+    /// extractor is not allowed to approximate the rest.
+    /// </remarks>
+    UnreadableConstruct = 7,
 }

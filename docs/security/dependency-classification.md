@@ -78,6 +78,7 @@ reference, together with its ADR.
 | `Microsoft.Extensions.Logging.Abstractions` | Pure | `Extensions`, pipeline | [0008](../adr/0008-privacy-safe-observability.md) | Source-generated logging only |
 | `DecisionKit.Core` | Pure | `Providers.DecisionKit` | [0011](../adr/0011-decisionkit-first-integration.md) | Abstractions only; the network lives in `DecisionKit.Jev`, which the application composes |
 | `MimeKitLite` | Sensitive-data processing | `Documents.Mime` | [0019](../adr/0019-mimekitlite-for-mime.md) | The parser without S/MIME and OpenPGP, which is where MimeKit reaches the network. No package dependencies on `net8.0` or `net10.0`. Enforced by `NetworkCapabilityTests` |
+| `PdfPig` | Sensitive-data processing | `Documents.Pdf` | [0020](../adr/0020-pdfpig-for-pdf.md) | Seven assemblies, no package dependencies. XMP is read as bytes, never as XML. Neither trimmable nor AOT-compatible. Enforced by `NetworkCapabilityTests` |
 
 ---
 
@@ -85,8 +86,7 @@ reference, together with its ADR.
 
 | Package | Class | Status |
 | --- | --- | --- |
-| `PdfPig` | Sensitive-data processing | Phase 10, against the criteria in [0018](../adr/0018-format-adapters-may-take-a-parser.md) |
-| `DocumentFormat.OpenXml` | Sensitive-data processing | Phase 10, same criteria |
+| `DocumentFormat.OpenXml` | Sensitive-data processing | Phase 10, against the criteria in [0018](../adr/0018-format-adapters-may-take-a-parser.md) |
 | Microsoft Presidio | AI-capable, network-capable as deployed | Phase 11, as a separate package, documented as requiring a local deployment |
 | A local model runtime | AI-capable | Phase 11, behind `ISemanticDetector` |
 | A cloud document-intelligence service | Network-capable, sensitive-data processing | Never on the strict path. If it ships at all, it ships as an explicitly named out-of-boundary adapter |

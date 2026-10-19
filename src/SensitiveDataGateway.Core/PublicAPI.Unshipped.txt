@@ -16,6 +16,7 @@ const SensitiveDataGateway.Documents.ExtractionErrorCodes.LimitExceeded = "extra
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.Malformed = "extraction.malformed" -> string!
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.PasswordProtected = "extraction.password_protected" -> string!
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.TimedOut = "extraction.timed_out" -> string!
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.UnreadableConstruct = "extraction.unreadable_construct" -> string!
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.UnsupportedMediaType = "extraction.unsupported_media_type" -> string!
 const SensitiveDataGateway.Documents.ExtractorVersion.MaxVersionLength = 64 -> int
 const SensitiveDataGateway.Documents.SegmentOrigin.MaxLocatorLength = 128 -> int
@@ -328,6 +329,7 @@ SensitiveDataGateway.Documents.ExtractionFailureReason.LimitExceeded = 4 -> Sens
 SensitiveDataGateway.Documents.ExtractionFailureReason.Malformed = 2 -> SensitiveDataGateway.Documents.ExtractionFailureReason
 SensitiveDataGateway.Documents.ExtractionFailureReason.PasswordProtected = 3 -> SensitiveDataGateway.Documents.ExtractionFailureReason
 SensitiveDataGateway.Documents.ExtractionFailureReason.TimedOut = 5 -> SensitiveDataGateway.Documents.ExtractionFailureReason
+SensitiveDataGateway.Documents.ExtractionFailureReason.UnreadableConstruct = 7 -> SensitiveDataGateway.Documents.ExtractionFailureReason
 SensitiveDataGateway.Documents.ExtractionFailureReason.UnsupportedMediaType = 1 -> SensitiveDataGateway.Documents.ExtractionFailureReason
 SensitiveDataGateway.Documents.ExtractorVersion
 SensitiveDataGateway.Documents.ExtractorVersion.Equals(SensitiveDataGateway.Documents.ExtractorVersion other) -> bool

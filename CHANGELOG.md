@@ -290,6 +290,25 @@ While the major version is `0`, the public API may change in any minor release.
 - `NetworkCapabilityTests`, which disassembles every assembly that reads document content and
   fails if any method body calls into a network namespace or one of the transmitting types
   that live in otherwise harmless ones. Hard rule 7 now has a test.
+- `SensitiveDataGateway.Documents.Pdf`, the extractor for `application/pdf`, built on PdfPig.
+  - `PdfExtractor` produces one segment per page, the document information entries, the XMP
+    metadata packet, every annotation, and the value of every AcroForm field. Page text comes
+    out in reading order rather than painting order, because a value split across an
+    interleaved two-column layout is a value no detector matches.
+  - Parsing is strict. A document the parser cannot read without guessing is refused, because
+    a guessed object yields a page whose text is partly recovered and silently partly absent.
+  - The XMP packet is decoded as text and never handed to an XML parser, so there is no
+    external entity to resolve and no resolver to configure.
+  - It fails closed on what it cannot read whole: a password-protected document, an embedded
+    file, an XFA form, a page of pixels with no extractable text, a document past the page or
+    byte bound, and a field tree deeper than the walk descends. The byte bound is enforced
+    while the content is copied, because a declared stream length can lie.
+  - `PdfExtractorOptions` states the page and byte bounds and is immutable.
+  - Decision record 0020 records the choice of PdfPig against the six criteria in 0018, and
+    why iText, PDFsharp and a PDFium wrapper were rejected.
+- `ExtractionFailureReason.UnreadableConstruct` and `ExtractionErrorCodes.UnreadableConstruct`,
+  for a part whose bytes parse but whose content cannot be recovered as text — a scanned page,
+  an embedded document, a form defined as a payload the reader refuses to open.
 
 ### Changed
 

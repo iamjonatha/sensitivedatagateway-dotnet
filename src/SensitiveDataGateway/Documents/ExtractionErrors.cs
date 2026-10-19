@@ -36,6 +36,12 @@ internal static class ExtractionErrors
     public const string LimitExceededCode = ExtractionErrorCodes.LimitExceeded;
 
     /// <summary>
+    /// The code raised when a part carries content in a construct the extractor cannot read
+    /// in place.
+    /// </summary>
+    public const string UnreadableConstructCode = ExtractionErrorCodes.UnreadableConstruct;
+
+    /// <summary>
     /// Builds the error for a part whose bytes are not the encoding it declares.
     /// </summary>
     /// <param name="partId">The part that could not be decoded.</param>
@@ -116,6 +122,7 @@ internal static class ExtractionErrors
         PasswordProtectedCode => ExtractionFailureReason.PasswordProtected,
         TimedOutCode => ExtractionFailureReason.TimedOut,
         LimitExceededCode => ExtractionFailureReason.LimitExceeded,
+        UnreadableConstructCode => ExtractionFailureReason.UnreadableConstruct,
         _ => ExtractionFailureReason.ExtractorFailed,
     };
 }

@@ -19,6 +19,7 @@
   -->
   <ItemGroup>
     <ProjectReference Include="../../src/SensitiveDataGateway.Documents.Mime/SensitiveDataGateway.Documents.Mime.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway.Documents.Pdf/SensitiveDataGateway.Documents.Pdf.csproj" />
   </ItemGroup>
 
 </Project>
