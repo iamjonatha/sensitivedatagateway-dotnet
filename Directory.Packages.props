@@ -44,6 +44,24 @@
     <PackageVersion Include="DecisionKit.Core" Version="0.1.0" />
   </ItemGroup>
 
+  <!--
+    A Documents.* package may reference one parser for the format it adapts, and nothing
+    else. Each is classified "Sensitive-data processing": it reads raw content, so it never
+    appears in Core or in the pipeline package. The six criteria the parsers were taken
+    against, and the capability each one must not have, are in
+    docs/adr/0018-format-adapters-may-take-a-parser.md.
+
+    MimeKitLite, not MimeKit. They are the same parser from the same project; the Lite build
+    leaves out S/MIME and OpenPGP, which is where MimeKit reaches the network to fetch a
+    revocation list or a public key. This reader never decrypts and never verifies, so the
+    whole capability is dropped rather than left present and unused.
+  -->
+  <ItemGroup Label="Document format parsers">
+    <PackageVersion Include="MimeKitLite" Version="4.18.1" />
+    <PackageVersion Include="PdfPig" Version="0.1.16" />
+    <PackageVersion Include="DocumentFormat.OpenXml" Version="3.5.1" />
+  </ItemGroup>
+
   <ItemGroup Label="Benchmark tooling">
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
   </ItemGroup>

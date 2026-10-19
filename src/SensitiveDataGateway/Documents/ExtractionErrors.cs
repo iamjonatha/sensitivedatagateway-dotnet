@@ -13,27 +13,27 @@ internal static class ExtractionErrors
     /// <summary>
     /// The code raised when no registered extractor accepts a part.
     /// </summary>
-    public const string UnsupportedMediaTypeCode = "extraction.unsupported_media_type";
+    public const string UnsupportedMediaTypeCode = ExtractionErrorCodes.UnsupportedMediaType;
 
     /// <summary>
     /// The code raised when a part cannot be decoded or parsed.
     /// </summary>
-    public const string MalformedCode = "extraction.malformed";
+    public const string MalformedCode = ExtractionErrorCodes.Malformed;
 
     /// <summary>
     /// The code raised when a part is encrypted or password protected.
     /// </summary>
-    public const string PasswordProtectedCode = "extraction.password_protected";
+    public const string PasswordProtectedCode = ExtractionErrorCodes.PasswordProtected;
 
     /// <summary>
     /// The code raised when an extractor runs out of time.
     /// </summary>
-    public const string TimedOutCode = "extraction.timed_out";
+    public const string TimedOutCode = ExtractionErrorCodes.TimedOut;
 
     /// <summary>
     /// The code raised when a part cannot be read within the configured bounds.
     /// </summary>
-    public const string LimitExceededCode = "extraction.limit_exceeded";
+    public const string LimitExceededCode = ExtractionErrorCodes.LimitExceeded;
 
     /// <summary>
     /// Builds the error for a part whose bytes are not the encoding it declares.
@@ -83,18 +83,6 @@ internal static class ExtractionErrors
             GatewayErrorCategory.LimitExceeded,
             LimitExceededCode,
             $"Extraction produced more than {maxExtractedCharacters} characters, which is the configured bound.");
-
-    /// <summary>
-    /// Builds the error for a part whose identifier is too long to derive segment identifiers from.
-    /// </summary>
-    /// <param name="partId">The part with the oversized identifier.</param>
-    /// <returns>The error.</returns>
-    public static GatewayError PartIdentifierTooLong(PartId partId) =>
-        GatewayError.Create(
-            GatewayErrorCategory.ExtractionFailed,
-            MalformedCode,
-            "The part identifier is too long to derive a distinct segment identifier from.")
-            .InPart(partId);
 
     /// <summary>
     /// Builds the error for a bundle that yielded no text at all.

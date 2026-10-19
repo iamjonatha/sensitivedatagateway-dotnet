@@ -12,6 +12,11 @@ const SensitiveDataGateway.Documents.DocumentMetadata.MaxProperties = 32 -> int
 const SensitiveDataGateway.Documents.DocumentMetadata.MaxPropertyNameLength = 64 -> int
 const SensitiveDataGateway.Documents.DocumentMetadata.MaxPropertyValueLength = 4096 -> int
 const SensitiveDataGateway.Documents.DocumentPart.MaxMediaTypeLength = 255 -> int
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.LimitExceeded = "extraction.limit_exceeded" -> string!
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.Malformed = "extraction.malformed" -> string!
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.PasswordProtected = "extraction.password_protected" -> string!
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.TimedOut = "extraction.timed_out" -> string!
+const SensitiveDataGateway.Documents.ExtractionErrorCodes.UnsupportedMediaType = "extraction.unsupported_media_type" -> string!
 const SensitiveDataGateway.Documents.ExtractorVersion.MaxVersionLength = 64 -> int
 const SensitiveDataGateway.Documents.SegmentOrigin.MaxLocatorLength = 128 -> int
 const SensitiveDataGateway.EntityId.MaxLength = 128 -> int
@@ -312,6 +317,7 @@ SensitiveDataGateway.Documents.ExtractedDocument.Failures.get -> System.Collecti
 SensitiveDataGateway.Documents.ExtractedDocument.IsComplete.get -> bool
 SensitiveDataGateway.Documents.ExtractedDocument.Segments.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!
 SensitiveDataGateway.Documents.ExtractedDocument.TotalCharacters.get -> long
+SensitiveDataGateway.Documents.ExtractionErrorCodes
 SensitiveDataGateway.Documents.ExtractionFailure
 SensitiveDataGateway.Documents.ExtractionFailure.MediaType.get -> string!
 SensitiveDataGateway.Documents.ExtractionFailure.PartId.get -> SensitiveDataGateway.PartId
@@ -339,6 +345,7 @@ SensitiveDataGateway.Documents.PartKind.Body = 1 -> SensitiveDataGateway.Documen
 SensitiveDataGateway.Documents.PartKind.Embedded = 5 -> SensitiveDataGateway.Documents.PartKind
 SensitiveDataGateway.Documents.PartKind.Header = 3 -> SensitiveDataGateway.Documents.PartKind
 SensitiveDataGateway.Documents.PartKind.Subject = 2 -> SensitiveDataGateway.Documents.PartKind
+SensitiveDataGateway.Documents.SegmentIds
 SensitiveDataGateway.Documents.SegmentOrigin
 SensitiveDataGateway.Documents.SegmentOrigin.Equals(SensitiveDataGateway.Documents.SegmentOrigin other) -> bool
 SensitiveDataGateway.Documents.SegmentOrigin.Kind.get -> SensitiveDataGateway.Documents.SegmentOriginKind
@@ -773,6 +780,14 @@ static SensitiveDataGateway.Documents.ExtractionFailure.Create(SensitiveDataGate
 static SensitiveDataGateway.Documents.ExtractorVersion.Create(SensitiveDataGateway.ExtractorId extractorId, string! version) -> SensitiveDataGateway.Documents.ExtractorVersion
 static SensitiveDataGateway.Documents.ExtractorVersion.operator !=(SensitiveDataGateway.Documents.ExtractorVersion left, SensitiveDataGateway.Documents.ExtractorVersion right) -> bool
 static SensitiveDataGateway.Documents.ExtractorVersion.operator ==(SensitiveDataGateway.Documents.ExtractorVersion left, SensitiveDataGateway.Documents.ExtractorVersion right) -> bool
+static SensitiveDataGateway.Documents.SegmentIds.Annotation(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Cell(SensitiveDataGateway.PartId partId, int sheetOrdinal, int rowOrdinal, int columnOrdinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Header(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Metadata(SensitiveDataGateway.PartId partId, string! name) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Page(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Paragraph(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Row(SensitiveDataGateway.PartId partId, int sheetOrdinal, int rowOrdinal) -> SensitiveDataGateway.SegmentId
+static SensitiveDataGateway.Documents.SegmentIds.Slide(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
 static SensitiveDataGateway.Documents.SegmentOrigin.At(SensitiveDataGateway.Documents.SegmentOriginKind kind, int ordinal) -> SensitiveDataGateway.Documents.SegmentOrigin
 static SensitiveDataGateway.Documents.SegmentOrigin.Create(SensitiveDataGateway.Documents.SegmentOriginKind kind, int ordinal, string! locator) -> SensitiveDataGateway.Documents.SegmentOrigin
 static SensitiveDataGateway.Documents.SegmentOrigin.Named(SensitiveDataGateway.Documents.SegmentOriginKind kind, string! locator) -> SensitiveDataGateway.Documents.SegmentOrigin

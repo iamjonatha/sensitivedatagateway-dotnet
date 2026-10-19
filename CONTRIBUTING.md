@@ -151,7 +151,9 @@ dotnet test --solution SensitiveDataGateway.slnx -c Release
 
 - Shipping packages may reference **only** Microsoft-maintained framework and
   `Microsoft.Extensions.*` packages, plus — in a `Providers.*` package — the integration
-  library that package exists to adapt.
+  library that package exists to adapt, and — in a `Documents.*` package — the single parser
+  for the format it adapts, under the criteria in
+  [ADR-0018](docs/adr/0018-format-adapters-may-take-a-parser.md).
 - `SensitiveDataGateway.Core` targets **zero** package references.
 - The pipeline package may reference only packages classified `Pure`.
 - Third-party packages are allowed in test and benchmark projects, for the test framework,

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway.Documents.Mime/SensitiveDataGateway.Documents.Mime.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
+  </ItemGroup>
+
+</Project>

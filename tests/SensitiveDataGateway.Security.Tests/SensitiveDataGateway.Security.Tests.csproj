@@ -11,4 +11,14 @@
     <ProjectReference Include="../../src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
   </ItemGroup>
 
+  <!--
+    The adapters are referenced so that their assemblies, and the parsers they carry, land in
+    this suite's output directory where NetworkCapabilityTests can read them. No test here
+    calls into them: hard rule 7 is a property of what they are built from, not of what they
+    do when invoked.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway.Documents.Mime/SensitiveDataGateway.Documents.Mime.csproj" />
+  </ItemGroup>
+
 </Project>

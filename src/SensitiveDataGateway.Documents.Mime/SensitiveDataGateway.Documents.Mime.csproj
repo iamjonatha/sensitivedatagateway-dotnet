@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      Turns an RFC 5322 message into a SensitiveDataGateway bundle: headers, every body part
+      of every alternative, attachments, and forwarded messages flattened with their lineage
+      intact. It decodes transfer encodings and charsets and does nothing else — it opens no
+      socket, follows no reference out of the message, and decrypts nothing.
+    </Description>
+  </PropertyGroup>
+
+  <!--
+    The format parsers are not claimed to be trimmable or Native AOT safe. The guarantee
+    covers Core, the pipeline, Extensions and Providers.*; see
+    docs/adr/0018-format-adapters-may-take-a-parser.md -> Consequences.
+  -->
+  <PropertyGroup>
+    <IsTrimmable>false</IsTrimmable>
+    <IsAotCompatible>false</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MimeKitLite" />
+  </ItemGroup>
+
+</Project>

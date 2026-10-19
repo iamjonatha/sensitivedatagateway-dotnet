@@ -266,6 +266,30 @@ While the major version is `0`, the public API may change in any minor release.
   container, sanitizes a document and asserts that no synthetic value survived, publishing
   with `PublishAot`, `TrimMode=full` and warnings as errors.
 - The dependency injection guide, with the full configuration schema.
+- A carve-out for format adapters: a package whose only purpose is to turn one file format
+  into text may take one parser dependency, against six stated criteria. Decision record
+  0018, and rule 7 in the dependency classification.
+- `SensitiveDataGateway.Documents.Mime`, the adapter for internet messages, built on
+  MimeKitLite.
+  - `MimeBundleReader` turns a `message/rfc822` stream into a `DocumentBundle`: one part per
+    body, per attachment and per forwarded message, each carrying its lineage, its media
+    type and its file name, and a set of header segments on the primary part.
+  - Identifiers are content-free. Nothing in a part identifier, a segment identifier or an
+    error message repeats what the message said.
+  - It fails closed on what it cannot read whole: a `message/external-body` it would have to
+    fetch, a `message/partial` it cannot reassemble, an encrypted or signed part it cannot
+    open, a message deeper, larger or wider than its limits, and a message the parser
+    truncated rather than parsed.
+  - `MimeStructureExtractor` reads the headers the caller names, unfolding continuations and
+    decoding RFC 2047 encoded words, and `MimeReaderOptions` states the limits and the header
+    list.
+  - Decision record 0019 records why the adapter references MimeKitLite rather than MimeKit:
+    MimeKit reaches the network in two places, both in its cryptography, and the criterion is
+    absence of the capability rather than disuse of it. MimeKitLite has no package
+    dependencies on either target framework.
+- `NetworkCapabilityTests`, which disassembles every assembly that reads document content and
+  fails if any method body calls into a network namespace or one of the transmitting types
+  that live in otherwise harmless ones. Hard rule 7 now has a test.
 
 ### Changed
 
