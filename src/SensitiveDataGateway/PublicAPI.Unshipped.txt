@@ -20,6 +20,7 @@ const SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumAllowedLength
 const SensitiveDataGateway.Detection.PatternDetector.MaxDetectorIdLength = 96 -> int
 const SensitiveDataGateway.Detection.PatternDetector.ValueGroupName = "value" -> string!
 const SensitiveDataGateway.Documents.PlainTextExtractor.AcceptedMediaTypePrefix = "text/" -> string!
+const SensitiveDataGateway.Documents.Recognition.RecognitionOptions.MinimumThreshold = 0.05 -> double
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedEntropyLength = 8 -> int
 const SensitiveDataGateway.Validation.ValidationOptions.MinimumAllowedFragmentLength = 3 -> int
 override SensitiveDataGateway.Anonymization.HashingKey.ToString() -> string!
@@ -111,6 +112,16 @@ SensitiveDataGateway.Documents.PlainTextExtractor.CanExtract(string! mediaType) 
 SensitiveDataGateway.Documents.PlainTextExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
 SensitiveDataGateway.Documents.PlainTextExtractor.PlainTextExtractor() -> void
 SensitiveDataGateway.Documents.PlainTextExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
+SensitiveDataGateway.Documents.Recognition.RecognitionOptions
+SensitiveDataGateway.Documents.Recognition.RecognitionOptions.MaxLines.get -> int
+SensitiveDataGateway.Documents.Recognition.RecognitionOptions.MinimumConfidence.get -> double
+SensitiveDataGateway.Documents.Recognition.RecognitionOptions.WithMaxLines(int maxLines) -> SensitiveDataGateway.Documents.Recognition.RecognitionOptions!
+SensitiveDataGateway.Documents.Recognition.RecognitionOptions.WithMinimumConfidence(double minimumConfidence) -> SensitiveDataGateway.Documents.Recognition.RecognitionOptions!
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CanExtract(string! mediaType) -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Locality.get -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
 SensitiveDataGateway.GatewayOptions
 SensitiveDataGateway.GatewayOptions.AuditSink.get -> SensitiveDataGateway.Auditing.IAuditSink!
 SensitiveDataGateway.GatewayOptions.GatewayVersion.get -> string!
@@ -177,5 +188,10 @@ static SensitiveDataGateway.Detection.PatternDetector.Create(SensitiveDataGatewa
 static SensitiveDataGateway.DocumentGateway.Create(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Documents.IDocumentExtractor!>! extractors, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Detection.ISensitiveDataDetector!>! detectors, SensitiveDataGateway.Anonymization.IPseudonymStore! pseudonymStore, SensitiveDataGateway.GatewayOptions! options) -> SensitiveDataGateway.DocumentGateway!
 static SensitiveDataGateway.DocumentGateway.CreateDefault() -> SensitiveDataGateway.DocumentGateway!
 static SensitiveDataGateway.DocumentGateway.CreateDefault(SensitiveDataGateway.GatewayOptions! options) -> SensitiveDataGateway.DocumentGateway!
+static SensitiveDataGateway.Documents.Recognition.RecognitionOptions.Default.get -> SensitiveDataGateway.Documents.Recognition.RecognitionOptions!
+static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Create(SensitiveDataGateway.Documents.Recognition.ITextRecognizer! recognizer, SensitiveDataGateway.Documents.Recognition.RecognitionOptions! options) -> SensitiveDataGateway.Documents.Recognition.RecognizingExtractor!
+static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Create(SensitiveDataGateway.Documents.Recognition.ITextRecognizer! recognizer) -> SensitiveDataGateway.Documents.Recognition.RecognizingExtractor!
+static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Documents.Recognition.ITextRecognizer! recognizer, SensitiveDataGateway.Documents.Recognition.RecognitionOptions! options) -> SensitiveDataGateway.Documents.Recognition.RecognizingExtractor!
+static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Documents.Recognition.ITextRecognizer! recognizer) -> SensitiveDataGateway.Documents.Recognition.RecognizingExtractor!
 static SensitiveDataGateway.GatewayOptions.Default.get -> SensitiveDataGateway.GatewayOptions!
 static SensitiveDataGateway.Validation.ValidationOptions.Default.get -> SensitiveDataGateway.Validation.ValidationOptions!

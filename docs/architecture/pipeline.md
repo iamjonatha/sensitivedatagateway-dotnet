@@ -41,13 +41,37 @@ Turns every part of the bundle into ordered, provenance-carrying text segments.
   external entity is resolved. XXE and SSRF are extraction-stage vulnerabilities.
 - Call the network. OCR and cloud document intelligence are *remote processors of raw
   content*: they are outside the strict path, registered explicitly, and never selected
-  automatically.
+  automatically. See *Recognition* below.
 
 **Blocks when**
 
 - a part exceeds a limit;
 - a required part fails to extract and the policy does not allow a partial bundle;
 - the bundle produces no segments at all.
+
+### Recognition
+
+No format adapter can read a page that is a picture, and every one of them refuses such a part
+as an `unreadable_construct` rather than reporting it empty. Closing that gap is an explicit
+act of composition, not an upgrade.
+
+`ITextRecognizer` is the contract an optical character recognition engine satisfies, and
+`RecognizingExtractor` is the only thing that puts one into this stage. **No package in this
+repository implements the contract**, so an application that does not construct a
+`RecognizingExtractor` has no recognition path and a scanned page keeps failing closed.
+
+A recognizer declares where it runs. `RecognizingExtractor.Create` accepts an engine that runs
+in-process or on a host the deployment controls, and refuses one that declares itself remote;
+`CreateOutsideTheTrustBoundary` is the separate, deliberately long-named entry point that
+accepts it. The distinction is a line of source rather than a setting, because what crosses it
+is raw content that detection has not yet seen. Either way the locality becomes part of the
+extractor identity — `recognizer/remote/vendor-ocr@1.0` — so the audit record says where a page
+went without saying what was on it.
+
+A part is refused unless **every** line reaches the confidence threshold. The mean would let
+one illegible line disappear into forty readable ones, and dropping the line would report clean
+exactly the portion nothing could read. [ADR-0022](../adr/0022-an-ocr-abstraction-with-no-implementation.md)
+records the reasoning.
 
 ---
 

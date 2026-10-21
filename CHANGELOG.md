@@ -333,6 +333,26 @@ While the major version is `0`, the public API may change in any minor release.
   - Decision record 0021 records the choice of the Open XML SDK against the six criteria in
     0018, why both formats ship in one package, and why NPOI, the convenience wrappers and
     parsing the markup directly were rejected.
+- An optical character recognition abstraction, with no engine shipped in this repository.
+  - `ITextRecognizer` is what an engine satisfies, and `RecognizedText`, `RecognizedLine`,
+    `RecognizerVersion`, `RecognizerId` and `RecognizerLocality` are the values it exchanges.
+  - `RecognizingExtractor` is the only thing that puts a recognizer into the extraction stage.
+    An application that does not construct one has no recognition path at all, and a scanned
+    page keeps failing closed exactly as before.
+  - `RecognizingExtractor.Create` refuses an engine that declares itself remote.
+    `CreateOutsideTheTrustBoundary` accepts it. The decision to send content that detection
+    has not yet seen off the host is a line of source a reviewer reads, not a setting.
+  - The locality becomes part of the composed extractor identity, so an audit record says a
+    page went to `recognizer/remote/vendor-ocr@1.0` without saying what was on it.
+  - A part is refused unless every line reaches the confidence threshold, which defaults to
+    0.80. `RecognizedText.LowestConfidence` is the minimum rather than the mean, because the
+    mean is the arithmetic by which one illegible line disappears into forty readable ones.
+  - It fails closed on an engine that returns nothing, returns null, throws, or returns more
+    lines than `RecognitionOptions.MaxLines` allows. No refusal names a recognised line, a
+    fragment of one, or anything that correlates with content.
+  - Decision record 0022 records why no engine ships, why locality is the only property of an
+    engine the library reasons about, and why a configuration flag, averaging the confidence
+    and dropping the uncertain line were all rejected.
 - `ExtractionFailureReason.UnreadableConstruct` and `ExtractionErrorCodes.UnreadableConstruct`,
   for a part whose bytes parse but whose content cannot be recovered as text — a scanned page,
   an embedded document, a form defined as a payload the reader refuses to open.

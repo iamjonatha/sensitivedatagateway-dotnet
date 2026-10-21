@@ -43,3 +43,4 @@ logged all require a record before the code is written.
 | [0019](0019-mimekitlite-for-mime.md) | Read MIME with MimeKitLite | Accepted |
 | [0020](0020-pdfpig-for-pdf.md) | Read PDF with PdfPig | Accepted |
 | [0021](0021-openxml-sdk-for-office-documents.md) | Read Word and Excel with the Open XML SDK | Accepted |
+| [0022](0022-an-ocr-abstraction-with-no-implementation.md) | Give optical character recognition a shape, and ship no engine | Accepted |

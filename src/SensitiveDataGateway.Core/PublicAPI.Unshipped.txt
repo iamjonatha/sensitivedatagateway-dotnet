@@ -19,6 +19,8 @@ const SensitiveDataGateway.Documents.ExtractionErrorCodes.TimedOut = "extraction
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.UnreadableConstruct = "extraction.unreadable_construct" -> string!
 const SensitiveDataGateway.Documents.ExtractionErrorCodes.UnsupportedMediaType = "extraction.unsupported_media_type" -> string!
 const SensitiveDataGateway.Documents.ExtractorVersion.MaxVersionLength = 64 -> int
+const SensitiveDataGateway.Documents.Recognition.RecognizerId.MaxLength = 128 -> int
+const SensitiveDataGateway.Documents.Recognition.RecognizerVersion.MaxVersionLength = 64 -> int
 const SensitiveDataGateway.Documents.SegmentOrigin.MaxLocatorLength = 128 -> int
 const SensitiveDataGateway.EntityId.MaxLength = 128 -> int
 const SensitiveDataGateway.ExtractorId.MaxLength = 128 -> int
@@ -62,6 +64,14 @@ override SensitiveDataGateway.Documents.ExtractionFailure.ToString() -> string!
 override SensitiveDataGateway.Documents.ExtractorVersion.Equals(object? obj) -> bool
 override SensitiveDataGateway.Documents.ExtractorVersion.GetHashCode() -> int
 override SensitiveDataGateway.Documents.ExtractorVersion.ToString() -> string!
+override SensitiveDataGateway.Documents.Recognition.RecognizedLine.ToString() -> string!
+override SensitiveDataGateway.Documents.Recognition.RecognizedText.ToString() -> string!
+override SensitiveDataGateway.Documents.Recognition.RecognizerId.Equals(object? obj) -> bool
+override SensitiveDataGateway.Documents.Recognition.RecognizerId.GetHashCode() -> int
+override SensitiveDataGateway.Documents.Recognition.RecognizerId.ToString() -> string!
+override SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Equals(object? obj) -> bool
+override SensitiveDataGateway.Documents.Recognition.RecognizerVersion.GetHashCode() -> int
+override SensitiveDataGateway.Documents.Recognition.RecognizerVersion.ToString() -> string!
 override SensitiveDataGateway.Documents.SegmentOrigin.Equals(object? obj) -> bool
 override SensitiveDataGateway.Documents.SegmentOrigin.GetHashCode() -> int
 override SensitiveDataGateway.Documents.SegmentOrigin.ToString() -> string!
@@ -347,6 +357,35 @@ SensitiveDataGateway.Documents.PartKind.Body = 1 -> SensitiveDataGateway.Documen
 SensitiveDataGateway.Documents.PartKind.Embedded = 5 -> SensitiveDataGateway.Documents.PartKind
 SensitiveDataGateway.Documents.PartKind.Header = 3 -> SensitiveDataGateway.Documents.PartKind
 SensitiveDataGateway.Documents.PartKind.Subject = 2 -> SensitiveDataGateway.Documents.PartKind
+SensitiveDataGateway.Documents.Recognition.ITextRecognizer
+SensitiveDataGateway.Documents.Recognition.ITextRecognizer.CanRecognize(string! mediaType) -> bool
+SensitiveDataGateway.Documents.Recognition.ITextRecognizer.RecognizeAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<SensitiveDataGateway.Documents.Recognition.RecognizedText!>
+SensitiveDataGateway.Documents.Recognition.ITextRecognizer.Version.get -> SensitiveDataGateway.Documents.Recognition.RecognizerVersion
+SensitiveDataGateway.Documents.Recognition.RecognizedLine
+SensitiveDataGateway.Documents.Recognition.RecognizedLine.Confidence.get -> double
+SensitiveDataGateway.Documents.Recognition.RecognizedLine.Ordinal.get -> int
+SensitiveDataGateway.Documents.Recognition.RecognizedLine.Text.get -> string!
+SensitiveDataGateway.Documents.Recognition.RecognizedText
+SensitiveDataGateway.Documents.Recognition.RecognizedText.IsEmpty.get -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizedText.Lines.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.Recognition.RecognizedLine!>!
+SensitiveDataGateway.Documents.Recognition.RecognizedText.LowestConfidence.get -> double
+SensitiveDataGateway.Documents.Recognition.RecognizerId
+SensitiveDataGateway.Documents.Recognition.RecognizerId.Equals(SensitiveDataGateway.Documents.Recognition.RecognizerId other) -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizerId.IsDefault.get -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizerId.RecognizerId() -> void
+SensitiveDataGateway.Documents.Recognition.RecognizerId.Value.get -> string!
+SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerLocality.InProcess = 1 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerLocality.Remote = 3 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerLocality.SelfHosted = 2 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Equals(SensitiveDataGateway.Documents.Recognition.RecognizerVersion other) -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.IsDefault.get -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.IsInsideTheTrustBoundary.get -> bool
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Locality.get -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.RecognizerId.get -> SensitiveDataGateway.Documents.Recognition.RecognizerId
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.RecognizerVersion() -> void
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Version.get -> string!
 SensitiveDataGateway.Documents.SegmentIds
 SensitiveDataGateway.Documents.SegmentOrigin
 SensitiveDataGateway.Documents.SegmentOrigin.Equals(SensitiveDataGateway.Documents.SegmentOrigin other) -> bool
@@ -782,6 +821,16 @@ static SensitiveDataGateway.Documents.ExtractionFailure.Create(SensitiveDataGate
 static SensitiveDataGateway.Documents.ExtractorVersion.Create(SensitiveDataGateway.ExtractorId extractorId, string! version) -> SensitiveDataGateway.Documents.ExtractorVersion
 static SensitiveDataGateway.Documents.ExtractorVersion.operator !=(SensitiveDataGateway.Documents.ExtractorVersion left, SensitiveDataGateway.Documents.ExtractorVersion right) -> bool
 static SensitiveDataGateway.Documents.ExtractorVersion.operator ==(SensitiveDataGateway.Documents.ExtractorVersion left, SensitiveDataGateway.Documents.ExtractorVersion right) -> bool
+static SensitiveDataGateway.Documents.Recognition.RecognizedLine.Create(string! text, double confidence, int ordinal) -> SensitiveDataGateway.Documents.Recognition.RecognizedLine!
+static SensitiveDataGateway.Documents.Recognition.RecognizedText.Create(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Documents.Recognition.RecognizedLine!>! lines) -> SensitiveDataGateway.Documents.Recognition.RecognizedText!
+static SensitiveDataGateway.Documents.Recognition.RecognizedText.Empty() -> SensitiveDataGateway.Documents.Recognition.RecognizedText!
+static SensitiveDataGateway.Documents.Recognition.RecognizerId.Create(string! value) -> SensitiveDataGateway.Documents.Recognition.RecognizerId
+static SensitiveDataGateway.Documents.Recognition.RecognizerId.operator !=(SensitiveDataGateway.Documents.Recognition.RecognizerId left, SensitiveDataGateway.Documents.Recognition.RecognizerId right) -> bool
+static SensitiveDataGateway.Documents.Recognition.RecognizerId.operator ==(SensitiveDataGateway.Documents.Recognition.RecognizerId left, SensitiveDataGateway.Documents.Recognition.RecognizerId right) -> bool
+static SensitiveDataGateway.Documents.Recognition.RecognizerId.TryCreate(string? value, out SensitiveDataGateway.Documents.Recognition.RecognizerId recognizerId) -> bool
+static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Create(SensitiveDataGateway.Documents.Recognition.RecognizerId recognizerId, string! version, SensitiveDataGateway.Documents.Recognition.RecognizerLocality locality) -> SensitiveDataGateway.Documents.Recognition.RecognizerVersion
+static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.operator !=(SensitiveDataGateway.Documents.Recognition.RecognizerVersion left, SensitiveDataGateway.Documents.Recognition.RecognizerVersion right) -> bool
+static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.operator ==(SensitiveDataGateway.Documents.Recognition.RecognizerVersion left, SensitiveDataGateway.Documents.Recognition.RecognizerVersion right) -> bool
 static SensitiveDataGateway.Documents.SegmentIds.Annotation(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
 static SensitiveDataGateway.Documents.SegmentIds.Cell(SensitiveDataGateway.PartId partId, int sheetOrdinal, int rowOrdinal, int columnOrdinal) -> SensitiveDataGateway.SegmentId
 static SensitiveDataGateway.Documents.SegmentIds.Header(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
