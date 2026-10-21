@@ -55,6 +55,12 @@
     leaves out S/MIME and OpenPGP, which is where MimeKit reaches the network to fetch a
     revocation list or a public key. This reader never decrypts and never verifies, so the
     whole capability is dropped rather than left present and unused.
+
+    DocumentFormat.OpenXml covers both Word and Excel. The assembly is monolithic — one file
+    for wordprocessing, spreadsheet and presentation markup — so the two extractors ship in
+    one package rather than two that would install the same bytes twice. It is also the one
+    parser here that prohibits document type declarations outright, which is what keeps XXE
+    off the table by construction rather than by configuration.
   -->
   <ItemGroup Label="Document format parsers">
     <PackageVersion Include="MimeKitLite" Version="4.18.1" />

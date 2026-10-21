@@ -306,6 +306,33 @@ While the major version is `0`, the public API may change in any minor release.
   - `PdfExtractorOptions` states the page and byte bounds and is immutable.
   - Decision record 0020 records the choice of PdfPig against the six criteria in 0018, and
     why iText, PDFsharp and a PDFium wrapper were rejected.
+- `SensitiveDataGateway.Documents.OpenXml`, the extractors for Word and Excel, built on the
+  Open XML SDK.
+  - `DocxExtractor` produces one segment per paragraph, one per table row, one per header and
+    footer, one per footnote and endnote, one per comment together with the name on it, one
+    per external link target, and one per package property a person can type into.
+  - `XlsxExtractor` produces one segment per row of each sheet, one per sheet name, one per
+    defined name, one per comment, and one per package property. A cell is resolved through
+    the shared string table and carries the text of its formula as well as its value, because
+    a name assembled from literals appears nowhere else in the file.
+  - A table row and a spreadsheet row are each one segment, with the cells joined by a space.
+    An account number in one column and its holder in the next are one fact, and a detector
+    handed the cells separately matches neither.
+  - Text a reviewer deleted with revisions on is read. It is invisible to a reader and fully
+    present in the file that would be transmitted.
+  - It fails closed on what it cannot read whole: a document encrypted with a password, told
+    apart from a damaged one by the compound file signature; an `altChunk` importing another
+    format; a `subDoc` assembling the document from separate files; a workbook whose formulas
+    read another workbook; a package with no main part; and a document past the byte or
+    segment bound. The byte bound is enforced while the content is copied, because a declared
+    stream length can lie, and `OpenSettings.MaxCharactersInPart` bounds expansion while the
+    markup is read.
+  - A package whose markup carries a document type declaration is refused by the reader before
+    any content is read, which is the XXE case closed by construction. Three tests assert it.
+  - `OpenXmlExtractorOptions` states the byte, segment and character bounds and is immutable.
+  - Decision record 0021 records the choice of the Open XML SDK against the six criteria in
+    0018, why both formats ship in one package, and why NPOI, the convenience wrappers and
+    parsing the markup directly were rejected.
 - `ExtractionFailureReason.UnreadableConstruct` and `ExtractionErrorCodes.UnreadableConstruct`,
   for a part whose bytes parse but whose content cannot be recovered as text — a scanned page,
   an embedded document, a form defined as a payload the reader refuses to open.

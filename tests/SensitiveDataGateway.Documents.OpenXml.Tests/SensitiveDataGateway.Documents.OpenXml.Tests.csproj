@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway.Documents.OpenXml/SensitiveDataGateway.Documents.OpenXml.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
+  </ItemGroup>
+
+</Project>
