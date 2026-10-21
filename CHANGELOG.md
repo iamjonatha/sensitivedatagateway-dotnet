@@ -353,6 +353,15 @@ While the major version is `0`, the public API may change in any minor release.
   - Decision record 0022 records why no engine ships, why locality is the only property of an
     engine the library reasons about, and why a configuration flag, averaging the confidence
     and dropping the uncertain line were all rejected.
+- `samples/EmailClassification`, the reference scenario end to end: an email with PDF, Word and
+  Excel attachments, read into a bundle, sanitized, and handed to a recording provider.
+  - It demonstrates that an attachment is a part and nothing more. Four of the six detected
+    values sit nowhere but inside an attachment, so a gateway that read only the body of the
+    message would fail the sample's egress assertion.
+  - A further attachment in a format no extractor claims refuses the whole message, rather than
+    transmitting the three that were read.
+  - It asserts that a postal address written in prose is *still transmitted*, because no
+    deterministic detector can find one. The day semantic detection ships, the sample fails.
 - `ExtractionFailureReason.UnreadableConstruct` and `ExtractionErrorCodes.UnreadableConstruct`,
   for a part whose bytes parse but whose content cannot be recovered as text — a scanned page,
   an embedded document, a form defined as a payload the reader refuses to open.
