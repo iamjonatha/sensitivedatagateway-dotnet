@@ -152,6 +152,35 @@ public sealed class SemanticInjectionTests
         Assert.Empty(provider.Calls);
     }
 
+    [Fact]
+    public async Task A_model_that_never_answers_blocks_the_document()
+    {
+        var provider = Harness.Provider();
+        var detectors = new List<ISensitiveDataDetector>(DeterministicDetectors.All())
+        {
+            SemanticDetectorHost.Create(Hanging(), s_asked),
+        };
+
+        var gateway = Harness.Over(
+            Harness.WithDetectors(
+                detectors,
+                DetectionPipelineOptions.Default.WithDetectorTimeout(DetectionPipelineOptions.MinimumTimeout)),
+            provider);
+
+        foreach (var document in SyntheticCorpus.PromptInjections())
+        {
+            var result = await gateway.ExecuteAsync(
+                document.ToBundle(),
+                Harness.Request,
+                Harness.Permissive(),
+                TestContext.Current.CancellationToken);
+
+            Assert.False(result.IsAllowed, $"A scan that never finished let '{document.Name}' through.");
+        }
+
+        Assert.Empty(provider.Calls);
+    }
+
     private static async Task RunCorpus(DocumentGateway<ReviewRequest, ReviewDecision> gateway)
     {
         foreach (var document in SyntheticCorpus.PromptInjections())
@@ -214,6 +243,8 @@ public sealed class SemanticInjectionTests
     private static StubSemanticDetector Refusing() =>
         new(_ => throw new InvalidOperationException("The model declined."));
 
+    private static HangingSemanticDetector Hanging() => new();
+
     private static string Join(ValidatedPayload payload)
     {
         var texts = new List<string>(payload.Content.Count);
@@ -252,5 +283,25 @@ public sealed class SemanticInjectionTests
             SemanticDetectionContext context,
             CancellationToken cancellationToken) =>
             ValueTask.FromResult(findings(context));
+    }
+
+    /// <summary>
+    /// A model that accepts the question and never comes back.
+    /// </summary>
+    private sealed class HangingSemanticDetector : ISemanticDetector
+    {
+        public DetectorVersion Version { get; } =
+            DetectorVersion.Create(DetectorId.Create("hanging"), "1.0.0");
+
+        public TrustBoundaryLocality Locality => TrustBoundaryLocality.SelfHosted;
+
+        public async ValueTask<IReadOnlyList<SensitiveEntity>> ExamineAsync(
+            SemanticDetectionContext context,
+            CancellationToken cancellationToken)
+        {
+            await Task.Delay(Timeout.Infinite, cancellationToken).ConfigureAwait(false);
+
+            return [];
+        }
     }
 }

@@ -70,6 +70,17 @@ public sealed class PresidioDetectorTests
     }
 
     [Fact]
+    public async Task ExamineAsync_DropsAFindingOfATypeNobodyAskedFor()
+    {
+        var handler = Answering("""[{"entity_type":"EMAIL_ADDRESS","start":0,"end":3,"score":0.99}]""");
+        var detector = PresidioDetector.Create(new HttpClient(handler), PresidioOptions.ForSelfHosted(s_endpoint));
+
+        var entities = await detector.ExamineAsync(Context("abc"), TestContext.Current.CancellationToken);
+
+        Assert.Empty(entities);
+    }
+
+    [Fact]
     public async Task ExamineAsync_KeepsAFindingWhoseNameTheMapDoesNotHave()
     {
         var handler = Answering("""[{"entity_type":"AU_ABN","start":0,"end":3,"score":0.5}]""");

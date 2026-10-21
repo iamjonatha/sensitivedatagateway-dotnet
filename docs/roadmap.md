@@ -25,7 +25,7 @@ suite is still a plan.
 | Dependency injection | Built |
 | Document adapters: mail, PDF, Word, Excel | Built |
 | Optical character recognition | Abstraction built, no engine shipped |
-| Semantic detection | Phase 11 |
+| Semantic detection | Contract and Presidio adapter built, no model shipped |
 | Mutation testing of the boundary | Phase 13, last |
 
 Target frameworks: `net8.0` and `net10.0`, with an identical public surface on both.
@@ -44,21 +44,20 @@ written, and each one that lands must leave the existing API working.
 
 1. **More document adapters**, driven by what applications actually receive — RTF, HTML,
    ODF, images with a local OCR engine.
-2. **A Presidio adapter**, documented as requiring a local deployment.
-3. **Pseudonym scopes beyond the bundle**, with the correlation cost documented next to the
+2. **Pseudonym scopes beyond the bundle**, with the correlation cost documented next to the
    switch that enables them.
-4. **Human review.** `RequireReview` as a full workflow: suspend, hand to a reviewer inside
+3. **Human review.** `RequireReview` as a full workflow: suspend, hand to a reviewer inside
    the boundary, resume with the reviewer's decisions recorded in the audit trail.
-5. **Policy composition.** Layering an organizational policy over a domain policy, with a
+4. **Policy composition.** Layering an organizational policy over a domain policy, with a
    defined conflict resolution.
-6. **Telemetry.** An optional package with an `ActivitySource` and a `Meter`, emitting only
+5. **Telemetry.** An optional package with an `ActivitySource` and a `Meter`, emitting only
    the fields listed in [ADR-0008](adr/0008-privacy-safe-observability.md).
-7. **Streaming extraction**, so that a large bundle never has to be fully resident.
-8. **Analyzers.** Diagnostics for a policy that leaves a known entity type unhandled, for a
+6. **Streaming extraction**, so that a large bundle never has to be fully resident.
+7. **Analyzers.** Diagnostics for a policy that leaves a known entity type unhandled, for a
    detector registered without a version, and for a log statement that interpolates content.
-9. **Additional provider integrations**, which is also the real test of whether
+8. **Additional provider integrations**, which is also the real test of whether
    [ADR-0001](adr/0001-provider-independent-core.md) held.
-10. **Mutation testing of the boundary**, last of all. The suite proves the code passes; it
+9. **Mutation testing of the boundary**, last of all. The suite proves the code passes; it
     does not prove a test would fail if a fail-closed branch stopped closing. A mutation tool
     answers that by rewriting the source one small change at a time and checking that
     something turns red. It is held to the end because it judges every test written before

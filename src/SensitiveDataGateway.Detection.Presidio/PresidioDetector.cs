@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
@@ -23,6 +24,13 @@ namespace SensitiveDataGateway.Detection.Presidio;
 /// One request carries one segment, because Presidio reports offsets into the text it was
 /// given and the gateway needs offsets into a segment. A document with many segments is many
 /// requests; the detection stage's time budget covers all of them together.
+/// </para>
+/// <para>
+/// A finding whose type was not asked for is dropped rather than reported. The analyzer
+/// recognizes shapes a deterministic detector already covers with a checksum, and
+/// <c>SemanticDetectorHost</c> treats an unrequested type as a malformed answer — so
+/// forwarding one would fail the scan and block the document over an email address the
+/// gateway had already found.
 /// </para>
 /// <para>
 /// The detector sends raw, un-extracted-from document text over the network. Where that text
@@ -135,11 +143,18 @@ public sealed class PresidioDetector : ISemanticDetector
             return;
         }
 
+        var type = TypeOf(result.EntityType);
+
+        if (!context.EntityTypes.Contains(type))
+        {
+            return;
+        }
+
         var length = result.End - result.Start;
 
         entities.Add(SensitiveEntity.Create(
             EntityId.New(),
-            TypeOf(result.EntityType),
+            type,
             SourceSpan.Create(segment.Id, result.Start, length),
             DetectionConfidence.Create(Math.Clamp(result.Score, 0.0, 1.0)),
             context.DetectorId,

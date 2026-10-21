@@ -47,6 +47,17 @@ internal static class Harness
     public static DocumentGateway WithDetectors(IEnumerable<ISensitiveDataDetector> detectors) =>
         Build(detectors, Anonymizer(), GatewayOptions.Default);
 
+    public static DocumentGateway WithDetectors(
+        IEnumerable<ISensitiveDataDetector> detectors,
+        DetectionPipelineOptions detectionOptions) =>
+        new(
+            new ExtractionPipeline([new PlainTextExtractor()]),
+            new DetectionPipeline(detectors, detectionOptions),
+            new PolicyEngine(),
+            Anonymizer(),
+            new PrivacyValidator(),
+            GatewayOptions.Default);
+
     public static DocumentGateway WithAnonymizer(IDocumentAnonymizer anonymizer) =>
         Build(DeterministicDetectors.All(), anonymizer, GatewayOptions.Default);
 

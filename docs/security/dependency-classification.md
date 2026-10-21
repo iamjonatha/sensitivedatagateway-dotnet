@@ -53,7 +53,7 @@ Core                     Pure only, and in practice nothing at all
 SensitiveDataGateway     Pure
   ^
 Documents.*              Sensitive-data processing
-Detection.Semantic.*     AI-capable, local or self-hosted
+Detection.*              AI-capable; network-capable when the model is a service
 Anonymization.Stores.*   Persistence-capable
   ^
 Providers.*              Network-capable
@@ -83,11 +83,29 @@ reference, together with its ADR.
 
 ---
 
+## A capability taken without a package
+
+`SensitiveDataGateway.Detection.Presidio` adds no row above, because it adds no reference: it
+references `Core` and the framework, and speaks the analyzer's HTTP API itself. Nothing is
+installed, and no third-party code runs in the host process.
+
+It is listed here anyway, because the classification is about capability rather than about
+package count. The package is **network-capable and reads raw content**, which is the one
+combination [ADR-0009](../adr/0009-no-network-in-core.md) otherwise forbids, and point 3 of
+that record is what permits it: a model the deployment runs itself is inside the boundary.
+`NetworkCapabilityTests` does not vouch for this assembly, deliberately — the whole point of
+it is to transmit. What constrains it instead is
+[ADR-0023](../adr/0023-semantic-detection-is-a-contract-not-a-model.md): `ForHostedService`
+produces a detector the strict composition path refuses, and the audit record names the side
+of the boundary that read the document. The residual risk is written down as N10 in
+[the egress guarantees](egress-guarantees.md).
+
+---
+
 ## Candidates, and why they are not taken yet
 
 | Package | Class | Status |
 | --- | --- | --- |
-| Microsoft Presidio | AI-capable, network-capable as deployed | Phase 11, as a separate package, documented as requiring a local deployment |
-| A local model runtime | AI-capable | Phase 11, behind `ISemanticDetector` |
+| A local model runtime | AI-capable | Behind `ISemanticDetector`, if a runtime ever earns its weight in the package |
 | A cloud document-intelligence service | Network-capable, sensitive-data processing | Never on the strict path. If it ships at all, it ships as an explicitly named out-of-boundary adapter |
 | An OCR engine | Sensitive-data processing, frequently network-capable | Never. `ITextRecognizer` is the shape, and the host brings the engine. [0022](../adr/0022-an-ocr-abstraction-with-no-implementation.md) records why no engine ships, and why a remote one is reachable only through `RecognizingExtractor.CreateOutsideTheTrustBoundary` |

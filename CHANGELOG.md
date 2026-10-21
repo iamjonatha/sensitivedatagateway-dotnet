@@ -13,9 +13,10 @@ While the major version is `0`, the public API may change in any minor release.
 
 - `SensitiveDataGateway.Detection.Presidio`: a detector that asks a Presidio analyzer the
   deployment operates. The endpoint has no default, `ForHostedService` produces a detector the
-  strict path refuses, an entity name the map does not know is kept rather than dropped, and
-  the package adds no NuGet dependency — the JSON contract is source-generated so it survives
-  trimming and Native AOT.
+  strict path refuses, a finding of a type the host did not ask for is dropped rather than
+  forwarded, an entity name the map does not know is kept rather than dropped, and the package
+  adds no NuGet dependency — the JSON contract is source-generated so it survives trimming and
+  Native AOT.
 - `ISemanticDetector` and `SemanticDetectionContext`: the contract for a detector backed by a
   model, and the question it is asked. The instructions are a constant of the library, the
   document sits inside a block whose marker is chosen at random once the content is known, and

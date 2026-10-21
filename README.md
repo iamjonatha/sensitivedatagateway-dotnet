@@ -132,6 +132,7 @@ Enough to answer "is this an invoice?". Not enough to know whose.
 | `SensitiveDataGateway.Documents.Mime` | Email, including every attachment and every forwarded message | `Core`, MimeKitLite |
 | `SensitiveDataGateway.Documents.Pdf` | PDF, including annotations, form fields and document information | `Core`, PdfPig |
 | `SensitiveDataGateway.Documents.OpenXml` | Word and Excel, including comments, tracked deletions and formula text | `Core`, Open XML SDK |
+| `SensitiveDataGateway.Detection.Presidio` | A semantic detector backed by a Presidio analyzer your deployment runs | `Core` |
 
 A format adapter is referenced only by an application that reads that format. Nothing in the
 pipeline depends on one, so an application that processes email alone never installs a PDF
@@ -193,6 +194,7 @@ anywhere that is stronger than that document is a bug.
 | [Threat model](docs/security/threat-model.md) | Fourteen threats, their mitigations, and the residual risk |
 | [Egress guarantees](docs/security/egress-guarantees.md) | What is guaranteed, what is not, and how to verify it |
 | [Testing](docs/guides/testing.md) | Proving over your own documents that nothing crossed |
+| [Semantic detection](docs/guides/semantic-detection.md) | Asking a model without letting the document answer back |
 | [Dependency injection](docs/guides/dependency-injection.md) | One registration, the configuration schema, and keyed gateways |
 | [DecisionKit provider](docs/providers/decisionkit.md) | What the DecisionKit adapter sends, and what it cannot |
 | [Writing your own provider](docs/providers/custom-provider.md) | The contract at the egress boundary, and how to prove you kept it |

@@ -136,6 +136,31 @@ Build request text from constants. This is the one egress path on the gateway's 
 that the gateway does not govern, and it is the caller's to close. See
 [`../providers/custom-provider.md`](../providers/custom-provider.md).
 
+### N10 — A semantic detector reads the document before anything has been removed
+
+A detector registered through `SemanticDetectorHost` is given document text as it was
+extracted: nothing has been detected yet, so nothing has been transformed yet. A detector
+that is a process, a container or a service therefore receives the unsanitized document.
+
+That is inherent to the job. A stage that finds what the patterns missed has to see what the
+patterns saw, and a stage that only ever saw redacted text could not find anything.
+
+What the gateway does about it is make the choice explicit rather than implicit:
+
+- `SemanticDetectorHost.Create` refuses a detector that reports
+  `TrustBoundaryLocality.Remote`, at composition time;
+- accepting one requires `CreateOutsideTheTrustBoundary`, which is a deliberate name;
+- the detector's identity in the audit record carries the locality, so a record says which
+  side of the boundary read the document.
+
+None of that verifies the recipient. A self-hosted analyzer on infrastructure you control is
+still infrastructure that holds document content, and securing it is the deployment's job,
+not the library's. The guarantees above are about what crosses the *egress* boundary towards
+a decision provider; they say nothing about a detector you chose to put on a network.
+
+See [`../guides/semantic-detection.md`](../guides/semantic-detection.md) and
+[ADR-0023](../adr/0023-semantic-detection-is-a-contract-not-a-model.md).
+
 ---
 
 ## 3. How a block reaches the caller
