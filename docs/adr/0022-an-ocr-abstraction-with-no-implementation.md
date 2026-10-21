@@ -4,6 +4,10 @@
 - **Date:** 2026-10-19
 - **Deciders:** @iamjonatha
 
+> **Later:** the locality enum described here was renamed `TrustBoundaryLocality` and moved to
+> the root namespace when semantic detection needed to ask the same question. The decision is
+> unchanged; only the type's name and home are.
+
 ## Context
 
 Three format adapters now read the formats an office sends, and all three stop at the same

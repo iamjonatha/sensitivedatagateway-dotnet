@@ -12,7 +12,7 @@ public sealed class RecognizingExtractorCompositionTests
     [Fact]
     public void Refuses_a_recognizer_that_runs_outside_the_boundary()
     {
-        var recognizer = FakeRecognizer.Reading(RecognizerLocality.Remote, ("invoice 4471", 0.99));
+        var recognizer = FakeRecognizer.Reading(TrustBoundaryLocality.Remote, ("invoice 4471", 0.99));
 
         var exception = Assert.Throws<ArgumentException>(() => RecognizingExtractor.Create(recognizer));
 
@@ -22,17 +22,17 @@ public sealed class RecognizingExtractorCompositionTests
     [Fact]
     public void Accepts_a_recognizer_that_runs_outside_the_boundary_only_through_the_named_factory()
     {
-        var recognizer = FakeRecognizer.Reading(RecognizerLocality.Remote, ("invoice 4471", 0.99));
+        var recognizer = FakeRecognizer.Reading(TrustBoundaryLocality.Remote, ("invoice 4471", 0.99));
 
         var extractor = RecognizingExtractor.CreateOutsideTheTrustBoundary(recognizer);
 
-        Assert.Equal(RecognizerLocality.Remote, extractor.Locality);
+        Assert.Equal(TrustBoundaryLocality.Remote, extractor.Locality);
     }
 
     [Theory]
-    [InlineData(RecognizerLocality.InProcess)]
-    [InlineData(RecognizerLocality.SelfHosted)]
-    public void Accepts_a_recognizer_that_runs_inside_the_boundary(RecognizerLocality locality)
+    [InlineData(TrustBoundaryLocality.InProcess)]
+    [InlineData(TrustBoundaryLocality.SelfHosted)]
+    public void Accepts_a_recognizer_that_runs_inside_the_boundary(TrustBoundaryLocality locality)
     {
         var extractor = RecognizingExtractor.Create(FakeRecognizer.Reading(locality, ("invoice 4471", 0.99)));
 
@@ -40,10 +40,10 @@ public sealed class RecognizingExtractorCompositionTests
     }
 
     [Theory]
-    [InlineData(RecognizerLocality.InProcess, "recognizer/in-process/vendor-ocr@1.0")]
-    [InlineData(RecognizerLocality.SelfHosted, "recognizer/self-hosted/vendor-ocr@1.0")]
+    [InlineData(TrustBoundaryLocality.InProcess, "recognizer/in-process/vendor-ocr@1.0")]
+    [InlineData(TrustBoundaryLocality.SelfHosted, "recognizer/self-hosted/vendor-ocr@1.0")]
     public void Records_where_the_recognizer_runs_in_the_extractor_identity(
-        RecognizerLocality locality,
+        TrustBoundaryLocality locality,
         string expected)
     {
         var extractor = RecognizingExtractor.Create(FakeRecognizer.Named("vendor-ocr", locality));
@@ -55,7 +55,7 @@ public sealed class RecognizingExtractorCompositionTests
     public void Records_a_remote_recognizer_as_remote()
     {
         var extractor = RecognizingExtractor.CreateOutsideTheTrustBoundary(
-            FakeRecognizer.Named("vendor-ocr", RecognizerLocality.Remote));
+            FakeRecognizer.Named("vendor-ocr", TrustBoundaryLocality.Remote));
 
         Assert.Equal("recognizer/remote/vendor-ocr@1.0", extractor.Version.ToString());
     }
@@ -71,7 +71,7 @@ public sealed class RecognizingExtractorCompositionTests
     [Fact]
     public void Refuses_a_recognizer_named_too_long_to_record()
     {
-        var recognizer = FakeRecognizer.Named(new string('r', RecognizerId.MaxLength), RecognizerLocality.SelfHosted);
+        var recognizer = FakeRecognizer.Named(new string('r', RecognizerId.MaxLength), TrustBoundaryLocality.SelfHosted);
 
         var exception = Assert.Throws<ArgumentException>(() => RecognizingExtractor.Create(recognizer));
 

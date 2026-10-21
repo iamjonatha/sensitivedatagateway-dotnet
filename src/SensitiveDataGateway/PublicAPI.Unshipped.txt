@@ -120,7 +120,7 @@ SensitiveDataGateway.Documents.Recognition.RecognitionOptions.WithMinimumConfide
 SensitiveDataGateway.Documents.Recognition.RecognizingExtractor
 SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CanExtract(string! mediaType) -> bool
 SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
-SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Locality.get -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
 SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
 SensitiveDataGateway.GatewayOptions
 SensitiveDataGateway.GatewayOptions.AuditSink.get -> SensitiveDataGateway.Auditing.IAuditSink!

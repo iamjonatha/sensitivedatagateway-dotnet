@@ -28,30 +28,30 @@ internal sealed class FakeRecognizer : ITextRecognizer
 
     public int Calls { get; private set; }
 
-    public static FakeRecognizer Reading(RecognizerLocality locality, params (string Text, double Confidence)[] lines) =>
+    public static FakeRecognizer Reading(TrustBoundaryLocality locality, params (string Text, double Confidence)[] lines) =>
         new(
             VersionFor(locality),
             _ => RecognizedText.Create(
                 lines.Select((line, index) => RecognizedLine.Create(line.Text, line.Confidence, index + 1))));
 
     public static FakeRecognizer Reading(params (string Text, double Confidence)[] lines) =>
-        Reading(RecognizerLocality.InProcess, lines);
+        Reading(TrustBoundaryLocality.InProcess, lines);
 
     public static FakeRecognizer ReadingNothing() =>
-        new(VersionFor(RecognizerLocality.InProcess), _ => RecognizedText.Empty());
+        new(VersionFor(TrustBoundaryLocality.InProcess), _ => RecognizedText.Empty());
 
     public static FakeRecognizer ReturningNull() =>
-        new(VersionFor(RecognizerLocality.InProcess), _ => null);
+        new(VersionFor(TrustBoundaryLocality.InProcess), _ => null);
 
     public static FakeRecognizer Failing(GatewayError error) =>
-        new(VersionFor(RecognizerLocality.InProcess), _ => throw new ExtractionException(error));
+        new(VersionFor(TrustBoundaryLocality.InProcess), _ => throw new ExtractionException(error));
 
-    public static FakeRecognizer Named(string id, RecognizerLocality locality) =>
+    public static FakeRecognizer Named(string id, TrustBoundaryLocality locality) =>
         new(
             RecognizerVersion.Create(RecognizerId.Create(id), "1.0", locality),
             _ => RecognizedText.Create([RecognizedLine.Create("invoice 4471", 0.99, 1)]));
 
-    public static RecognizerVersion VersionFor(RecognizerLocality locality) =>
+    public static RecognizerVersion VersionFor(TrustBoundaryLocality locality) =>
         RecognizerVersion.Create(RecognizerId.Create("fake-ocr"), "1.0", locality);
 
     public bool CanRecognize(string mediaType) =>

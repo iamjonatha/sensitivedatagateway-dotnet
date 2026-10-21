@@ -374,15 +374,15 @@ SensitiveDataGateway.Documents.Recognition.RecognizerId.Equals(SensitiveDataGate
 SensitiveDataGateway.Documents.Recognition.RecognizerId.IsDefault.get -> bool
 SensitiveDataGateway.Documents.Recognition.RecognizerId.RecognizerId() -> void
 SensitiveDataGateway.Documents.Recognition.RecognizerId.Value.get -> string!
-SensitiveDataGateway.Documents.Recognition.RecognizerLocality
-SensitiveDataGateway.Documents.Recognition.RecognizerLocality.InProcess = 1 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
-SensitiveDataGateway.Documents.Recognition.RecognizerLocality.Remote = 3 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
-SensitiveDataGateway.Documents.Recognition.RecognizerLocality.SelfHosted = 2 -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.TrustBoundaryLocality
+SensitiveDataGateway.TrustBoundaryLocality.InProcess = 1 -> SensitiveDataGateway.TrustBoundaryLocality
+SensitiveDataGateway.TrustBoundaryLocality.Remote = 3 -> SensitiveDataGateway.TrustBoundaryLocality
+SensitiveDataGateway.TrustBoundaryLocality.SelfHosted = 2 -> SensitiveDataGateway.TrustBoundaryLocality
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Equals(SensitiveDataGateway.Documents.Recognition.RecognizerVersion other) -> bool
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.IsDefault.get -> bool
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.IsInsideTheTrustBoundary.get -> bool
-SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Locality.get -> SensitiveDataGateway.Documents.Recognition.RecognizerLocality
+SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.RecognizerId.get -> SensitiveDataGateway.Documents.Recognition.RecognizerId
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.RecognizerVersion() -> void
 SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Version.get -> string!
@@ -828,7 +828,7 @@ static SensitiveDataGateway.Documents.Recognition.RecognizerId.Create(string! va
 static SensitiveDataGateway.Documents.Recognition.RecognizerId.operator !=(SensitiveDataGateway.Documents.Recognition.RecognizerId left, SensitiveDataGateway.Documents.Recognition.RecognizerId right) -> bool
 static SensitiveDataGateway.Documents.Recognition.RecognizerId.operator ==(SensitiveDataGateway.Documents.Recognition.RecognizerId left, SensitiveDataGateway.Documents.Recognition.RecognizerId right) -> bool
 static SensitiveDataGateway.Documents.Recognition.RecognizerId.TryCreate(string? value, out SensitiveDataGateway.Documents.Recognition.RecognizerId recognizerId) -> bool
-static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Create(SensitiveDataGateway.Documents.Recognition.RecognizerId recognizerId, string! version, SensitiveDataGateway.Documents.Recognition.RecognizerLocality locality) -> SensitiveDataGateway.Documents.Recognition.RecognizerVersion
+static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.Create(SensitiveDataGateway.Documents.Recognition.RecognizerId recognizerId, string! version, SensitiveDataGateway.TrustBoundaryLocality locality) -> SensitiveDataGateway.Documents.Recognition.RecognizerVersion
 static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.operator !=(SensitiveDataGateway.Documents.Recognition.RecognizerVersion left, SensitiveDataGateway.Documents.Recognition.RecognizerVersion right) -> bool
 static SensitiveDataGateway.Documents.Recognition.RecognizerVersion.operator ==(SensitiveDataGateway.Documents.Recognition.RecognizerVersion left, SensitiveDataGateway.Documents.Recognition.RecognizerVersion right) -> bool
 static SensitiveDataGateway.Documents.SegmentIds.Annotation(SensitiveDataGateway.PartId partId, int ordinal) -> SensitiveDataGateway.SegmentId
@@ -901,3 +901,7 @@ static SensitiveDataGateway.Validation.PrivacyFinding.ForEntity(SensitiveDataGat
 static SensitiveDataGateway.Validation.PrivacyFinding.ForLeak(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.Validation.LeakSignal signal, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!
 static SensitiveDataGateway.Validation.PrivacyFinding.ForLeak(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.Validation.LeakSignal signal, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!
 static SensitiveDataGateway.Validation.PrivacyFinding.InSegment(SensitiveDataGateway.Validation.PrivacyCheck check, SensitiveDataGateway.SegmentId segment) -> SensitiveDataGateway.Validation.PrivacyFinding!
+SensitiveDataGateway.TrustBoundaryLocalityExtensions
+static SensitiveDataGateway.TrustBoundaryLocalityExtensions.Describe(this SensitiveDataGateway.TrustBoundaryLocality locality) -> string!
+static SensitiveDataGateway.TrustBoundaryLocalityExtensions.IsDeclared(this SensitiveDataGateway.TrustBoundaryLocality locality) -> bool
+static SensitiveDataGateway.TrustBoundaryLocalityExtensions.IsInsideTheTrustBoundary(this SensitiveDataGateway.TrustBoundaryLocality locality) -> bool

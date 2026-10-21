@@ -11,6 +11,10 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- `TrustBoundaryLocality`, the one question the library asks about a component that reads raw
+  content: does it run in the process, elsewhere in the deployment, or at a third party. A
+  text recognizer and a semantic detector are classified by the same type, so the two stages
+  cannot drift into disagreeing about what "self-hosted" means.
 - Architecture overview, the normative description of the layers, the fundamental
   requirement and the trust boundary.
 - The pipeline contract: what each stage does, what it is forbidden to do, and what it must
@@ -335,7 +339,8 @@ While the major version is `0`, the public API may change in any minor release.
     parsing the markup directly were rejected.
 - An optical character recognition abstraction, with no engine shipped in this repository.
   - `ITextRecognizer` is what an engine satisfies, and `RecognizedText`, `RecognizedLine`,
-    `RecognizerVersion`, `RecognizerId` and `RecognizerLocality` are the values it exchanges.
+    `RecognizerVersion`, `RecognizerId` and `TrustBoundaryLocality` are the values it
+    exchanges.
   - `RecognizingExtractor` is the only thing that puts a recognizer into the extraction stage.
     An application that does not construct one has no recognition path at all, and a scanned
     page keeps failing closed exactly as before.

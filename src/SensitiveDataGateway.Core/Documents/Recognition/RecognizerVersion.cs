@@ -20,7 +20,7 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
 
     private readonly string? _version;
 
-    private RecognizerVersion(RecognizerId recognizerId, string version, RecognizerLocality locality)
+    private RecognizerVersion(RecognizerId recognizerId, string version, TrustBoundaryLocality locality)
     {
         RecognizerId = recognizerId;
         _version = version;
@@ -35,7 +35,7 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
     /// <summary>
     /// Gets where the recognizer runs.
     /// </summary>
-    public RecognizerLocality Locality { get; }
+    public TrustBoundaryLocality Locality { get; }
 
     /// <summary>
     /// Gets the version of the recognizer.
@@ -52,8 +52,7 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
     /// <summary>
     /// Gets a value indicating whether the recognizer reads content inside the trust boundary.
     /// </summary>
-    public bool IsInsideTheTrustBoundary =>
-        Locality is RecognizerLocality.InProcess or RecognizerLocality.SelfHosted;
+    public bool IsInsideTheTrustBoundary => Locality.IsInsideTheTrustBoundary();
 
     /// <summary>
     /// Creates a recognizer version.
@@ -69,18 +68,18 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
     /// </exception>
     /// <remarks>
     /// An undeclared locality is refused rather than defaulted. The safe default would be
-    /// <see cref="RecognizerLocality.Remote"/>, which would refuse every engine that forgot to
-    /// say; the honest answer is that an engine which does not state where it runs has not
+    /// <see cref="TrustBoundaryLocality.Remote"/>, which would refuse every engine that forgot
+    /// to say; the honest answer is that an engine which does not state where it runs has not
     /// been reviewed.
     /// </remarks>
-    public static RecognizerVersion Create(RecognizerId recognizerId, string version, RecognizerLocality locality)
+    public static RecognizerVersion Create(RecognizerId recognizerId, string version, TrustBoundaryLocality locality)
     {
         if (recognizerId.IsDefault)
         {
             throw new ArgumentException("The recognizer identifier carries no value.", nameof(recognizerId));
         }
 
-        if (locality is not (RecognizerLocality.InProcess or RecognizerLocality.SelfHosted or RecognizerLocality.Remote))
+        if (!locality.IsDeclared())
         {
             throw new ArgumentException("The recognizer must state where it runs.", nameof(locality));
         }
@@ -118,7 +117,7 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
     public override string ToString() =>
         _version is null
             ? string.Empty
-            : string.Concat(RecognizerId.ToString(), "@", _version, "/", Describe(Locality));
+            : string.Concat(RecognizerId.ToString(), "@", _version, "/", Locality.Describe());
 
     /// <summary>
     /// Determines whether two recognizer versions are the same.
@@ -135,12 +134,4 @@ public readonly struct RecognizerVersion : IEquatable<RecognizerVersion>
     /// <param name="right">The second value.</param>
     /// <returns><see langword="true"/> when they differ.</returns>
     public static bool operator !=(RecognizerVersion left, RecognizerVersion right) => !left.Equals(right);
-
-    private static string Describe(RecognizerLocality locality) => locality switch
-    {
-        RecognizerLocality.InProcess => "in-process",
-        RecognizerLocality.SelfHosted => "self-hosted",
-        RecognizerLocality.Remote => "remote",
-        _ => "undeclared",
-    };
 }

@@ -18,7 +18,7 @@ namespace SensitiveDataGateway.Documents.Recognition;
 /// </para>
 /// <para>
 /// <see cref="Create(ITextRecognizer)"/> refuses an engine that declares itself
-/// <see cref="RecognizerLocality.Remote"/>. Accepting it would mean transmitting raw,
+/// <see cref="TrustBoundaryLocality.Remote"/>. Accepting it would mean transmitting raw,
 /// un-sanitized content to a third party in order to decide whether content may be
 /// transmitted to a third party. An application that has decided to do that anyway calls
 /// <see cref="CreateOutsideTheTrustBoundary(ITextRecognizer)"/>, whose name is the point: the
@@ -51,7 +51,7 @@ public sealed class RecognizingExtractor : IDocumentExtractor
     /// <summary>
     /// Gets where the recognizer behind this extractor runs.
     /// </summary>
-    public RecognizerLocality Locality => _recognizer.Version.Locality;
+    public TrustBoundaryLocality Locality => _recognizer.Version.Locality;
 
     /// <summary>
     /// Creates an extractor over a recognizer that runs inside the trust boundary.
@@ -61,7 +61,7 @@ public sealed class RecognizingExtractor : IDocumentExtractor
     /// <exception cref="ArgumentNullException"><paramref name="recognizer"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">
     /// The recognizer carries no version, declares itself
-    /// <see cref="RecognizerLocality.Remote"/>, or is named too long to record.
+    /// <see cref="TrustBoundaryLocality.Remote"/>, or is named too long to record.
     /// </exception>
     public static RecognizingExtractor Create(ITextRecognizer recognizer) =>
         Create(recognizer, RecognitionOptions.Default);
@@ -75,7 +75,7 @@ public sealed class RecognizingExtractor : IDocumentExtractor
     /// <exception cref="ArgumentNullException">An argument is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">
     /// The recognizer carries no version, declares itself
-    /// <see cref="RecognizerLocality.Remote"/>, or is named too long to record.
+    /// <see cref="TrustBoundaryLocality.Remote"/>, or is named too long to record.
     /// </exception>
     public static RecognizingExtractor Create(ITextRecognizer recognizer, RecognitionOptions options)
     {
@@ -177,7 +177,7 @@ public sealed class RecognizingExtractor : IDocumentExtractor
     {
         ArgumentNullException.ThrowIfNull(options);
 
-        var name = string.Concat(IdentifierPrefix, Abbreviate(version.Locality), "/", version.RecognizerId.Value);
+        var name = string.Concat(IdentifierPrefix, version.Locality.Describe(), "/", version.RecognizerId.Value);
 
         if (name.Length > ExtractorId.MaxLength)
         {
@@ -191,13 +191,6 @@ public sealed class RecognizingExtractor : IDocumentExtractor
             options,
             ExtractorVersion.Create(ExtractorId.Create(name), version.Version));
     }
-
-    private static string Abbreviate(RecognizerLocality locality) => locality switch
-    {
-        RecognizerLocality.InProcess => "in-process",
-        RecognizerLocality.SelfHosted => "self-hosted",
-        _ => "remote",
-    };
 
     private void Validate(PartId partId, RecognizedText recognized)
     {

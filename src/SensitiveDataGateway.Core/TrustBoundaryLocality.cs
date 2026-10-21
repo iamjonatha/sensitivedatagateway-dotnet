@@ -1,14 +1,19 @@
-namespace SensitiveDataGateway.Documents.Recognition;
+namespace SensitiveDataGateway;
 
 /// <summary>
-/// Where a text recognizer runs, relative to the trust boundary.
+/// Where a component that reads raw content runs, relative to the trust boundary.
 /// </summary>
 /// <remarks>
 /// <para>
-/// This is the only property of a recognizer the library reasons about, because it is the
+/// This is the only property of such a component the library reasons about, because it is the
 /// only one that changes what the gateway can promise. An engine that runs in the process
 /// cannot leak a document; an engine behind a vendor's API has already received it, in full,
-/// before any detector has seen a character of it.
+/// before any decision about it has been made.
+/// </para>
+/// <para>
+/// The same question is asked of a text recognizer and of a semantic detector, and it has the
+/// same three answers, so it is asked once. A component that reads content before the
+/// validator has seen it is inside this classification whatever stage it belongs to.
 /// </para>
 /// <para>
 /// The locality is declared by the implementation and taken at its word. The library cannot
@@ -18,15 +23,15 @@ namespace SensitiveDataGateway.Documents.Recognition;
 /// person reviewing the dependency.
 /// </para>
 /// </remarks>
-public enum RecognizerLocality
+public enum TrustBoundaryLocality
 {
     /// <summary>
-    /// The engine runs inside the calling process.
+    /// The component runs inside the calling process.
     /// </summary>
     InProcess = 1,
 
     /// <summary>
-    /// The engine runs elsewhere in the deployment the application controls.
+    /// The component runs elsewhere in the deployment the application controls.
     /// </summary>
     /// <remarks>
     /// A container beside the application, a service on the same private network, a model
@@ -37,7 +42,7 @@ public enum RecognizerLocality
     SelfHosted = 2,
 
     /// <summary>
-    /// The engine runs outside the boundary, as a third party's service.
+    /// The component runs outside the boundary, as a third party's service.
     /// </summary>
     /// <remarks>
     /// Raw, un-sanitized content is transmitted to someone else in order to decide whether it

@@ -18,7 +18,7 @@ namespace SensitiveDataGateway.Documents.Recognition;
 /// A recognizer is the one component that may be given raw content from outside the trust
 /// boundary, and <see cref="RecognizerVersion.Locality"/> is where it says so. An
 /// implementation that reaches a third party's service and reports
-/// <see cref="RecognizerLocality.InProcess"/> defeats every control the library has; the
+/// <see cref="TrustBoundaryLocality.InProcess"/> defeats every control the library has; the
 /// locality is a declaration under review, not a measurement.
 /// </para>
 /// <para>

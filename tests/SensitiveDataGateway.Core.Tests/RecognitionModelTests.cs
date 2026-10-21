@@ -7,10 +7,10 @@ namespace SensitiveDataGateway.Core.Tests;
 public sealed class RecognizerVersionTests
 {
     [Theory]
-    [InlineData(RecognizerLocality.InProcess, "tesseract@5.3/in-process")]
-    [InlineData(RecognizerLocality.SelfHosted, "tesseract@5.3/self-hosted")]
-    [InlineData(RecognizerLocality.Remote, "tesseract@5.3/remote")]
-    public void Spells_out_where_the_recognizer_runs(RecognizerLocality locality, string expected)
+    [InlineData(TrustBoundaryLocality.InProcess, "tesseract@5.3/in-process")]
+    [InlineData(TrustBoundaryLocality.SelfHosted, "tesseract@5.3/self-hosted")]
+    [InlineData(TrustBoundaryLocality.Remote, "tesseract@5.3/remote")]
+    public void Spells_out_where_the_recognizer_runs(TrustBoundaryLocality locality, string expected)
     {
         var version = RecognizerVersion.Create(RecognizerId.Create("tesseract"), "5.3", locality);
 
@@ -21,14 +21,14 @@ public sealed class RecognizerVersionTests
     public void Refuses_a_recognizer_that_does_not_say_where_it_runs()
     {
         Assert.Throws<ArgumentException>(
-            () => RecognizerVersion.Create(RecognizerId.Create("tesseract"), "5.3", (RecognizerLocality)0));
+            () => RecognizerVersion.Create(RecognizerId.Create("tesseract"), "5.3", (TrustBoundaryLocality)0));
     }
 
     [Theory]
-    [InlineData(RecognizerLocality.InProcess, true)]
-    [InlineData(RecognizerLocality.SelfHosted, true)]
-    [InlineData(RecognizerLocality.Remote, false)]
-    public void Knows_which_localities_are_inside_the_boundary(RecognizerLocality locality, bool inside)
+    [InlineData(TrustBoundaryLocality.InProcess, true)]
+    [InlineData(TrustBoundaryLocality.SelfHosted, true)]
+    [InlineData(TrustBoundaryLocality.Remote, false)]
+    public void Knows_which_localities_are_inside_the_boundary(TrustBoundaryLocality locality, bool inside)
     {
         var version = RecognizerVersion.Create(RecognizerId.Create("tesseract"), "5.3", locality);
 
@@ -38,8 +38,8 @@ public sealed class RecognizerVersionTests
     [Fact]
     public void Tells_two_localities_of_the_same_engine_apart()
     {
-        var local = RecognizerVersion.Create(RecognizerId.Create("ocr"), "1", RecognizerLocality.InProcess);
-        var remote = RecognizerVersion.Create(RecognizerId.Create("ocr"), "1", RecognizerLocality.Remote);
+        var local = RecognizerVersion.Create(RecognizerId.Create("ocr"), "1", TrustBoundaryLocality.InProcess);
+        var remote = RecognizerVersion.Create(RecognizerId.Create("ocr"), "1", TrustBoundaryLocality.Remote);
 
         Assert.NotEqual(local, remote);
     }
