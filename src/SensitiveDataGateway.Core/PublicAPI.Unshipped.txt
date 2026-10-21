@@ -905,3 +905,17 @@ SensitiveDataGateway.TrustBoundaryLocalityExtensions
 static SensitiveDataGateway.TrustBoundaryLocalityExtensions.Describe(this SensitiveDataGateway.TrustBoundaryLocality locality) -> string!
 static SensitiveDataGateway.TrustBoundaryLocalityExtensions.IsDeclared(this SensitiveDataGateway.TrustBoundaryLocality locality) -> bool
 static SensitiveDataGateway.TrustBoundaryLocalityExtensions.IsInsideTheTrustBoundary(this SensitiveDataGateway.TrustBoundaryLocality locality) -> bool
+const SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.MarkerBytes = 16 -> int
+SensitiveDataGateway.Detection.Semantic.ISemanticDetector
+SensitiveDataGateway.Detection.Semantic.ISemanticDetector.ExamineAsync(SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.SensitiveEntity!>!>
+SensitiveDataGateway.Detection.Semantic.ISemanticDetector.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
+SensitiveDataGateway.Detection.Semantic.ISemanticDetector.Version.get -> SensitiveDataGateway.Detection.DetectorVersion
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.BundleId.get -> SensitiveDataGateway.BundleId
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.EntityTypes.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.Marker.get -> string!
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.Render() -> string!
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.Segments.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.Create(SensitiveDataGateway.Documents.ExtractedDocument! document, SensitiveDataGateway.DetectorId detectorId, System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.Instructions.get -> string!
+SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext.DetectorId.get -> SensitiveDataGateway.DetectorId

@@ -21,6 +21,11 @@ internal static class DetectionErrors
     public const string LimitExceededCode = "detection.limit_exceeded";
 
     /// <summary>
+    /// The code of the error raised when a detector reports a finding the pipeline cannot use.
+    /// </summary>
+    public const string MalformedFindingCode = "detection.malformed_finding";
+
+    /// <summary>
     /// Builds the error for a detector that ran out of time.
     /// </summary>
     /// <param name="detectorId">The detector that did not finish.</param>
@@ -41,6 +46,21 @@ internal static class DetectionErrors
             GatewayErrorCategory.DetectionFailed,
             LimitExceededCode,
             $"Detection reported more than {maxEntities} candidates, which is the configured bound.");
+
+    /// <summary>
+    /// Builds the error for a detector whose finding the pipeline cannot use.
+    /// </summary>
+    /// <param name="detectorId">The detector that reported it.</param>
+    /// <param name="problem">
+    /// What is wrong with the finding. One of a fixed set of sentences, never assembled from
+    /// the document or from the finding's own text.
+    /// </param>
+    /// <returns>The error.</returns>
+    public static GatewayError MalformedFinding(DetectorId detectorId, string problem) =>
+        GatewayError.Create(
+            GatewayErrorCategory.DetectionFailed,
+            MalformedFindingCode,
+            $"The detector '{detectorId.Value}' reported a finding the pipeline cannot use: {problem}");
 
     /// <summary>
     /// Maps an error raised by a detector onto the reason recorded against it.

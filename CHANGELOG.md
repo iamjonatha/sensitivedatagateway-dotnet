@@ -11,6 +11,15 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- `ISemanticDetector` and `SemanticDetectionContext`: the contract for a detector backed by a
+  model, and the question it is asked. The instructions are a constant of the library, the
+  document sits inside a block whose marker is chosen at random once the content is known, and
+  the text is written verbatim so that reported offsets still point at it.
+- `SemanticDetectorHost`, the only way a semantic detector reaches the pipeline. It refuses a
+  detector that declares itself remote unless the application says so in code, records where
+  the model ran in the identifier the audit keeps, and rejects a finding that points at a
+  segment the document does not have, reaches past the end of one, names an entity type the
+  detector was not asked about, or is attributed to somebody else.
 - `TrustBoundaryLocality`, the one question the library asks about a component that reads raw
   content: does it run in the process, elsewhere in the deployment, or at a third party. A
   text recognizer and a semantic detector are classified by the same type, so the two stages
