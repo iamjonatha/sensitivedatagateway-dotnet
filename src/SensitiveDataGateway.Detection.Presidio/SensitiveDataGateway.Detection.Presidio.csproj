@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>
+      Adapts SensitiveDataGateway to a Presidio analyzer you deploy and operate yourself.
+      It sends extracted text to the endpoint it is given and maps what comes back onto
+      gateway entity types. The endpoint is the deployment's responsibility: point it at a
+      service somebody else runs and every document examined has left your boundary.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/SensitiveDataGateway.Core/SensitiveDataGateway.Core.csproj" />
+    <Project Path="src/SensitiveDataGateway.Detection.Presidio/SensitiveDataGateway.Detection.Presidio.csproj" />
     <Project Path="src/SensitiveDataGateway.Documents.Mime/SensitiveDataGateway.Documents.Mime.csproj" />
     <Project Path="src/SensitiveDataGateway.Documents.OpenXml/SensitiveDataGateway.Documents.OpenXml.csproj" />
     <Project Path="src/SensitiveDataGateway.Documents.Pdf/SensitiveDataGateway.Documents.Pdf.csproj" />
@@ -15,6 +16,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SensitiveDataGateway.Core.Tests/SensitiveDataGateway.Core.Tests.csproj" />
+    <Project Path="tests/SensitiveDataGateway.Detection.Presidio.Tests/SensitiveDataGateway.Detection.Presidio.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Documents.Mime.Tests/SensitiveDataGateway.Documents.Mime.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Documents.OpenXml.Tests/SensitiveDataGateway.Documents.OpenXml.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Documents.Pdf.Tests/SensitiveDataGateway.Documents.Pdf.Tests.csproj" />
