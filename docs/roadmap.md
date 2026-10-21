@@ -23,7 +23,8 @@ suite is still a plan.
 | Testing package and egress security suite | Built |
 | DecisionKit integration | Built |
 | Dependency injection | Built |
-| Document adapters | Phase 10 |
+| Document adapters: mail, PDF, Word, Excel | Built |
+| Optical character recognition | Abstraction built, no engine shipped |
 | Semantic detection | Phase 11 |
 | Mutation testing of the boundary | Phase 13, last |
 

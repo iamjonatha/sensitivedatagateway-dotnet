@@ -90,3 +90,4 @@ reference, together with its ADR.
 | Microsoft Presidio | AI-capable, network-capable as deployed | Phase 11, as a separate package, documented as requiring a local deployment |
 | A local model runtime | AI-capable | Phase 11, behind `ISemanticDetector` |
 | A cloud document-intelligence service | Network-capable, sensitive-data processing | Never on the strict path. If it ships at all, it ships as an explicitly named out-of-boundary adapter |
+| An OCR engine | Sensitive-data processing, frequently network-capable | Never. `ITextRecognizer` is the shape, and the host brings the engine. [0022](../adr/0022-an-ocr-abstraction-with-no-implementation.md) records why no engine ships, and why a remote one is reachable only through `RecognizingExtractor.CreateOutsideTheTrustBoundary` |

@@ -129,7 +129,13 @@ Enough to answer "is this an invoice?". Not enough to know whose.
 | `SensitiveDataGateway.Extensions` | Dependency injection, configuration, logging | `Core`, pipeline |
 | `SensitiveDataGateway.Testing` | Fake providers, leakage assertions, synthetic corpora | `Core` |
 | `SensitiveDataGateway.Providers.*` | One per decision integration. The only place egress exists | `Core` |
-| `SensitiveDataGateway.Documents.*` | One per document format | `Core` |
+| `SensitiveDataGateway.Documents.Mime` | Email, including every attachment and every forwarded message | `Core`, MimeKitLite |
+| `SensitiveDataGateway.Documents.Pdf` | PDF, including annotations, form fields and document information | `Core`, PdfPig |
+| `SensitiveDataGateway.Documents.OpenXml` | Word and Excel, including comments, tracked deletions and formula text | `Core`, Open XML SDK |
+
+A format adapter is referenced only by an application that reads that format. Nothing in the
+pipeline depends on one, so an application that processes email alone never installs a PDF
+parser.
 
 Target frameworks: `net8.0` and `net10.0`. Windows, Linux and macOS.
 
@@ -191,6 +197,7 @@ anywhere that is stronger than that document is a bug.
 | [DecisionKit provider](docs/providers/decisionkit.md) | What the DecisionKit adapter sends, and what it cannot |
 | [Writing your own provider](docs/providers/custom-provider.md) | The contract at the egress boundary, and how to prove you kept it |
 | [Dependency classification](docs/security/dependency-classification.md) | What a package is allowed to be able to do |
+| [Samples](samples/) | The reference scenario end to end, and the Native AOT smoke test |
 | [Decision records](docs/adr/) | Why the architecture is what it is, and what was rejected |
 | [Contributing](CONTRIBUTING.md) | Development rules, commit conventions, review gates |
 | [Security policy](SECURITY.md) | Reporting a vulnerability, and the properties treated as security requirements |
