@@ -11,6 +11,12 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- `docs/adr/0025-development-tools-and-deferred-mutation-testing.md`, with a new section in
+  the testing guide that states plainly what the suite does not prove. The dependency policy
+  now distinguishes a tool a developer runs from a dependency a consumer receives, under four
+  written conditions. Mutation testing is still not among them: Stryker.NET cannot drive this
+  test platform, and bridged onto VSTest it reports a mutation score of 0.00% while the tests
+  it discovered decide nothing. No score is published, because that one is false.
 - `docs/security/boundary-review-2026-10.md`: the internal review of the egress boundary
   carried out before the first release — the eight questions it tried to answer, the three
   defects it found, what it did not cover, and a statement that an internal review is not an

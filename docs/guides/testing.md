@@ -198,3 +198,38 @@ dotnet test --solution SensitiveDataGateway.slnx -c Release
 
 Everything runs on both `net8.0` and `net10.0`. A test that passes on one and not the other
 is a defect in the code under test far more often than in the test.
+
+---
+
+## 7. What the suite still does not prove
+
+Every test above establishes that the code passes. None of them establishes that a test would
+*fail* if a fail-closed branch stopped closing. Those are different claims, and for three
+components the difference is the whole product: the validator, the policy engine and the
+egress guard all fail silently when they fail. A validator that returns `Allowed` because its
+loop never executed looks exactly like a validator that checked and found nothing.
+
+Mutation testing is the instrument for that. It rewrites the source one small change at a
+time — flips a comparison, empties a collection, inverts a condition — and asks whether
+anything turns red. A surviving mutant is a behaviour change no assertion noticed.
+
+**It is not running today, and the reason is recorded in
+[ADR-0025](../adr/0025-development-tools-and-deferred-mutation-testing.md).** In short: this
+suite runs on Microsoft.Testing.Platform, Stryker.NET drives tests through VSTest, and the
+two have not met yet. Bridged onto VSTest it does produce a report — a mutation score of
+0.00%, with every mutant in `SourceSpan.cs` surviving although `SourceSpanTests.cs` asserts
+that type directly. The tests are discovered and are not deciding anything. A number that
+confident and that wrong is worse than no number at all, which is why none is published.
+
+Until that changes, treat the following as the substitute, and as a weaker one:
+
+- the egress suite, which asserts the guarantee rather than the implementation, and which may
+  effectively never go red (§5);
+- the rule that a new detector, transformation or check ships with the test that proves it
+  fails closed (§6);
+- the requirement that a bug fix starts from a test that actually ran red (§6), which is the
+  one habit that gives a kill-like signal by hand.
+
+When the tool can run here, the first run should be scoped to those three components rather
+than to the whole repository, and a surviving mutant in any of them should be read as a
+missing assertion until someone demonstrates otherwise.

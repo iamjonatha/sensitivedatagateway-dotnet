@@ -26,7 +26,7 @@ suite is still a plan.
 | Document adapters: mail, PDF, Word, Excel | Built |
 | Optical character recognition | Abstraction built, no engine shipped |
 | Semantic detection | Contract and Presidio adapter built, no model shipped |
-| Mutation testing of the boundary | Phase 13, last |
+| Mutation testing of the boundary | Deferred — see [ADR-0025](adr/0025-development-tools-and-deferred-mutation-testing.md) |
 
 Target frameworks: `net8.0` and `net10.0`, with an identical public surface on both.
 
@@ -52,7 +52,11 @@ written, and each one that lands must leave the existing API working.
    defined conflict resolution.
 5. **Telemetry.** An optional package with an `ActivitySource` and a `Meter`, emitting only
    the fields listed in [ADR-0008](adr/0008-privacy-safe-observability.md).
-6. **Streaming extraction**, so that a large bundle never has to be fully resident.
+6. **Spilling extracted text to disk above a threshold**, which is the only remaining way to
+   cut peak memory now that [ADR-0024](adr/0024-bounded-buffering-not-streaming.md) has
+   settled the rest: ingress already streams, and the pipeline deliberately does not. It is
+   listed low because it creates a new place where content exists at rest, and that needs its
+   own record and its own deletion story before any code.
 7. **Analyzers.** Diagnostics for a policy that leaves a known entity type unhandled, for a
    detector registered without a version, and for a log statement that interpolates content.
 8. **Additional provider integrations**, which is also the real test of whether
@@ -60,10 +64,11 @@ written, and each one that lands must leave the existing API working.
 9. **Mutation testing of the boundary**, last of all. The suite proves the code passes; it
     does not prove a test would fail if a fail-closed branch stopped closing. A mutation tool
     answers that by rewriting the source one small change at a time and checking that
-    something turns red. It is held to the end because it judges every test written before
-    it, and because it needs a decision record first: the only mature tool for .NET is not
-    Microsoft-maintained, and [ADR-0012](adr/0012-dependency-policy.md) does not yet
-    distinguish a development tool from a shipped dependency.
+    something turns red. The decision record it needed now exists:
+    [ADR-0025](adr/0025-development-tools-and-deferred-mutation-testing.md) admits
+    development tools as a class and still declines Stryker.NET today, because on this test
+    platform it reports a mutation score that is measurably false. The item waits on upstream
+    support for Microsoft.Testing.Platform, not on a decision here.
 10. **An external security review.** The boundary has been reviewed internally — see
     [`security/boundary-review-2026-10.md`](security/boundary-review-2026-10.md) — and that
     review found three defects, two of which no test would have caught. A review by people

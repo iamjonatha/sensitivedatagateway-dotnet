@@ -11,7 +11,7 @@
 | [Detectors](guides/detectors.md) | What each built-in detector finds, what it misses, and how to add your own |
 | [Getting started](guides/getting-started.md) | Sanitizing, inspecting and executing a document in five minutes |
 | [Logging and audit](guides/logging-and-audit.md) | The ten log events, the audit record, and why neither can carry content |
-| [Testing](guides/testing.md) | The testing package, the synthetic corpus, and which tests may go red |
+| [Testing](guides/testing.md) | The testing package, the synthetic corpus, which tests may go red, and what the suite still does not prove |
 | [Dependency injection](guides/dependency-injection.md) | One registration, the configuration schema, keyed gateways, and the AOT guarantee |
 | [Semantic detection](guides/semantic-detection.md) | The model contract, the trust boundary in the method name, and the Presidio adapter |
 | [AOT and trimming](guides/aot-and-trimming.md) | Which packages are AOT-clean, what the guarantee covers, and what to do about a warning |
