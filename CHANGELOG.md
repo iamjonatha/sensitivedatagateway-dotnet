@@ -11,6 +11,12 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- An end-to-end test for mail with attachments: a real MIME message is parsed, run through
+  extraction, detection, policy, anonymization and validation, and handed to a provider. It
+  asserts both halves — the attachment's text arrives and keeps a part identity of its own,
+  and the account number and address inside it do not. Attachment reading and pipeline
+  behaviour were each covered before; their join was not, and a silently dropped attachment
+  would have satisfied every leak assertion in the suite.
 - `docs/adr/0025-development-tools-and-deferred-mutation-testing.md`, with a new section in
   the testing guide that states plainly what the suite does not prove. The dependency policy
   now distinguishes a tool a developer runs from a dependency a consumer receives, under four

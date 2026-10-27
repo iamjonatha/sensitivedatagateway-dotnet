@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/SensitiveDataGateway.Documents.Mime/SensitiveDataGateway.Documents.Mime.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
     <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
   </ItemGroup>
 
