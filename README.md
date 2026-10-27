@@ -58,9 +58,9 @@ own type, a provider accepts only a `ValidatedPayload`, and only the privacy val
 produce one:
 
 ```csharp
-var result = await gateway.ExecuteAsync(bundle, questions, cancellationToken);
+var result = await gateway.ExecuteAsync(bundle, request, SanitizationPolicy.Balanced, cancellationToken);
 
-if (result.Status is GatewayStatus.Blocked)
+if (!result.IsAllowed)
 {
     return Reject(result.Report);   // it says which check refused, and quotes no value
 }

@@ -9,6 +9,8 @@ While the major version is `0`, the public API may change in any minor release.
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-27
+
 ### Added
 
 - An end-to-end test for mail with attachments: a real MIME message is parsed, run through
@@ -513,3 +515,6 @@ While the major version is `0`, the public API may change in any minor release.
   document in full before anything has been removed from it, so cleartext there exposes every
   document to anyone on the path. `ForSelfHosted` still accepts `http`, because a container
   reached over a loopback or a bridge the deployment owns gains nothing from a certificate.
+
+[Unreleased]: https://github.com/iamjonatha/sensitivedatagateway-dotnet/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/iamjonatha/sensitivedatagateway-dotnet/releases/tag/v0.1.0

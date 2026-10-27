@@ -1,18 +1,1 @@
 #nullable enable
-const SensitiveDataGateway.Documents.Mime.MimeReaderOptions.MaximumNestingDepth = 64 -> int
-const SensitiveDataGateway.Documents.Mime.MimeReaderOptions.MinimumNestingDepth = 1 -> int
-SensitiveDataGateway.Documents.Mime.MimeBundleReader
-SensitiveDataGateway.Documents.Mime.MimeBundleReader.MimeBundleReader() -> void
-SensitiveDataGateway.Documents.Mime.MimeBundleReader.MimeBundleReader(SensitiveDataGateway.Documents.Mime.MimeReaderOptions! options) -> void
-SensitiveDataGateway.Documents.Mime.MimeBundleReader.ReadAsync(SensitiveDataGateway.BundleId id, System.IO.Stream! message, SensitiveDataGateway.ProcessingLimits! limits, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Documents.DocumentBundle!>!
-SensitiveDataGateway.Documents.Mime.MimeReaderOptions
-SensitiveDataGateway.Documents.Mime.MimeReaderOptions.Headers.get -> System.Collections.Generic.IReadOnlyList<string!>!
-SensitiveDataGateway.Documents.Mime.MimeReaderOptions.MaxNestingDepth.get -> int
-SensitiveDataGateway.Documents.Mime.MimeReaderOptions.WithHeaders(System.Collections.Generic.IEnumerable<string!>! headers) -> SensitiveDataGateway.Documents.Mime.MimeReaderOptions!
-SensitiveDataGateway.Documents.Mime.MimeReaderOptions.WithMaxNestingDepth(int depth) -> SensitiveDataGateway.Documents.Mime.MimeReaderOptions!
-SensitiveDataGateway.Documents.Mime.MimeStructureExtractor
-SensitiveDataGateway.Documents.Mime.MimeStructureExtractor.CanExtract(string! mediaType) -> bool
-SensitiveDataGateway.Documents.Mime.MimeStructureExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
-SensitiveDataGateway.Documents.Mime.MimeStructureExtractor.MimeStructureExtractor() -> void
-SensitiveDataGateway.Documents.Mime.MimeStructureExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
-static SensitiveDataGateway.Documents.Mime.MimeReaderOptions.Default.get -> SensitiveDataGateway.Documents.Mime.MimeReaderOptions!

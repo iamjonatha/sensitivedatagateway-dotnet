@@ -1,1 +1,71 @@
 #nullable enable
+SensitiveDataGateway.Testing.FakeDecisionProvider
+SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>
+SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>.DecideAsync(SensitiveDataGateway.Validation.ValidatedPayload! payload, TRequest request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResult>!
+SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>.Name.get -> string!
+SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>.Named(string! name) -> SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>!
+SensitiveDataGateway.Testing.Leak
+SensitiveDataGateway.Testing.Leak.Location.get -> string!
+SensitiveDataGateway.Testing.Leak.ValueIndex.get -> int
+SensitiveDataGateway.Testing.Leak.ValueLength.get -> int
+SensitiveDataGateway.Testing.LeakAssert
+SensitiveDataGateway.Testing.LeakDetectedException
+SensitiveDataGateway.Testing.LeakDetectedException.LeakDetectedException() -> void
+SensitiveDataGateway.Testing.LeakDetectedException.LeakDetectedException(string! message) -> void
+SensitiveDataGateway.Testing.LeakDetectedException.LeakDetectedException(string! message, System.Exception! innerException) -> void
+SensitiveDataGateway.Testing.LeakDetectedException.Leaks.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Testing.Leak!>!
+SensitiveDataGateway.Testing.ProviderCall<TRequest>
+SensitiveDataGateway.Testing.ProviderCall<TRequest>.Payload.get -> SensitiveDataGateway.Validation.ValidatedPayload!
+SensitiveDataGateway.Testing.ProviderCall<TRequest>.Request.get -> TRequest
+SensitiveDataGateway.Testing.RecordingAuditSink
+SensitiveDataGateway.Testing.RecordingAuditSink.RecordingAuditSink() -> void
+SensitiveDataGateway.Testing.RecordingAuditSink.Records.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Auditing.AuditRecord!>!
+SensitiveDataGateway.Testing.RecordingAuditSink.WriteAsync(SensitiveDataGateway.Auditing.AuditRecord! record, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+SensitiveDataGateway.Testing.RecordingDecisionProvider
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.Calls.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Testing.ProviderCall<TRequest>!>!
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.DecideAsync(SensitiveDataGateway.Validation.ValidatedPayload! payload, TRequest request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<TResult>!
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.LastPayload.get -> SensitiveDataGateway.Validation.ValidatedPayload?
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.Name.get -> string!
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.RecordingDecisionProvider(SensitiveDataGateway.IDecisionProvider<TRequest, TResult>! inner) -> void
+SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>.WasCalled.get -> bool
+SensitiveDataGateway.Testing.SensitiveValue
+SensitiveDataGateway.Testing.SensitiveValue.Text.get -> string!
+SensitiveDataGateway.Testing.SensitiveValue.Type.get -> SensitiveDataGateway.Detection.EntityType
+SensitiveDataGateway.Testing.SyntheticCorpus
+SensitiveDataGateway.Testing.SyntheticDocument
+SensitiveDataGateway.Testing.SyntheticDocument.Body.get -> string!
+SensitiveDataGateway.Testing.SyntheticDocument.HasAttachment.get -> bool
+SensitiveDataGateway.Testing.SyntheticDocument.IsPromptInjection.get -> bool
+SensitiveDataGateway.Testing.SyntheticDocument.Language.get -> string!
+SensitiveDataGateway.Testing.SyntheticDocument.Name.get -> string!
+SensitiveDataGateway.Testing.SyntheticDocument.Texts.get -> System.Collections.Generic.IReadOnlyList<string!>!
+SensitiveDataGateway.Testing.SyntheticDocument.ToBundle() -> SensitiveDataGateway.Documents.DocumentBundle!
+SensitiveDataGateway.Testing.SyntheticDocument.Values.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Testing.SensitiveValue!>!
+SensitiveDataGateway.Testing.TestBundle
+SensitiveDataGateway.Testing.TestPolicy
+const SensitiveDataGateway.Testing.LeakAssert.MinimumValueLength = 4 -> int
+const SensitiveDataGateway.Testing.TestBundle.MediaType = "text/plain" -> string!
+override SensitiveDataGateway.Testing.Leak.ToString() -> string!
+override SensitiveDataGateway.Testing.ProviderCall<TRequest>.ToString() -> string!
+override SensitiveDataGateway.Testing.SensitiveValue.ToString() -> string!
+override SensitiveDataGateway.Testing.SyntheticDocument.ToString() -> string!
+static SensitiveDataGateway.Testing.FakeDecisionProvider.Deciding<TRequest, TResult>(System.Func<SensitiveDataGateway.Validation.ValidatedPayload!, TRequest, TResult>! decide) -> SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>!
+static SensitiveDataGateway.Testing.FakeDecisionProvider.Failing<TRequest, TResult>(System.Exception! failure) -> SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>!
+static SensitiveDataGateway.Testing.FakeDecisionProvider.Returning<TRequest, TResult>(TResult result) -> SensitiveDataGateway.Testing.FakeDecisionProvider<TRequest, TResult>!
+static SensitiveDataGateway.Testing.LeakAssert.NoneIn(System.Collections.Generic.IEnumerable<string!>! lines, System.Collections.Generic.IEnumerable<string!>! values) -> void
+static SensitiveDataGateway.Testing.LeakAssert.NoneOf(SensitiveDataGateway.Validation.ValidatedPayload! payload, System.Collections.Generic.IEnumerable<string!>! values) -> void
+static SensitiveDataGateway.Testing.LeakAssert.NoneOf(SensitiveDataGateway.Validation.ValidatedPayload! payload, params string![]! values) -> void
+static SensitiveDataGateway.Testing.LeakAssert.NoneOf<TRequest, TResult>(SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>! provider, System.Collections.Generic.IEnumerable<string!>! values) -> void
+static SensitiveDataGateway.Testing.RecordingDecisionProvider.Returning<TRequest, TResult>(TResult result) -> SensitiveDataGateway.Testing.RecordingDecisionProvider<TRequest, TResult>!
+static SensitiveDataGateway.Testing.SensitiveValue.Of(SensitiveDataGateway.Detection.EntityType type, string! text) -> SensitiveDataGateway.Testing.SensitiveValue!
+static SensitiveDataGateway.Testing.SyntheticCorpus.All() -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Testing.SyntheticDocument!>!
+static SensitiveDataGateway.Testing.SyntheticCorpus.PromptInjections() -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Testing.SyntheticDocument!>!
+static SensitiveDataGateway.Testing.SyntheticCorpus.Values() -> System.Collections.Generic.IReadOnlyList<string!>!
+static SensitiveDataGateway.Testing.TestBundle.FromText(string! text) -> SensitiveDataGateway.Documents.DocumentBundle!
+static SensitiveDataGateway.Testing.TestBundle.OfSize(int characters) -> SensitiveDataGateway.Documents.DocumentBundle!
+static SensitiveDataGateway.Testing.TestBundle.WithAttachment(string! body, string! attachment) -> SensitiveDataGateway.Documents.DocumentBundle!
+static SensitiveDataGateway.Testing.TestPolicy.Blocking.get -> SensitiveDataGateway.Policies.SanitizationPolicy!
+static SensitiveDataGateway.Testing.TestPolicy.CreateBuilder() -> SensitiveDataGateway.Policies.SanitizationPolicyBuilder!
+static SensitiveDataGateway.Testing.TestPolicy.Permissive.get -> SensitiveDataGateway.Policies.SanitizationPolicy!
+static SensitiveDataGateway.Testing.TestPolicy.Within(SensitiveDataGateway.ProcessingLimits! limits) -> SensitiveDataGateway.Policies.SanitizationPolicy!

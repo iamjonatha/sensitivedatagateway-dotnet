@@ -1,1 +1,16 @@
 #nullable enable
+SensitiveDataGateway.Documents.Pdf.PdfExtractor
+SensitiveDataGateway.Documents.Pdf.PdfExtractor.CanExtract(string! mediaType) -> bool
+SensitiveDataGateway.Documents.Pdf.PdfExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
+SensitiveDataGateway.Documents.Pdf.PdfExtractor.PdfExtractor() -> void
+SensitiveDataGateway.Documents.Pdf.PdfExtractor.PdfExtractor(SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions! options) -> void
+SensitiveDataGateway.Documents.Pdf.PdfExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
+SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions
+SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.MaxBytes.get -> long
+SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.MaxPageCount.get -> int
+SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.WithMaxBytes(long bytes) -> SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions!
+SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.WithMaxPageCount(int pages) -> SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions!
+const SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.MaximumPageCount = 50000 -> int
+const SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.MinimumBytes = 1024 -> long
+const SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.MinimumPageCount = 1 -> int
+static SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions.Default.get -> SensitiveDataGateway.Documents.Pdf.PdfExtractorOptions!

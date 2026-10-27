@@ -1,1 +1,24 @@
 #nullable enable
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor.CanExtract(string! mediaType) -> bool
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor.DocxExtractor() -> void
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor.DocxExtractor(SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions! options) -> void
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
+SensitiveDataGateway.Documents.OpenXml.DocxExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MaxBytes.get -> long
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MaxCharactersInPart.get -> long
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MaxSegmentCount.get -> int
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.WithMaxBytes(long maxBytes) -> SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions!
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.WithMaxCharactersInPart(long maxCharactersInPart) -> SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions!
+SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.WithMaxSegmentCount(int maxSegmentCount) -> SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions!
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor.CanExtract(string! mediaType) -> bool
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor.ExtractAsync(SensitiveDataGateway.Documents.DocumentPart! part, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Documents.TextSegment!>!>
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor.Version.get -> SensitiveDataGateway.Documents.ExtractorVersion
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor.XlsxExtractor() -> void
+SensitiveDataGateway.Documents.OpenXml.XlsxExtractor.XlsxExtractor(SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions! options) -> void
+const SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MaximumSegmentCount = 1000000 -> int
+const SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MinimumBytes = 1024 -> long
+const SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.MinimumSegmentCount = 1 -> int
+static SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions.Default.get -> SensitiveDataGateway.Documents.OpenXml.OpenXmlExtractorOptions!
