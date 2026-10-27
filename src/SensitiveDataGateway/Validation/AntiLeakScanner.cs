@@ -36,7 +36,7 @@ internal sealed class AntiLeakScanner
     /// <param name="output">The sanitized segments.</param>
     /// <returns>One finding per value and segment, empty when the output is clean.</returns>
     public IReadOnlyList<PrivacyFinding> Scan(
-        IReadOnlyList<LeakCandidate> candidates,
+        IReadOnlyList<ScannedCandidate> candidates,
         IReadOnlyList<SanitizedSegment> output)
     {
         var findings = new List<PrivacyFinding>();
@@ -52,7 +52,7 @@ internal sealed class AntiLeakScanner
     }
 
     private void ScanSegment(
-        IReadOnlyList<LeakCandidate> candidates,
+        IReadOnlyList<ScannedCandidate> candidates,
         SegmentId segment,
         string visible,
         List<PrivacyFinding> findings)
@@ -68,7 +68,7 @@ internal sealed class AntiLeakScanner
                 findings.Add(PrivacyFinding.ForLeak(
                     PrivacyCheck.AntiLeakScan,
                     signal,
-                    candidate.Type,
+                    candidate.Candidate.Type,
                     segment));
             }
         }
@@ -88,26 +88,25 @@ internal sealed class AntiLeakScanner
         }
     }
 
-    private LeakSignal Recognize(LeakCandidate candidate, string visible, string reduced)
+    private LeakSignal Recognize(ScannedCandidate candidate, string visible, string reduced)
     {
-        if (visible.Contains(candidate.Value, StringComparison.Ordinal))
+        if (visible.Contains(candidate.Candidate.Value, StringComparison.Ordinal))
         {
             return LeakSignal.Exact;
         }
 
-        var value = TextNormalizer.Reduce(candidate.Value);
-
-        if (value.Length >= _options.MinimumFragmentLength && reduced.Contains(value, StringComparison.Ordinal))
+        if (candidate.Reduced.Length >= _options.MinimumFragmentLength
+            && reduced.Contains(candidate.Reduced, StringComparison.Ordinal))
         {
             return LeakSignal.Normalized;
         }
 
-        return CarriesFragment(candidate.Value, reduced) ? LeakSignal.Fragment : LeakSignal.None;
+        return CarriesFragment(candidate.Fragments, reduced) ? LeakSignal.Fragment : LeakSignal.None;
     }
 
-    private bool CarriesFragment(string value, string reduced)
+    private static bool CarriesFragment(IReadOnlyList<string> fragments, string reduced)
     {
-        foreach (var fragment in Fragments(value))
+        foreach (var fragment in fragments)
         {
             if (reduced.Contains(fragment, StringComparison.Ordinal))
             {
@@ -116,39 +115,6 @@ internal sealed class AntiLeakScanner
         }
 
         return false;
-    }
-
-    /// <summary>
-    /// Splits a value into the parts that are long enough to identify it on their own.
-    /// </summary>
-    /// <param name="value">The detected value.</param>
-    /// <returns>
-    /// The reduced parts of at least the configured length. A value made of a single part
-    /// yields nothing, because the whole of it was already compared.
-    /// </returns>
-    private List<string> Fragments(string value)
-    {
-        var parts = value.Split(
-            (char[]?)null,
-            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        var fragments = new List<string>();
-
-        if (parts.Length < 2)
-        {
-            return fragments;
-        }
-
-        foreach (var part in parts)
-        {
-            var reduced = TextNormalizer.Reduce(part);
-
-            if (reduced.Length >= _options.MinimumFragmentLength)
-            {
-                fragments.Add(reduced);
-            }
-        }
-
-        return fragments;
     }
 
     private bool CarriesKeyMaterial(string visible)

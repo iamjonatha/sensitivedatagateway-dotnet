@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    What the gateway costs, measured rather than asserted.
+
+    The project references the pipeline and the testing package only. No document adapter is
+    referenced on purpose: a PDF benchmark would mostly measure PdfPig, and the number that
+    matters here is what this repository's own code adds on top of whatever produced the text.
+  -->
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/SensitiveDataGateway/SensitiveDataGateway.csproj" />
+    <ProjectReference Include="../../src/SensitiveDataGateway.Testing/SensitiveDataGateway.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+  </ItemGroup>
+
+</Project>

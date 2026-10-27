@@ -70,7 +70,9 @@ public sealed class PrivacyValidator : IPrivacyValidator
         CheckStatus(run, sanitized);
         CheckScan(run, detected);
 
-        var candidates = Candidates(detected, plan, run);
+        var candidates = ScannedCandidate.Project(
+            Candidates(detected, plan, run),
+            _options.MinimumFragmentLength);
 
         CheckUnresolved(run, plan, policy);
         CheckViolations(run, plan);
@@ -188,7 +190,7 @@ public sealed class PrivacyValidator : IPrivacyValidator
         }
     }
 
-    private void CheckLeaks(Run run, IReadOnlyList<LeakCandidate> candidates, SanitizedDocument sanitized)
+    private void CheckLeaks(Run run, IReadOnlyList<ScannedCandidate> candidates, SanitizedDocument sanitized)
     {
         run.Ran(PrivacyCheck.AntiLeakScan);
 
@@ -198,7 +200,7 @@ public sealed class PrivacyValidator : IPrivacyValidator
         }
     }
 
-    private void CheckTokens(Run run, IReadOnlyList<LeakCandidate> candidates, SanitizedDocument sanitized)
+    private void CheckTokens(Run run, IReadOnlyList<ScannedCandidate> candidates, SanitizedDocument sanitized)
     {
         run.Ran(PrivacyCheck.TokenResolution);
 
@@ -208,15 +210,13 @@ public sealed class PrivacyValidator : IPrivacyValidator
 
             foreach (var candidate in candidates)
             {
-                var value = TextNormalizer.Reduce(candidate.Value);
-
-                if (value.Length >= _options.MinimumFragmentLength
-                    && tokens.Contains(value, StringComparison.Ordinal))
+                if (candidate.Reduced.Length >= _options.MinimumFragmentLength
+                    && tokens.Contains(candidate.Reduced, StringComparison.Ordinal))
                 {
                     run.Fail(PrivacyFinding.ForLeak(
                         PrivacyCheck.TokenResolution,
                         LeakSignal.Normalized,
-                        candidate.Type,
+                        candidate.Candidate.Type,
                         segment.Id));
                 }
             }

@@ -280,6 +280,67 @@ public sealed class PrivacyValidatorTests
     public void Constructor_RejectsMissingOptions() =>
         Assert.Throws<ArgumentNullException>(() => new PrivacyValidator(null!));
 
+    /// <summary>
+    /// Bounds what validating a many-paragraph document is allowed to allocate.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The anti-leak scan compares every candidate against every segment, so its comparison
+    /// count is the cross-product and cannot be smaller. What a candidate is reduced to, and
+    /// the fragments it splits into, depend on the value alone and must be derived once —
+    /// deriving them inside the segment loop turned a 200,000-character document into two
+    /// seconds and 2.6 GB, which is a denial of service aimed at the one stage that cannot
+    /// be skipped.
+    /// </para>
+    /// <para>
+    /// The budget is deliberately loose. It is here to catch a return of per-segment
+    /// derivation, which costs two orders of magnitude, not to police an allocation.
+    /// </para>
+    /// </remarks>
+    [Fact]
+    public void Validate_DerivesEachCandidateOnceAcrossEverySegment()
+    {
+        var document = Crowd(300);
+        var policy = Fixture.Policy(Rules());
+        var plan = s_engine.Evaluate(document, policy);
+        var sanitized = Anonymize(document, plan);
+        var validator = new PrivacyValidator();
+
+        _ = validator.Validate(document, plan, sanitized, policy);
+
+        var before = GC.GetAllocatedBytesForCurrentThread();
+        var result = validator.Validate(document, plan, sanitized, policy);
+        var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+
+        Assert.True(result.IsAllowed);
+        Assert.True(allocated < 8L * 1024 * 1024, $"Validation allocated {allocated} bytes.");
+    }
+
+    /// <summary>
+    /// Builds a document of many paragraphs, each carrying values of its own.
+    /// </summary>
+    /// <param name="paragraphs">How many paragraphs the document has.</param>
+    /// <returns>The detected document.</returns>
+    private static DetectedDocument Crowd(int paragraphs)
+    {
+        var parts = new Fixture.PartSpec[paragraphs];
+
+        for (var index = 0; index < paragraphs; index++)
+        {
+            var person = $"Dana Oakfield {index}";
+            var email = $"dana{index}@example.invalid";
+            var text = $"Contact {person} at {email} today";
+
+            parts[index] = Fixture.Part(
+                $"part-{index}",
+                text,
+                Span(text, person, EntityType.Person),
+                Span(text, email, EntityType.Email));
+        }
+
+        return Fixture.Document(parts);
+    }
+
     private static DetectedDocument Document() => Fixture.Document(Fixture.Part(
         "body",
         Body,

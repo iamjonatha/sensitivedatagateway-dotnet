@@ -14,21 +14,16 @@
 | [Testing](guides/testing.md) | The testing package, the synthetic corpus, and which tests may go red |
 | [Dependency injection](guides/dependency-injection.md) | One registration, the configuration schema, keyed gateways, and the AOT guarantee |
 | [Semantic detection](guides/semantic-detection.md) | The model contract, the trust boundary in the method name, and the Presidio adapter |
+| [AOT and trimming](guides/aot-and-trimming.md) | Which packages are AOT-clean, what the guarantee covers, and what to do about a warning |
+| [Releasing](guides/releasing.md) | What a version number promises, the pre-tag checklist, and how to withdraw a release |
+| [FAQ](guides/faq.md) | The short answers, each pointing at the long one |
+| [Performance](performance.md) | Measured cost per stage, the worst shape, and what the numbers do not say |
 | [DecisionKit provider](providers/decisionkit.md) | What the DecisionKit adapter sends, the two payload formats, the metadata keys |
 | [Writing your own provider](providers/custom-provider.md) | The contract at the egress boundary, the rules, and how to prove you kept them |
 | [Threat model](security/threat-model.md) | The trust boundary, the assets, fourteen threats and the residual risk |
 | [Egress guarantees](security/egress-guarantees.md) | What is guaranteed, what is explicitly not, and how to verify both |
 | [Dependency classification](security/dependency-classification.md) | What a referenced package is allowed to be capable of |
 | [Decision records](adr/) | Why the architecture is what it is, and what was rejected |
-
-## Planned
-
-Written by the phase that creates the behaviour. The phases are listed in
-[the roadmap](roadmap.md). These documents do not exist yet.
-
-| Document | Phase |
-| --- | --- |
-| `guides/releasing.md`, `guides/aot-and-trimming.md`, `guides/faq.md` | 0 and 12 |
 
 ## Rules
 

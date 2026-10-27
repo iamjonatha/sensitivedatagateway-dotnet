@@ -11,6 +11,10 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- Published performance figures in `docs/performance.md`, produced by a BenchmarkDotNet
+  project in `benchmarks/` that measures each pipeline stage and the gateway end to end over
+  three document shapes and two sizes. The worst shape is the one documented.
+- Guides for releasing, for Native AOT and trimming, and a FAQ.
 - `SensitiveDataGateway.Detection.Presidio`: a detector that asks a Presidio analyzer the
   deployment operates. The endpoint has no default, `ForHostedService` produces a detector the
   strict path refuses, a finding of a type the host did not ask for is dropped rather than
@@ -416,6 +420,16 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Fixed
 
+- Validation no longer re-derives the comparison forms of every candidate value once per
+  output segment. The anti-leak scan compares every candidate against every segment, which is
+  necessary — a value anonymized in one paragraph must not reappear in another — but reducing
+  a value and splitting it into fragments depends on the value alone, and both the scanner and
+  the token check were doing it inside the segment loop. On a 200,000-character document split
+  into roughly two thousand paragraphs this made validation allocate 2.6 GB and take two
+  seconds, which is a denial-of-service vector in the one stage that is not allowed to be
+  skipped. The derivation now happens once per candidate: the same document validates in
+  152 ms and allocates 18.9 MB, and the gateway end to end goes from 1.69 s to 212 ms. No
+  finding changes; the comparison performed is identical.
 - The audit record now carries `ProviderName`, the name of the decision provider the payload
   was handed to. `IDecisionProvider<,>.Name` documented itself as being for the audit record,
   but no field carried it and nothing in the gateway read it, so a record said that an

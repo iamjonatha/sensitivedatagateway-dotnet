@@ -196,6 +196,9 @@ anywhere that is stronger than that document is a bug.
 | [Testing](docs/guides/testing.md) | Proving over your own documents that nothing crossed |
 | [Semantic detection](docs/guides/semantic-detection.md) | Asking a model without letting the document answer back |
 | [Dependency injection](docs/guides/dependency-injection.md) | One registration, the configuration schema, and keyed gateways |
+| [FAQ](docs/guides/faq.md) | The short answers, each pointing at the long one |
+| [Performance](docs/performance.md) | Measured cost per stage, and what the numbers do not say |
+| [AOT and trimming](docs/guides/aot-and-trimming.md) | Which packages are AOT-clean, and what the guarantee covers |
 | [DecisionKit provider](docs/providers/decisionkit.md) | What the DecisionKit adapter sends, and what it cannot |
 | [Writing your own provider](docs/providers/custom-provider.md) | The contract at the egress boundary, and how to prove you kept it |
 | [Dependency classification](docs/security/dependency-classification.md) | What a package is allowed to be able to do |

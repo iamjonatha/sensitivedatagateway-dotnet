@@ -122,7 +122,7 @@ public sealed class AntiLeakScannerTests
         string text,
         params LeakCandidate[] candidates) =>
         s_scanner.Scan(
-            candidates,
+            ScannedCandidate.Project(candidates, ValidationOptions.Default.MinimumFragmentLength),
             [
                 SanitizedSegment.Create(
                     SegmentId.Create("segment-0"),

@@ -1,0 +1,25 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Benchmarks">
+    <!--
+      One target framework. A benchmark that ran on net8.0 and net10.0 would publish two
+      numbers for the same question and invite the reader to pick one. The published figures
+      are the current runtime's; the older one is measured by hand when a release needs it.
+    -->
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+    <!--
+      Server GC off keeps the numbers closer to what a request-scoped application sees, and
+      an optimized build is the only build worth measuring.
+    -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+</Project>

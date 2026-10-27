@@ -223,7 +223,8 @@ comment. `docs/adr/` is append-only.
 
 ## 10. Releasing
 
-See `docs/guides/releasing.md` once Phase 0 has produced it.
+See [`docs/guides/releasing.md`](docs/guides/releasing.md): what a version number promises,
+the pre-tag checklist, and how a release is withdrawn.
 
 ---
 

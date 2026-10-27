@@ -14,6 +14,9 @@
     <Project Path="samples/Aot/SensitiveDataGateway.Samples.Aot.csproj" />
     <Project Path="samples/EmailClassification/SensitiveDataGateway.Samples.EmailClassification.csproj" />
   </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/SensitiveDataGateway.Benchmarks/SensitiveDataGateway.Benchmarks.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SensitiveDataGateway.Core.Tests/SensitiveDataGateway.Core.Tests.csproj" />
     <Project Path="tests/SensitiveDataGateway.Detection.Presidio.Tests/SensitiveDataGateway.Detection.Presidio.Tests.csproj" />
