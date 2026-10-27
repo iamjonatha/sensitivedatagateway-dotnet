@@ -51,6 +51,61 @@ jobs:
       - name: Test
         run: dotnet test --solution SensitiveDataGateway.slnx -c Release --no-build
 
+      - name: Run offline samples
+        run: |
+          dotnet run --project samples/Aot -c Release --no-build
+          dotnet run --project samples/EmailClassification -c Release --no-build
+
+  aot:
+    name: Native AOT publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # The interesting failure is a trim or AOT warning, which is an error here. Running the
+      # binary afterwards proves the trimmer did not remove something the code still needs.
+      - name: Publish
+        run: dotnet publish samples/Aot -c Release -r linux-x64
+
+      - name: Run the native binary
+        run: ./artifacts/publish/SensitiveDataGateway.Samples.Aot/release_linux-x64/SensitiveDataGateway.Samples.Aot
+
+  benchmarks:
+    name: Benchmarks (smoke)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # A dry run proves every benchmark still compiles and executes. Measured numbers from a
+      # shared CI runner would be noise, so no timings are collected or published here.
+      # An explicit bash shell turns on pipefail, so a build failure is not hidden behind tee.
+      - name: Dry run
+        shell: bash
+        run: |
+          dotnet run --project benchmarks/SensitiveDataGateway.Benchmarks -c Release -- --filter '*' --job Dry | tee benchmarks.log
+          if grep -q 'Benchmarks with issues' benchmarks.log; then
+            echo '::error::One or more benchmarks failed to run.'
+            exit 1
+          fi
+
   package:
     name: Pack
     runs-on: ubuntu-latest
