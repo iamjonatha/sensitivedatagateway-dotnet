@@ -1,17 +1,1 @@
 #nullable enable
-SensitiveDataGateway.Detection.Presidio.PresidioDetector
-SensitiveDataGateway.Detection.Presidio.PresidioDetector.ExamineAsync(SensitiveDataGateway.Detection.Semantic.SemanticDetectionContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.SensitiveEntity!>!>
-SensitiveDataGateway.Detection.Presidio.PresidioDetector.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
-SensitiveDataGateway.Detection.Presidio.PresidioDetector.Version.get -> SensitiveDataGateway.Detection.DetectorVersion
-SensitiveDataGateway.Detection.Presidio.PresidioOptions
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.Endpoint.get -> System.Uri!
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.EntityTypes.get -> System.Collections.Generic.IReadOnlyDictionary<string!, SensitiveDataGateway.Detection.EntityType>!
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.Language.get -> string!
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.MinimumScore.get -> double
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.WithEntityTypes(System.Collections.Generic.IReadOnlyDictionary<string!, SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Presidio.PresidioOptions!
-SensitiveDataGateway.Detection.Presidio.PresidioOptions.WithMinimumScore(double minimumScore) -> SensitiveDataGateway.Detection.Presidio.PresidioOptions!
-static SensitiveDataGateway.Detection.Presidio.PresidioDetector.Create(System.Net.Http.HttpClient! client, SensitiveDataGateway.Detection.Presidio.PresidioOptions! options) -> SensitiveDataGateway.Detection.Presidio.PresidioDetector!
-static SensitiveDataGateway.Detection.Presidio.PresidioOptions.ForHostedService(System.Uri! endpoint, string! language) -> SensitiveDataGateway.Detection.Presidio.PresidioOptions!
-static SensitiveDataGateway.Detection.Presidio.PresidioOptions.ForSelfHosted(System.Uri! endpoint, string! language) -> SensitiveDataGateway.Detection.Presidio.PresidioOptions!
-static SensitiveDataGateway.Detection.Presidio.PresidioOptions.ForSelfHosted(System.Uri! endpoint) -> SensitiveDataGateway.Detection.Presidio.PresidioOptions!

@@ -1,1 +1,15 @@
 #nullable enable
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat.Segments = 1 -> SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat.Text = 0 -> SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitProvider
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitProvider.DecideAsync(SensitiveDataGateway.Validation.ValidatedPayload! payload, DecisionKit.Questions.QuestionSet! request, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<DecisionKit.Results.DecisionResult!>!
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitProvider.DecisionKitProvider(DecisionKit.Providers.IDecisionProvider! inner) -> void
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitProvider.DecisionKitProvider(DecisionKit.Providers.IDecisionProvider! inner, SensitiveDataGateway.Providers.DecisionKit.DecisionKitPayloadFormat payloadFormat) -> void
+SensitiveDataGateway.Providers.DecisionKit.DecisionKitProvider.Name.get -> string!
+const SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys.ContentHash = "sdg.content.hash" -> string!
+const SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys.GatewayVersion = "sdg.gateway.version" -> string!
+const SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys.PolicyId = "sdg.policy.id" -> string!
+const SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys.PolicyVersion = "sdg.policy.version" -> string!
+const SensitiveDataGateway.Providers.DecisionKit.DecisionKitMetadataKeys.SanitizedAt = "sdg.sanitized.at" -> string!
