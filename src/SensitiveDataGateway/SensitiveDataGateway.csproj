@@ -16,4 +16,15 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
+  <!--
+    The benchmark project measures each pipeline stage on its own, including the privacy
+    validator, which is internal so that no consumer can call it with inputs it did not
+    produce. Measuring a stage is not forging a payload: the benchmark never hands what it
+    builds to a provider, and the grant is to one assembly in this repository that does not
+    ship.
+  -->
+  <ItemGroup Label="Benchmark visibility">
+    <InternalsVisibleTo Include="SensitiveDataGateway.Benchmarks" />
+  </ItemGroup>
+
 </Project>

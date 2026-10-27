@@ -109,8 +109,12 @@ var gateway = DocumentGateway.CreateDefault(options);
 
 `DocumentGateway.CreateDefault()` reads `text/*` and nothing else. A part with any other
 media type produces an extraction failure, which `Strict` treats as an incomplete scan and
-blocks. Document adapters for PDF, Office and email formats arrive in phase 10; until then,
-convert the document yourself or supply your own `IDocumentExtractor`.
+blocks.
+
+To read more, reference the adapter package for the format and register its extractor with
+`WithExtractor`: `SensitiveDataGateway.Documents.Mime` for email, `.Documents.Pdf` for PDF,
+`.Documents.OpenXml` for Word and Excel. A format no registered extractor claims still
+blocks, which is the point — a part nobody could read is not a part anybody has scanned.
 
 ## When it throws
 

@@ -56,21 +56,16 @@ public enum TransformationAction
     Hash = 5,
 
     /// <summary>
-    /// Replace the value with ciphertext the application can later reverse.
-    /// </summary>
-    Encrypt = 6,
-
-    /// <summary>
     /// Refuse the whole operation.
     /// </summary>
     /// <remarks>
     /// Blocking is a decision about the document, not about the value: there is no sanitized
     /// version of a document that contains this.
     /// </remarks>
-    Block = 7,
+    Block = 6,
 
     /// <summary>
     /// Suspend the operation and hand it to a human inside the trust boundary.
     /// </summary>
-    RequireReview = 8,
+    RequireReview = 7,
 }

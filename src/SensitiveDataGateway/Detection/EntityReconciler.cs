@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using SensitiveDataGateway.Documents;
 
 namespace SensitiveDataGateway.Detection;
@@ -34,22 +35,31 @@ internal static class EntityReconciler
     /// </summary>
     /// <param name="segments">The segments of the document, in reading order.</param>
     /// <param name="candidates">Everything every detector reported.</param>
+    /// <param name="cancellationToken">The token that cancels the stage.</param>
     /// <returns>The surviving candidates, ordered by position.</returns>
+    /// <exception cref="OperationCanceledException">
+    /// <paramref name="cancellationToken"/> was cancelled.
+    /// </exception>
     public static List<SensitiveEntity> Reconcile(
         IReadOnlyList<TextSegment> segments,
-        List<SensitiveEntity> candidates)
+        List<SensitiveEntity> candidates,
+        CancellationToken cancellationToken)
     {
         var order = PositionOf(segments);
 
         candidates.Sort(ComparePriority);
 
         var accepted = new List<SensitiveEntity>(candidates.Count);
+        var occupied = new AcceptedSpans();
 
         foreach (var candidate in candidates)
         {
-            if (!OverlapsAccepted(accepted, candidate))
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (!occupied.Overlaps(candidate.Span))
             {
                 accepted.Add(candidate);
+                occupied.Add(candidate.Span);
             }
         }
 
@@ -68,19 +78,6 @@ internal static class EntityReconciler
         }
 
         return order;
-    }
-
-    private static bool OverlapsAccepted(List<SensitiveEntity> accepted, SensitiveEntity candidate)
-    {
-        foreach (var entity in accepted)
-        {
-            if (entity.Span.Overlaps(candidate.Span))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /// <summary>

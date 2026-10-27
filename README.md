@@ -78,7 +78,7 @@ to write a `catch`.
 | --- | --- |
 | **Extraction** | Email, PDF, DOCX, XLSX and plain text become ordered text segments, each traceable to the page, paragraph or cell it came from |
 | **Detection** | Deterministic detectors first — IBAN with its checksum, credit cards with Luhn, tax codes, tokens, keys — then, optionally, a local semantic detector |
-| **Policy** | An explicit, versioned policy decides per entity type: preserve, mask, redact, pseudonymize, hash, encrypt, block or hand to a human |
+| **Policy** | An explicit, versioned policy decides per entity type: preserve, mask, redact, pseudonymize, hash, block or hand to a human |
 | **Anonymization** | `Mario Rossi` becomes `[PERSON_001]`, stable across an email and its attachments. The mapping stays with you |
 | **Validation** | Ten checks, including a scan of the output for every value found in the input. Failure blocks |
 | **Egress** | The provider receives sanitized content, a policy version and nothing else |
@@ -87,7 +87,7 @@ The original:
 
 ```text
 Buongiorno Mario Rossi, la fattura 2026/123 relativa al contratto con
-ACME S.p.A. verrà saldata sul conto IT60X0542811101000000123456.
+ACME S.p.A. verrà saldata sul conto IT51X9999999999000000999999.
 ```
 
 What the provider sees:

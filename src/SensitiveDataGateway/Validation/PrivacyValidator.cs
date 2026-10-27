@@ -26,7 +26,7 @@ namespace SensitiveDataGateway.Validation;
 /// <see cref="ValidationOptions"/> decide how hard the scan looks, never whether it looks.
 /// </para>
 /// </remarks>
-public sealed class PrivacyValidator : IPrivacyValidator
+internal sealed class PrivacyValidator : IPrivacyValidator
 {
     private readonly ValidationOptions _options;
     private readonly AntiLeakScanner _scanner;

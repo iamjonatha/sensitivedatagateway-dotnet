@@ -37,7 +37,6 @@ var gateway = new DocumentGateway(
     new DetectionPipeline([.. DeterministicDetectors.All(), host]),
     new PolicyEngine(),
     new DocumentAnonymizer(new InMemoryPseudonymStore()),
-    new PrivacyValidator(),
     GatewayOptions.Default);
 ```
 
@@ -198,10 +197,12 @@ gateway assumes nothing about how you run it beyond reachability at the URI you 
 
 - `ForSelfHosted(uri)` — a service on infrastructure you control. Reports `SelfHosted`, and
   `SemanticDetectorHost.Create` accepts it. An overload takes the analyzer's language code,
-  which defaults to `en`.
+  which defaults to `en`. `http` is accepted here: a container on a network you own is
+  reached over a loopback or a bridge, and a certificate there buys nothing.
 - `ForHostedService(uri, language)` — a service somebody else runs. Reports `Remote`, and
   `Create` refuses it. Use `CreateOutsideTheTrustBoundary` if that is genuinely what you
-  want.
+  want. The address must be `https`: the content is unsanitized and the network is not
+  yours, so cleartext would hand every document to anyone on the path.
 
 Raw document text leaves the process in both cases. The distinction is who receives it.
 

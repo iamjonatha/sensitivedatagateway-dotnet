@@ -213,7 +213,6 @@ that choice belongs to the policy, not to the engine.
 | `Redact` | Replace with a type marker that carries no identity: `[REDACTED]` |
 | `Pseudonymize` | Replace with a stable, correlatable token: `[PERSON_001]` |
 | `Hash` | Replace with a keyed digest. Correlatable across operations, not reversible |
-| `Encrypt` | Replace with ciphertext the application can later reverse. Reversible by design |
 | `Block` | Refuse the whole operation |
 | `RequireReview` | Suspend the operation and hand it to a human inside the trust boundary |
 

@@ -18,7 +18,7 @@ namespace SensitiveDataGateway.Validation;
 /// correction applied here would be a transformation nobody planned and nobody audited.
 /// </para>
 /// </remarks>
-public interface IPrivacyValidator
+internal interface IPrivacyValidator
 {
     /// <summary>
     /// Validates a sanitized document against everything the pipeline claimed about it.

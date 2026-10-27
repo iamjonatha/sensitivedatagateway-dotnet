@@ -30,7 +30,7 @@ The anonymizer refuses a plan it cannot honour, rather than doing its best:
 | `plan.IsBlocked` | `InvalidOperationException` |
 | `Hash` with no key configured | `InvalidOperationException` |
 | `Session` or `Tenant` scope with no name configured | `InvalidOperationException` |
-| `Encrypt`, `Block` or `RequireReview` | `NotSupportedException` |
+| `Block` or `RequireReview` | `NotSupportedException` |
 
 The first two are programming errors: the policy engine already decided, and ignoring its
 verdict here would make the block advisory. The rest are configuration errors, and a

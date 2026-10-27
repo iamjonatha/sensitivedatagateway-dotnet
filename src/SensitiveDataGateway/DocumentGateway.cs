@@ -34,17 +34,22 @@ public sealed class DocumentGateway : ISensitiveDataGateway
     /// <param name="detection">Finds candidates in the text.</param>
     /// <param name="policyEngine">Decides what happens to each candidate.</param>
     /// <param name="anonymizer">Rewrites the text.</param>
-    /// <param name="validator">Checks the rewrite before anything may leave.</param>
     /// <param name="options">What the gateway itself does: audit, clock, version.</param>
     /// <exception cref="ArgumentNullException">Any argument is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// The privacy validator is not a parameter, and there is no overload that takes one. It
+    /// is the stage that decides whether anything may leave, so a gateway assembled from
+    /// caller-supplied parts still checks its own output with the validator this library
+    /// ships. A replaceable validator would make <see cref="ValidatedPayload"/> mean
+    /// "somebody said this was checked" rather than "this library checked it".
+    /// </remarks>
     public DocumentGateway(
         ExtractionPipeline extraction,
         DetectionPipeline detection,
         IPolicyEngine policyEngine,
         IDocumentAnonymizer anonymizer,
-        IPrivacyValidator validator,
         GatewayOptions options)
-        : this(new GatewayPipeline(extraction, detection, policyEngine, anonymizer, validator, options))
+        : this(new GatewayPipeline(extraction, detection, policyEngine, anonymizer, new PrivacyValidator(), options))
     {
     }
 
@@ -88,9 +93,8 @@ public sealed class DocumentGateway : ISensitiveDataGateway
     /// <exception cref="ArgumentException"><paramref name="extractors"/> is empty.</exception>
     /// <remarks>
     /// The policy engine, the anonymizer and the privacy validator are not parameters here.
-    /// They are the part of the pipeline that decides what may leave, and an application that
-    /// genuinely needs to replace one of them can say so through the full constructor rather
-    /// than by passing <see langword="null"/> to a convenience method.
+    /// The policy engine and the anonymizer can be replaced through the full constructor. The
+    /// validator cannot be replaced anywhere, by design.
     /// </remarks>
     public static DocumentGateway Create(
         IEnumerable<IDocumentExtractor> extractors,

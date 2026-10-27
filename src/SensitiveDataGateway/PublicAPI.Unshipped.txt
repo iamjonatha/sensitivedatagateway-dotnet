@@ -95,8 +95,13 @@ SensitiveDataGateway.Detection.EntropyDetectorOptions.MinimumLength.get -> int
 SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumBitsPerCharacter(double minimumBitsPerCharacter) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 SensitiveDataGateway.Detection.EntropyDetectorOptions.WithMinimumLength(int minimumLength) -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 SensitiveDataGateway.Detection.PatternDetector
+SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost
+SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.DetectAsync(SensitiveDataGateway.Documents.ExtractedDocument! document, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.SensitiveEntity!>!>
+SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.EntityTypes.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
+SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
+SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Version.get -> SensitiveDataGateway.Detection.DetectorVersion
 SensitiveDataGateway.DocumentGateway
-SensitiveDataGateway.DocumentGateway.DocumentGateway(SensitiveDataGateway.Documents.ExtractionPipeline! extraction, SensitiveDataGateway.Detection.DetectionPipeline! detection, SensitiveDataGateway.Policies.IPolicyEngine! policyEngine, SensitiveDataGateway.Anonymization.IDocumentAnonymizer! anonymizer, SensitiveDataGateway.Validation.IPrivacyValidator! validator, SensitiveDataGateway.GatewayOptions! options) -> void
+SensitiveDataGateway.DocumentGateway.DocumentGateway(SensitiveDataGateway.Documents.ExtractionPipeline! extraction, SensitiveDataGateway.Detection.DetectionPipeline! detection, SensitiveDataGateway.Policies.IPolicyEngine! policyEngine, SensitiveDataGateway.Anonymization.IDocumentAnonymizer! anonymizer, SensitiveDataGateway.GatewayOptions! options) -> void
 SensitiveDataGateway.DocumentGateway.InspectAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.InspectionReport!>!
 SensitiveDataGateway.DocumentGateway.SanitizeAsync(SensitiveDataGateway.Documents.DocumentBundle! bundle, SensitiveDataGateway.Policies.SanitizationPolicy! policy, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<SensitiveDataGateway.Validation.SanitizationResult!>!
 SensitiveDataGateway.DocumentGateway<TRequest, TResult>
@@ -136,11 +141,6 @@ SensitiveDataGateway.GatewayOptions.WithTimeProvider(System.TimeProvider! timePr
 SensitiveDataGateway.Policies.PolicyEngine
 SensitiveDataGateway.Policies.PolicyEngine.Evaluate(SensitiveDataGateway.Detection.DetectedDocument! document, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Policies.TransformationPlan!
 SensitiveDataGateway.Policies.PolicyEngine.PolicyEngine() -> void
-SensitiveDataGateway.Validation.PrivacyValidator
-SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator() -> void
-SensitiveDataGateway.Validation.PrivacyValidator.PrivacyValidator(SensitiveDataGateway.Validation.ValidationOptions! options) -> void
-SensitiveDataGateway.Validation.PrivacyValidator.Reject(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
-SensitiveDataGateway.Validation.PrivacyValidator.Validate(SensitiveDataGateway.Detection.DetectedDocument! detected, SensitiveDataGateway.Policies.TransformationPlan! plan, SensitiveDataGateway.Anonymization.SanitizedDocument! sanitized, SensitiveDataGateway.Policies.SanitizationPolicy! policy) -> SensitiveDataGateway.Validation.SanitizationResult!
 SensitiveDataGateway.Validation.ValidationOptions
 SensitiveDataGateway.Validation.ValidationOptions.EntropyThreshold.get -> double
 SensitiveDataGateway.Validation.ValidationOptions.MinimumEntropyLength.get -> int
@@ -185,6 +185,11 @@ static SensitiveDataGateway.Detection.DeterministicDetectors.PrivateKey() -> Sen
 static SensitiveDataGateway.Detection.DeterministicDetectors.Url() -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
 static SensitiveDataGateway.Detection.EntropyDetectorOptions.Default.get -> SensitiveDataGateway.Detection.EntropyDetectorOptions!
 static SensitiveDataGateway.Detection.PatternDetector.Create(SensitiveDataGateway.Detection.DetectorVersion version, string! patternName, SensitiveDataGateway.Detection.EntityType type, SensitiveDataGateway.Detection.SensitivityLevel sensitivity, SensitiveDataGateway.Detection.DetectionConfidence confidence, System.Text.RegularExpressions.Regex! pattern) -> SensitiveDataGateway.Detection.ISensitiveDataDetector!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Create(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector, System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Create(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector, System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
+static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.DefaultEntityTypes.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
 static SensitiveDataGateway.DocumentGateway.Create(System.Collections.Generic.IEnumerable<SensitiveDataGateway.Documents.IDocumentExtractor!>! extractors, System.Collections.Generic.IEnumerable<SensitiveDataGateway.Detection.ISensitiveDataDetector!>! detectors, SensitiveDataGateway.Anonymization.IPseudonymStore! pseudonymStore, SensitiveDataGateway.GatewayOptions! options) -> SensitiveDataGateway.DocumentGateway!
 static SensitiveDataGateway.DocumentGateway.CreateDefault() -> SensitiveDataGateway.DocumentGateway!
 static SensitiveDataGateway.DocumentGateway.CreateDefault(SensitiveDataGateway.GatewayOptions! options) -> SensitiveDataGateway.DocumentGateway!
@@ -195,13 +200,3 @@ static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CreateOut
 static SensitiveDataGateway.Documents.Recognition.RecognizingExtractor.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Documents.Recognition.ITextRecognizer! recognizer) -> SensitiveDataGateway.Documents.Recognition.RecognizingExtractor!
 static SensitiveDataGateway.GatewayOptions.Default.get -> SensitiveDataGateway.GatewayOptions!
 static SensitiveDataGateway.Validation.ValidationOptions.Default.get -> SensitiveDataGateway.Validation.ValidationOptions!
-SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost
-SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.DetectAsync(SensitiveDataGateway.Documents.ExtractedDocument! document, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.SensitiveEntity!>!>
-SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.EntityTypes.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!
-SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Locality.get -> SensitiveDataGateway.TrustBoundaryLocality
-SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Version.get -> SensitiveDataGateway.Detection.DetectorVersion
-static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Create(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector, System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
-static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.Create(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
-static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector, System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>! entityTypes) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
-static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.CreateOutsideTheTrustBoundary(SensitiveDataGateway.Detection.Semantic.ISemanticDetector! detector) -> SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost!
-static SensitiveDataGateway.Detection.Semantic.SemanticDetectorHost.DefaultEntityTypes.get -> System.Collections.Generic.IReadOnlyList<SensitiveDataGateway.Detection.EntityType>!

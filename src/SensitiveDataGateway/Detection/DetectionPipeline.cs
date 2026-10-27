@@ -133,7 +133,7 @@ public sealed class DetectionPipeline
             }
         }
 
-        var entities = EntityReconciler.Reconcile(document.Segments, candidates);
+        var entities = EntityReconciler.Reconcile(document.Segments, candidates, cancellationToken);
 
         return DetectedDocument.Create(document, entities, versions, failures);
     }

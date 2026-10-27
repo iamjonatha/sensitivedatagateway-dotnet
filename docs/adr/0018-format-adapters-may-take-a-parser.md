@@ -64,7 +64,7 @@ Three constraints survive unchanged:
   Taking a parser does not relax that; it is what criterion 1 exists to preserve.
 - **Each parser still gets its own ADR**, as ADR-0012 requires. This record states the rule;
   [0019](0019-mimekitlite-for-mime.md), [0020](0020-pdfpig-for-pdf.md) and
-  [0021](0021-open-xml-sdk-for-docx-and-xlsx.md) take the individual decisions.
+  [0021](0021-openxml-sdk-for-office-documents.md) take the individual decisions.
 
 An adapter that cannot read something is not allowed to approximate it. A construct that
 carries content the adapter cannot extract in place — an encrypted part, an embedded file, an

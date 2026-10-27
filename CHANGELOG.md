@@ -11,6 +11,13 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Added
 
+- `docs/security/boundary-review-2026-10.md`: the internal review of the egress boundary
+  carried out before the first release — the eight questions it tried to answer, the three
+  defects it found, what it did not cover, and a statement that an internal review is not an
+  independent one. The external review is now an explicit open item on the roadmap.
+- A security test that enumerates the public surface of every shipping assembly and fails if
+  any member other than three named readers yields a `ValidatedPayload`. The private
+  constructor was only ever half of G2; this is the other half.
 - Published performance figures in `docs/performance.md`, produced by a BenchmarkDotNet
   project in `benchmarks/` that measures each pipeline stage and the gateway end to end over
   three document shapes and two sizes. The worst shape is the one documented.
@@ -41,7 +48,7 @@ While the major version is `0`, the public API may change in any minor release.
 - Domain model: the identity, document, detection, policy, sanitization, validation, audit
   and error types, and the rules they follow.
 - Threat model covering fourteen threats, their mitigations and the residual risk of each.
-- Egress guarantees: twelve guaranteed properties, eight explicit non-guarantees, and how to
+- Egress guarantees: twelve guaranteed properties, ten explicit non-guarantees, and how to
   verify both.
 - Dependency classification: the five capability classes, where each may appear, and the
   registry every future dependency is added to.
@@ -392,6 +399,9 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Changed
 
+- `DocumentGateway`'s constructor no longer takes an `IPrivacyValidator`. The gateway
+  constructs the validator itself, because a stage that is documented as not configurable
+  should not be a constructor parameter. See the Security section.
 - The default gateway supplies the anonymizer with a hashing key whether or not the
   application configured one. A shipped policy may ask for a hashing transformation, and the
   anonymizer refuses to produce an unkeyed hash because a short value hashed without a secret
@@ -411,6 +421,13 @@ While the major version is `0`, the public API may change in any minor release.
 
 ### Removed
 
+- `TransformationAction.Encrypt`, `IPrivacyValidator` and `PrivacyValidator` from the public
+  API. `Encrypt` was documented as a reversible transformation but was implemented nowhere:
+  the policy engine did not map it and the anonymizer threw `NotSupportedException` on it, so
+  the only thing it could do was fail a document at the last stage, having advertised a
+  capability the library does not have. A policy description naming it is now rejected when
+  the action is read, with `policy.action_invalid`. The remaining actions were renumbered,
+  which is safe because nothing has been published.
 - `SanitizationPolicy.RequiresCompleteScan`, `SanitizationPolicyBuilder.RequireCompleteScan`
   and the `RequireCompleteScan` key of a policy description. An incomplete scan blocks under
   every policy: the final privacy validation refuses one unconditionally, as the rule against
@@ -460,3 +477,27 @@ While the major version is `0`, the public API may change in any minor release.
   then failed its mod-97 check and was discarded, so the account number was not reported at
   all: a missed detection rather than a noisy one. The separator is now captured once and
   required to be the same throughout, which is what the format actually specifies.
+
+### Security
+
+- A `ValidatedPayload` can no longer be manufactured without running the pipeline.
+  `PrivacyValidator` was public and every one of its four arguments had a public factory, so
+  a caller could assemble a sanitized document holding arbitrary text, pass a plan containing
+  no decisions, and receive a genuine payload together with a report that truthfully recorded
+  ten passed checks — because every check compares the sanitized text against the decisions,
+  and there were none to compare it against. The validator and its interface are now
+  internal, which is what the gateway's own documentation already claimed when it said the
+  checking "is not optional and not configurable". `SanitizedDocument.Create` stays public: a
+  sanitized document is not a payload, and no provider accepts one.
+- Entity reconciliation is no longer quadratic in the number of candidates, and now observes
+  the cancellation token. The detection stage admits up to `MaxCandidatesPerDetector` from
+  each detector, so a document built to saturate every detector could present enough
+  candidates to occupy a core for hours, and cancelling the request would not stop it. The
+  accepted spans are now kept ordered per segment and searched by bisection, which is correct
+  because acceptances are pairwise disjoint: only the two spans nearest a candidate can
+  collide with it. No bound was added — bounding the input would have hidden the defect
+  rather than removed it.
+- `PresidioOptions.ForHostedService` now requires `https`. A hosted analyzer receives the
+  document in full before anything has been removed from it, so cleartext there exposes every
+  document to anyone on the path. `ForSelfHosted` still accepts `http`, because a container
+  reached over a loopback or a bridge the deployment owns gains nothing from a certificate.

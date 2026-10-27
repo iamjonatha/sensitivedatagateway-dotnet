@@ -1,8 +1,9 @@
 # Native AOT and trimming
 
-Every shipping package in this repository is `IsTrimmable`, `IsAotCompatible`, and built with
-the trim and AOT analyzers on and warnings as errors. This guide says what that buys you,
-which packages the claim covers, and where it stops.
+Every shipping package in this repository is `IsTrimmable` and `IsAotCompatible` by default,
+with the trim and AOT analyzers on and warnings as errors. Three of them opt out, and say so
+in their project file: the format adapters, each because of the parser it wraps. This guide
+says what the claim buys you, exactly which packages it covers, and where it stops.
 
 ---
 
@@ -15,7 +16,8 @@ a type that was not there when we shipped" is a security property as much as a p
 one.
 
 The dependency policy in [ADR-0012](../adr/0012-dependency-policy.md) and this one support
-each other: the packages are AOT-clean largely because there are so few of them.
+each other: the core packages are AOT-clean largely because there are so few dependencies to
+be clean about, and the three that are not are exactly the three that took a parser on.
 
 ---
 
@@ -27,16 +29,21 @@ each other: the packages are AOT-clean largely because there are so few of them.
 | `SensitiveDataGateway` | Yes | The pipeline, including the deterministic detectors. |
 | `SensitiveDataGateway.Extensions` | Yes | Configuration binding is hand-written, not reflective. See below. |
 | `SensitiveDataGateway.Testing` | Yes | |
-| `SensitiveDataGateway.Providers.DecisionKit` | Inherits | AOT-clean as far as this package goes; DecisionKit's own surface is DecisionKit's claim. |
-| `SensitiveDataGateway.Documents.Mime` | Inherits | MimeKitLite is trim-friendly; verify against your own trim settings. |
-| `SensitiveDataGateway.Documents.Pdf` | Inherits | PdfPig is not annotated for trimming. Expect warnings. |
-| `SensitiveDataGateway.Documents.OpenXml` | Inherits | The Open XML SDK uses reflection over its generated model. Expect warnings. |
-| `SensitiveDataGateway.Detection.Presidio` | Inherits | Uses `System.Text.Json` with a source-generated context. |
+| `SensitiveDataGateway.Providers.DecisionKit` | Yes | AOT-clean as far as this package goes; DecisionKit's own surface is DecisionKit's claim. |
+| `SensitiveDataGateway.Detection.Presidio` | Yes | `System.Text.Json` with a source-generated context, so the contract survives trimming. |
+| `SensitiveDataGateway.Documents.Mime` | **No** | `IsTrimmable=false`, `IsAotCompatible=false`. MimeKitLite is trim-friendly in practice but makes no annotated claim. |
+| `SensitiveDataGateway.Documents.Pdf` | **No** | `IsTrimmable=false`, `IsAotCompatible=false`. PdfPig is not annotated for trimming. |
+| `SensitiveDataGateway.Documents.OpenXml` | **No** | `IsTrimmable=false`, `IsAotCompatible=false`. The Open XML SDK reflects over its generated model. |
 
-"Inherits" means this repository's code in that package is clean and the parser it adapts is
-the thing to check. That is the practical consequence of
+The three adapters opt out honestly rather than shipping a claim their parser cannot keep.
+Marking a package trimmable when its dependency reflects does not make trimming safe; it
+only moves the failure from your build to your customer's runtime.
+
+That split is the practical consequence of
 [ADR-0018](../adr/0018-format-adapters-may-take-a-parser.md): one format, one package, one
-parser, so a trim warning names exactly which format you are paying for.
+parser, so the AOT cost is scoped to exactly the format you chose to read. An application
+that needs Native AOT and reads only text or email-as-text pays nothing for the PDF reader
+it never referenced.
 
 ---
 

@@ -55,7 +55,6 @@ internal static class Harness
             new DetectionPipeline(detectors, detectionOptions),
             new PolicyEngine(),
             Anonymizer(),
-            new PrivacyValidator(),
             GatewayOptions.Default);
 
     public static DocumentGateway WithAnonymizer(IDocumentAnonymizer anonymizer) =>
@@ -73,7 +72,6 @@ internal static class Harness
             new DetectionPipeline(detectors),
             new PolicyEngine(),
             anonymizer,
-            new PrivacyValidator(),
             options);
 
     public static DocumentGateway<ReviewRequest, ReviewDecision> Over(

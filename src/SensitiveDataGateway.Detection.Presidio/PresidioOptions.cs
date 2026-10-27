@@ -97,16 +97,18 @@ public sealed class PresidioOptions
     /// <returns>The options, keeping every result the analyzer reports.</returns>
     /// <exception cref="ArgumentNullException">An argument is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">
-    /// <paramref name="endpoint"/> is not an absolute HTTP address, or
+    /// <paramref name="endpoint"/> is not an absolute https address, or
     /// <paramref name="language"/> is blank.
     /// </exception>
     /// <remarks>
     /// Every document examined is transmitted in full, before any sanitization, to whoever
     /// operates that address. A detector built on these options is refused by
-    /// <c>SemanticDetectorHost.Create</c> and has to be admitted deliberately.
+    /// <c>SemanticDetectorHost.Create</c> and has to be admitted deliberately. The address
+    /// must be <c>https</c>: raw content crossing a network somebody else operates is the one
+    /// case where the transport is part of the boundary rather than a deployment detail.
     /// </remarks>
     public static PresidioOptions ForHostedService(Uri endpoint, string language) =>
-        new(Checked(endpoint), Checked(language), 0.0, TrustBoundaryLocality.Remote, s_defaultMap);
+        new(CheckedRemote(endpoint), Checked(language), 0.0, TrustBoundaryLocality.Remote, s_defaultMap);
 
     /// <summary>
     /// Returns the same options, discarding results the analyzer was less sure about.
@@ -160,6 +162,34 @@ public sealed class PresidioOptions
         if (!endpoint.IsAbsoluteUri || (endpoint.Scheme != Uri.UriSchemeHttp && endpoint.Scheme != Uri.UriSchemeHttps))
         {
             throw new ArgumentException("A Presidio endpoint is an absolute http or https address.", nameof(endpoint));
+        }
+
+        return endpoint;
+    }
+
+    /// <summary>
+    /// Checks the address of an analyzer outside the trust boundary.
+    /// </summary>
+    /// <param name="endpoint">The analyzer's base address.</param>
+    /// <returns>The same address.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="endpoint"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="endpoint"/> is not an absolute https address.</exception>
+    /// <remarks>
+    /// <c>http</c> is allowed for a self-hosted analyzer because a container on the same host
+    /// is reached over a loopback or a bridge the deployment owns, and demanding a
+    /// certificate there buys nothing. It is refused here because the content is unsanitized
+    /// and the network is not the deployment's: cleartext would hand every document to anyone
+    /// on the path, which is not the risk the caller accepted by choosing a hosted analyzer.
+    /// </remarks>
+    private static Uri CheckedRemote(Uri endpoint)
+    {
+        ArgumentNullException.ThrowIfNull(endpoint);
+
+        if (!endpoint.IsAbsoluteUri || endpoint.Scheme != Uri.UriSchemeHttps)
+        {
+            throw new ArgumentException(
+                "A hosted Presidio analyzer receives unsanitized content and is reached over https.",
+                nameof(endpoint));
         }
 
         return endpoint;

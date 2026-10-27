@@ -93,7 +93,7 @@ no knowledge that any decision provider exists.
 
 | Package | Contains | Must not contain |
 | --- | --- | --- |
-| `SensitiveDataGateway.Core` | Document model, pipeline stage types, `SensitiveEntity`, policy model, transformation actions, audit model, abstractions (`IDocumentExtractor`, `ISensitiveDataDetector`, `IAnonymizer`, `IPrivacyValidator`, `IDecisionProvider<,>`), error contracts | Any network call, any provider name, any third-party detector, any file-format parser |
+| `SensitiveDataGateway.Core` | Document model, pipeline stage types, `SensitiveEntity`, policy model, transformation actions, audit model, abstractions (`IDocumentExtractor`, `ISensitiveDataDetector`, `IAnonymizer`, `IDecisionProvider<,>`), error contracts | Any network call, any provider name, any third-party detector, any file-format parser |
 | `SensitiveDataGateway` | The pipeline: detection host, built-in deterministic detectors, policy engine, pseudonymizer and redactor, final privacy validator, the gateway façade | Provider protocol knowledge, HTTP, document-format parsers |
 | `SensitiveDataGateway.Extensions` | `IServiceCollection` registration, `IOptions` binding, logging integration | Domain logic, detection logic |
 | `SensitiveDataGateway.Testing` | Fake providers, recording providers, leakage assertions, synthetic corpora | Real network calls, real credentials |

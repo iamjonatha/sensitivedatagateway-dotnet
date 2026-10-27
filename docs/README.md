@@ -23,6 +23,7 @@
 | [Threat model](security/threat-model.md) | The trust boundary, the assets, fourteen threats and the residual risk |
 | [Egress guarantees](security/egress-guarantees.md) | What is guaranteed, what is explicitly not, and how to verify both |
 | [Dependency classification](security/dependency-classification.md) | What a referenced package is allowed to be capable of |
+| [Boundary review](security/boundary-review-2026-10.md) | The internal review before the first release: what was tried, what it found |
 | [Decision records](adr/) | Why the architecture is what it is, and what was rejected |
 
 ## Rules

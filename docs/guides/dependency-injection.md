@@ -157,8 +157,8 @@ name holding a value of the wrong shape throws `PolicyConfigurationException` wi
 | `Limits:MaxEntities` | int | |
 | `Limits:MaxProcessingTime` | `TimeSpan` | `hh:mm:ss` |
 
-`TransformationAction` is `Preserve`, `Mask`, `Redact`, `Pseudonymize`, `Hash`, `Encrypt`,
-`Block` or `RequireReview`. Names are matched case-insensitively. Entity type names are the
+`TransformationAction` is `Preserve`, `Mask`, `Redact`, `Pseudonymize`, `Hash`, `Block` or
+`RequireReview`. Names are matched case-insensitively. Entity type names are the
 canonical upper-case ones — `IBAN`, `EMAIL`, `TAX_ID` — listed in
 [Detectors](detectors.md).
 

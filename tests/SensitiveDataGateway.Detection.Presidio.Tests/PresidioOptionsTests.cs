@@ -69,6 +69,22 @@ public sealed class PresidioOptionsTests
     }
 
     [Theory]
+    [InlineData("http://analyzer.example/")]
+    [InlineData("http://localhost:5002/")]
+    public void ForHostedService_RejectsCleartext(string endpoint)
+    {
+        Assert.Throws<ArgumentException>(() => PresidioOptions.ForHostedService(new Uri(endpoint), "en"));
+    }
+
+    [Fact]
+    public void ForSelfHosted_AcceptsCleartext()
+    {
+        var options = PresidioOptions.ForSelfHosted(new Uri("http://localhost:5002/"));
+
+        Assert.Equal(Uri.UriSchemeHttp, options.Endpoint.Scheme);
+    }
+
+    [Theory]
     [InlineData(-0.1)]
     [InlineData(1.1)]
     [InlineData(double.NaN)]

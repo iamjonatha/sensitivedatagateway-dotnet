@@ -64,6 +64,12 @@ written, and each one that lands must leave the existing API working.
     it, and because it needs a decision record first: the only mature tool for .NET is not
     Microsoft-maintained, and [ADR-0012](adr/0012-dependency-policy.md) does not yet
     distinguish a development tool from a shipped dependency.
+10. **An external security review.** The boundary has been reviewed internally — see
+    [`security/boundary-review-2026-10.md`](security/boundary-review-2026-10.md) — and that
+    review found three defects, two of which no test would have caught. A review by people
+    who did not write the code is a different instrument, and this project has not had one.
+    Until it does, the honest claim is that the boundary was examined on purpose, not that it
+    was independently assured.
 
 ## What is deliberately not planned
 

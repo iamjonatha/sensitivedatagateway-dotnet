@@ -14,7 +14,7 @@ defect. See [`../../SECURITY.md`](../../SECURITY.md).
 | # | Guarantee | Enforced by |
 | --- | --- | --- |
 | G1 | A provider cannot receive anything other than a `ValidatedPayload` | The type system: `IDecisionProvider<,>` takes no other content type |
-| G2 | Only the privacy validator can construct a `ValidatedPayload` | No public constructor; construction is assembly-internal |
+| G2 | Only the privacy validator can construct a `ValidatedPayload` | No public constructor, the validator is internal, and a test enumerates the public surface for anything that yields one |
 | G3 | A provider package cannot reach the raw document, the entity list or the pseudonym map | Package boundaries and an architecture test |
 | G4 | A validation failure prevents transmission | No configuration converts it into a warning |
 | G5 | A detection failure prevents transmission | Fail-closed evaluation of an incomplete scan, under every policy |
@@ -103,7 +103,6 @@ transformations are reversible:
 | --- | --- | --- |
 | `Pseudonymize` | yes, locally, through the map | yes |
 | `Hash` | no | yes |
-| `Encrypt` | yes, locally, with the key | yes |
 | `Mask` | no | partially — the shape survives |
 | `Redact` | no | no |
 

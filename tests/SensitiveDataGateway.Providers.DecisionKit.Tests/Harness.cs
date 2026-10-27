@@ -40,7 +40,6 @@ internal static class Harness
             new DetectionPipeline(DeterministicDetectors.All()),
             new PolicyEngine(),
             new DocumentAnonymizer(new InMemoryPseudonymStore()),
-            new PrivacyValidator(),
             GatewayOptions.Default);
 
     public static DecisionEngineFake Engine()
